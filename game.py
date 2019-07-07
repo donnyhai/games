@@ -7,7 +7,7 @@ class Game:
         self.game_type = game_type
         self.board = board.Board(board_size)
         self.players = self.make_players()
-        self.locator = locator.Locator(self.board, self.players, look_into_past = 50)
+        self.locator = locator.Locator(self.board, list(self.players.values()), look_into_past = 50)
         
     #create players according to the game_type
     def make_players(self):

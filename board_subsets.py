@@ -33,6 +33,28 @@ class Board_subset:
             if not self.locator.can_move_to_neighbour_on_ground(coord, neigh):
                 right_neighbours.remove(neigh)
                 
+        #use test_objects
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         

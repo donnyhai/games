@@ -1,18 +1,33 @@
+import test_objects as test
+
 #A locator object corresponds to a board and and saves stones the locator is or was looking at in the past in 
-#a dict .locations (initialized with key = 0, and value = the stone in the middle of the board)
+#a dict .locations (init with key = 0, and value = the stone in the middle of the board)
 #note that empty fields formally have a stone of type "empty" on it.  
 #the maximum number of stones the locator is saving in .locations is set by int .look_into_past 
+#to create a locator board and players have to be given, then a test_board and test_players are 
+#set to give the possibility to test out moves etc
 class Locator:
     def __init__(self, board, players, look_into_past):
+        #board and test_board
         self.board = board #this is a Board object
-        self.test_board = board #test_board is there to simulate the board at certain points, init with board
+        self.test_board = test.Test_Board(self.board.size) 
+        
+        #players and test_players
         self.players = players #this is a list of Player objects
+        self.test_players = self.set_test_players() #set test_players with analog colors and player_types as players
+        
         self.look_into_past = look_into_past
         
         self.initial_stone = self.board.board[round(self.board.size / 2)][round(self.board.size / 2)].stone
         self.locations = {0: self.initial_stone}
         self.new_key = 1
-        
+    
+    def set_test_players(self):
+        test_players = []
+        for player in self.players:
+            test_players.append(test.Test_Player(player.color, player.type))
+        return test_players
+    
     #move locator to position coord, add the stone there to the locator. 
     #.new_key will always go up by one, to generally count the number of stones in total the locator
     #has been looking at since created, and to not have double keys accidently 

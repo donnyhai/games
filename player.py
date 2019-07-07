@@ -1,9 +1,10 @@
 import stone as s
 
 class Player:
-    def __init__(self, color):
+    def __init__(self, color, player_type = "human"):
         self.color = color
         self.stones = self.create_stones()
+        self.type = player_type
     def create_stones(self):
         stones = {"bee": s.Stone("bee", 1),
                 "ant1": s.Stone("ant",1),
