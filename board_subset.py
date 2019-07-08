@@ -36,11 +36,9 @@ class Board_Subset:
             
         #this function just gets applied on coordinates which are "right neighbours"
         def add_neigh_to_locator(dir_coord):   
-            
             actual_stone = self.locator.get_position()
             self.locator.test_board.move_stone(actual_stone, dir_coord)
             self.locator.move_to_position(dir_coord, self.locator.test_board)
-                
             right_neighbours = get_right_neighbours(dir_coord)
             if len(right_neighbours) == 0:
                 return
@@ -61,30 +59,54 @@ class Board_Subset:
             self.locator.move_to_position(coord, self.locator.test_board)
             #run the recursive function
             add_neigh_to_locator(neigh)
-            
-        ground_move_fields = [self.locator.locations[k].coordinate for k in range(start_key, self.locator.new_key)]    
+        
+        #all relevant were saved in locator since key start_key
+        ground_move_fields = [self.locator.locations[k][1] for k in range(start_key, self.locator.new_key)]    
         
         #set indicator matrix
         for i in range(self.board.size):
             for j in range(self.board.size):
-                self.matrix[i][j] = 1 if (i,j) in ground_move_fields else self.matrix[i][j] = 0
+                if (i,j) in ground_move_fields: self.matrix[i][j] = 1 
+                else: self.matrix[i][j] = 0
         
         return ground_move_fields
          
     
-        #hopper is on coord. where can it move ?
-        def get_hopper_fields(self, coord):
-            neighbours = self.board.get_neighbours(coord)
-            hopper_fields = []
-            #loop all the neighbours of coord and look for nonempty neighbours, 
-            #and get the first empty field in every "direction"
-            for i in range(5):
-                neigh = neighbours[i]
-                if not self.board.board[neigh[0]][neigh[1]].is_empty:
-                    while not self.board.board[neigh[0]][neigh[1]].is_empty:
-                        neigh = self.board.get_neighbours(neigh)[i]
-                    hopper_fields.append(neigh)
-            return hopper_fields
+    #hopper is on coord. where can it move ?
+    def get_hopper_fields(self, coord):
+        neighbours = self.board.get_neighbours(coord)
+        hopper_fields = []
+        #loop all the neighbours of coord and look for nonempty neighbours, 
+        #and get the first empty field in every "direction"
+        for i in range(5):
+            neigh = neighbours[i]
+            if not self.board.board[neigh[0]][neigh[1]].is_empty:
+                while not self.board.board[neigh[0]][neigh[1]].is_empty:
+                    neigh = self.board.get_neighbours(neigh)[i]
+                hopper_fields.append(neigh)
+        return hopper_fields
     
-        
-        
+    #spider is on coord. where can it move ?
+    def get_spider_fields(self, coord):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

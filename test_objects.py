@@ -30,3 +30,4 @@ class Test_Board(board.Board):
 
 class Test_Player(player.Player):
     pass
+

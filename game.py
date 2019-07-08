@@ -23,8 +23,5 @@ hgame = HvsH_Game()
 
 
 
-
-
-
 if __name__ == "main":
     pass

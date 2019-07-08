@@ -117,9 +117,9 @@ class Board:
         return indexset
     
     #move stone of player to i,j (if possible)       
-    def move_stone(self, player, stone, coordinate, locator):
-        i = coordinate[0]
-        j = coordinate[1]
+    def move_stone(self, player, stone, coord, locator):
+        i = coord[0]
+        j = coord[1]
         
         def move(stone, i, j):
             self.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
