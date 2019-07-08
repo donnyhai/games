@@ -1,2 +1,2 @@
 experimentals.py
-.pyc
+__pycache__\*.pyc
