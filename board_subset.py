@@ -4,10 +4,9 @@ class Board_Subset:
     def __init__(self, locator):
         self.locator = locator
         self.board = self.locator.board #note that the locator always contains the board object of the actual game
-        self.size = self.board.size
         #matrix has the sime size as board, is 1 in i,j iff we consider this field to be part 
         #of the set of fields we want to include at the moment (initialized with all fields, therefore all 1). 
-        #the matrix will be helpful to get structural insides
+        #the matrix will be helpful to get easier structural insides
         self.matrix = self.all_fields()
         
     def all_fields(self):
@@ -22,7 +21,7 @@ class Board_Subset:
     #on the way, it is like a spion which goes first and checks the situation, then returns all fields 
     #which are ok, that means physically reachable on the ground. function can_move_to_neighbour_on_ground
     #of locator is helpful. 
-    def ground_move_fields(self, coord):
+    def get_ground_move_fields(self, coord):
         
         #return neighbours of coord in test_board which are ground-reachably and which arent in seen_by_locator
         def get_right_neighbours(coord):
@@ -63,27 +62,29 @@ class Board_Subset:
             #run the recursive function
             add_neigh_to_locator(neigh)
             
-            
+        ground_move_fields = [self.locator.locations[k].coordinate for k in range(start_key, self.locator.new_key)]    
         
-        return [self.locator.locations[k].coordinate for k in range(start_key, self.locator.new_key)]
+        #set indicator matrix
+        for i in range(self.board.size):
+            for j in range(self.board.size):
+                self.matrix[i][j] = 1 if (i,j) in ground_move_fields else self.matrix[i][j] = 0
+        
+        return ground_move_fields
          
-        
-        def hopper_fields(self):
-            pass
     
-        #get possible moving coordinates of hopper if hopper is on i,j
-        def get_hopper_fields(self, coord, which_field):
-            neigh = self.locator.wh.get_neighbours(i,j)
-            indexset = {}
-            #loop all the neighbours of i,j and look for nonempty neighbours, 
+        #hopper is on coord. where can it move ?
+        def get_hopper_fields(self, coord):
+            neighbours = self.board.get_neighbours(coord)
+            hopper_fields = []
+            #loop all the neighbours of coord and look for nonempty neighbours, 
             #and get the first empty field in every "direction"
             for i in range(5):
-                index = neigh[i]
-                if not self.board(index[0], index[1]).is_empty:
-                    while not self.board(index[0], index[1]).is_empty:
-                        index = self.get_neighbours(index[0], index[1])[i]
-                        indexset.append(index)
-            return indexset
+                neigh = neighbours[i]
+                if not self.board.board[neigh[0]][neigh[1]].is_empty:
+                    while not self.board.board[neigh[0]][neigh[1]].is_empty:
+                        neigh = self.board.get_neighbours(neigh)[i]
+                    hopper_fields.append(neigh)
+            return hopper_fields
     
         
         
