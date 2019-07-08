@@ -1,10 +1,9 @@
 import stone as s
 
 class Player:
-    def __init__(self, color, player_type = "human"):
+    def __init__(self, color):
         self.color = color
         self.stones = self.create_stones()
-        self.type = player_type
     def create_stones(self):
         stones = {"bee": s.Stone("bee", 1),
                 "ant1": s.Stone("ant",1),
@@ -19,5 +18,9 @@ class Player:
             stone.set_color(self.color)
         return stones
     
+class Human_Player(Player):
+    pass
 
+class Computer_player(Player):
+    pass
         

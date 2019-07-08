@@ -3,22 +3,28 @@ import player
 import locator
 
 class Game:
-    def __init__(self, game_type = "two-player", board_size = 50):
-        self.game_type = game_type
-        self.board = board.Board(board_size)
-        self.players = self.make_players()
-        self.locator = locator.Locator(self.board, list(self.players.values()), look_into_past = 50)
+    board_size = 50
         
-    #create players according to the game_type
-    def make_players(self):
-        if self.game_type == "two-player":
-            player_1 = player.Player(color = "white")
-            player_2 = player.Player(color = "black")
-            return {"h1": player_1, "h2": player_2}
+class HvsH_Game(Game):
+    def __init__(self):
+        self.players = [player.Human_Player("white"), player.Human_Player("black")]
+        self.locator = locator.Locator(board.Board(Game.board_size), self.players, look_into_past = 100)
+        
+class HvsC_Game(Game):
+    def __init__(self):
+        self.players = [player.Human_Player("white"), player.Computer_player("black")]
+        self.locator = locator.Locator(board.Board(Game.board_size), self.players, look_into_past = 100)
+        
     
-    
+
 game = Game()
-board = game.board
+
+hgame = HvsH_Game()
+
+
+
+
+
 
 if __name__ == "main":
-    game = Game()
+    pass

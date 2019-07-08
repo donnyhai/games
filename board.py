@@ -1,9 +1,10 @@
 import field
+import board_subset
 
 class Board:
     def __init__(self, size):
         self.size = size
-        self.board = [[field.Field() for i in range(self.size)] for i in range(self.size)]
+        self.board = [[field.Field() for i in range(self.size)] for j in range(self.size)]
         self.set_fields_coordinates()
         self.nonempty_fields = [] #will contain coordinates
     
@@ -114,21 +115,6 @@ class Board:
                 if field.is_empty and len(neigh.intersection(self.nonempty_fields)) in numbers_nonempty_neigh:
                     indexset.append(coord)
         return indexset
-    
-    #get possible moving coordinates of hopper if hopper is on i,j
-    def get_hopper_fields(self, i,j):
-        neigh = self.get_neighbours(i,j)
-        indexset = {}
-        #loop all the neighbours of i,j and look for nonempty neighbours, 
-        #and get the first empty field in every "direction"
-        for i in range(5):
-            index = neigh[i]
-            if not self.board(index[0], index[1]).is_empty:
-                while not self.board(index[0], index[1]).is_empty:
-                    index = self.get_neighbours(index[0], index[1])[i]
-                indexset.append(index)
-        return indexset
-        
     
     #move stone of player to i,j (if possible)       
     def move_stone(self, player, stone, coordinate, locator):
