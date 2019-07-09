@@ -8,5 +8,3 @@ class Stone:
         self.is_mosquito = False
     def set_color(self, color):
         self.color = color
-    def set_coordinate(self, coordinate):
-        self.coordinate = coordinate
