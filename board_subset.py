@@ -72,6 +72,11 @@ class Board_Subset:
         return ground_move_fields
          
     
+    #ant is on coord. where can it move ?
+    def get_ant_fields(self, coord):
+        return self.get_ground_move_fields(coord)
+    
+    
     #hopper is on coord. where can it move ?
     def get_hopper_fields(self, coord):
         neighbours = self.board.get_neighbours(coord)
@@ -86,9 +91,61 @@ class Board_Subset:
                 hopper_fields.append(neigh)
         return hopper_fields
     
+    
+
     #spider is on coord. where can it move ?
-    def get_spider_fields(self, coord):
-        pass
+    def get_spider_fields(self, coord): 
+        
+        start_key = 0
+        
+        #function to simulate the moving of the spider. rule: the spider cannot return
+        #to a field she was coming from, unless it is the only possible field to walk. 
+        #when she has walked three fields with this rule, she has to stop
+        def func(sour_coord, dir_coord):
+            self.locator.move_to_position(dir_coord, self.locator.test_board)
+            if self.locator.new_key - start_key == 3:
+                spider_fields.append(dir_coord)
+                #why is there a problem with start_key ???
+                start_key += 1 #in case that next_neighbours contains more than one field, 
+                #because then we would count to more than 3 unwantedly
+                return
+            else:
+                neighbours = set(self.locator.test_board.get_neighbours(dir_coord).values())
+                right_neighbours = neighbours.intersection(ground_move_fields)
+                right_neighbours.remove(sour_coord) #dont consider sour_coord
+                if len(right_neighbours) == 0: #sour_coord only neighbour ?
+                    func(dir_coord, sour_coord)
+                else:
+                    for neigh in right_neighbours:
+                        func(dir_coord, neigh)
+        
+        ground_move_fields = self.get_ground_move_fields(coord)
+        spider_fields = []
+        
+        #actualize test_board and move locator to coord on test_board
+        self.locator.test_board.copy_board(self.board)
+        self.locator.move_to_position(coord, self.locator.test_board)
+        
+        neighbours = set(self.locator.test_board.get_neighbours(coord).values())
+        right_neighbours = neighbours.intersection(ground_move_fields)
+        
+        for neigh in right_neighbours:
+            #copy the actual board constellation into test_board
+            self.locator.test_board.copy_board(self.board)
+            #move locator back to the "starting" coordinate
+            self.locator.move_to_position(coord, self.locator.test_board)
+            #start_key to be able to count to 3 for the steps taken by locator
+            start_key = self.locator.new_key
+            #run the recursive function
+            func(coord, neigh)
+        
+        #set indicator matrix
+        for i in range(self.board.size):
+            for j in range(self.board.size):
+                if (i,j) in spider_fields: self.matrix[i][j] = 1 
+                else: self.matrix[i][j] = 0
+        
+        return spider_fields
 
 
 

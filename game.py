@@ -4,6 +4,7 @@ import locator
 
 class Game:
     board_size = 50
+    board = board.Board(board_size)
         
 class HvsH_Game(Game):
     def __init__(self):
