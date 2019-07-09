@@ -9,8 +9,10 @@ class Board_Subset:
         #the matrix will be helpful to get easier structural insides
         self.matrix = self.all_fields()
         
+        
     def all_fields(self):
         return [[1] * self.size for i in range(self.size)]
+    
     
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
@@ -70,7 +72,12 @@ class Board_Subset:
                 else: self.matrix[i][j] = 0
         
         return ground_move_fields
-         
+    
+    
+    #bee is on coord. where can it move ?
+    def get_bee_fields(self, coord):
+        return set(self.board.get_neighbours(coord).values()).intersection(self.get_ground_move_fields(coord))
+    
     
     #ant is on coord. where can it move ?
     def get_ant_fields(self, coord):
@@ -92,7 +99,6 @@ class Board_Subset:
         return hopper_fields
     
     
-
     #spider is on coord. where can it move ?
     def get_spider_fields(self, coord): 
         
@@ -148,7 +154,14 @@ class Board_Subset:
         return spider_fields
 
 
-
+        #bug is on coord. where can it move ?
+        def get_bug_fields(self, coord):
+            return self.board.get_neighbours(coord).values()
+        
+        
+        #marienbug is on coord. where can it move ?
+        def get_marienbug_fields(self, coord):
+            pass
 
 
 

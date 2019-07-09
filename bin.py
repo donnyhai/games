@@ -42,7 +42,29 @@ class Hopper_fields(All_fields):
         pass
     
 
-
+#get empty fields of the board, enter empty_type "extern", "outer" or "inner"
+    #"extern" means empty fields with number of nonempty neighbours in {0}
+    #"outer" means empty fields with number of nonempty neighbours in {1,2,3,4}
+    #"inner" means empty fields with number of nonempty neighbours in {5,6}
+    def get_empty_fields(self, empty_type):
+        #set possible numbers for nonempty neighbours according to empty_type
+        if empty_type == "extern":
+            numbers_nonempty_neigh = {0}
+        elif empty_type == "outer":
+            numbers_nonempty_neigh = {1,2,3,4}
+        elif empty_type == "inner":
+            numbers_nonempty_neigh = {5,6}
+        else:
+            print("no such empty_type")
+        #find respective empty fields 
+        indexset = {}
+        for row in self.board:
+            for field in row:
+                coord = field.coordinate
+                neigh = set(self.get_neighbours(coord[0], coord[1]).values())
+                if field.is_empty and len(neigh.intersection(self.nonempty_fields)) in numbers_nonempty_neigh:
+                    indexset.append(coord)
+        return indexset
 
 
 
