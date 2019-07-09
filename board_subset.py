@@ -11,7 +11,7 @@ class Board_Subset:
         
         
     def all_fields(self):
-        return [[1] * self.size for i in range(self.size)]
+        return [[1] * self.board.size for i in range(self.board.size)]
     
     
     #a ground walking stone is on coord. where can it physically move ?
