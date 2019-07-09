@@ -4,6 +4,8 @@ class Stone:
         self.number = number
         self.is_on_board = False
         self.coordinate = (-1,-1)
+        self.has_bug_on = False
+        self.is_mosquito = False
     def set_color(self, color):
         self.color = color
     def set_coordinate(self, coordinate):
