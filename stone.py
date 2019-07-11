@@ -1,0 +1,10 @@
+class Stone:
+    def __init__(self, stone_type, number):
+        self.type = stone_type
+        self.number = number
+        self.is_on_board = False
+        self.coordinate = (-1,-1)
+        self.has_bug_on = False
+        self.is_mosquito = False
+    def set_color(self, color):
+        self.color = color
