@@ -1,6 +1,4 @@
 import game
-
-
 from PyQt5 import QtWidgets
 
 class MyDialog(QtWidgets.QWidget):
