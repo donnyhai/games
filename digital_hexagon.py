@@ -1,3 +1,6 @@
+from math import sqrt       
+import pygame, sys
+pygame.init()
 
 def getting_hexa(scaling_ratio, start_vector):    
     hex_coords = [(0,0), (1,0), (1.5, 3**(1/2)/2), (1, 3**(1/2)), (0,3**(1/2)), (-0.5, 3**(1/2)/2)]
@@ -10,20 +13,54 @@ def getting_hexa(scaling_ratio, start_vector):
     return points
 
 
-        
-import pygame, sys
+def euclidean_metric(vector):
+    squared = [x*x for x in vector]
+    return sqrt(sum(squared))
 
-pygame.init()
+def point_in_hexagon(hexa_points, coords):
+    boundary_vectors = []
+    connection_vectors = []
+    for i in range(len(hexa_points)):
+        boundary_vectors.append((hexa_points[(i+1)%len(hexa_points)][0]-hexa_points[i][0],hexa_points[(i+1)%len(hexa_points)][1]-hexa_points[i][1]))
+        connection_vectors.append((coords[0]-hexa_points[i][0], coords[1]-hexa_points[i][1]))
+    test = True
+    angles = []
+    for i in range(len(hexa_points)):
+        angles.append((boundary_vectors[i][0]*connection_vectors[i][0]+boundary_vectors[i][1]*connection_vectors[i][1])
+                      /(euclidean_metric(boundary_vectors[i])*euclidean_metric(connection_vectors[i])))
+        if angles[i] <= -0.5:
+            test = False
+    return test
 
-showed_display = pygame.display.set_mode((750, 750), 0, 32)
-pygame.display.set_caption('WindowName')
+
+
+showed_display = pygame.display.set_mode((1280, 720), 0, 32)
+pygame.display.set_caption('Clickable_Hexagon')
 showed_display.fill((255,255,255))
-pygame.draw.lines(showed_display, (100,100,100), True,  getting_hexa(50, (20,20)))
-pygame.draw.lines(showed_display, (100,100,100), True,  getting_hexa(80, (200,200)))
 
+hexagon1 = getting_hexa(50, (50,50))
+hexagon2 = getting_hexa(80, (200,200))
+
+
+pygame.draw.polygon(showed_display, (100,100,100),hexagon1 )
+pygame.draw.aalines(showed_display, (0,0,255), True, hexagon1, 15)
+pygame.draw.polygon(showed_display, (100,100,100), hexagon2)
+pygame.draw.aalines(showed_display, (0,255,0), True, hexagon2, 15)
+    
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    pygame.display.update()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                #print("You pressed the left mouse button")
+                if point_in_hexagon(hexagon1, event.pos) == True or point_in_hexagon(hexagon2, event.pos) == True:
+                    pygame.draw.circle(showed_display,(255,0,0), event.pos, 5)
+                else:
+                    pygame.draw.circle(showed_display,(0,255,255), event.pos, 5)
+            elif event.button == 3:
+                print("You pressed the right mouse button")
+        #elif event.type == pygame.MOUSEBUTTONUP:
+            #print("You released the mouse button")
+        pygame.display.update()
