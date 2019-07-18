@@ -51,7 +51,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
+            sys.exit()     
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 #print("You pressed the left mouse button")
