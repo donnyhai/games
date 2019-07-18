@@ -40,6 +40,7 @@ showed_display.fill((255,255,255))
 
 hexagon1 = getting_hexa(50, (50,50))
 hexagon2 = getting_hexa(80, (200,200))
+hexagons = [hexagon1, hexagon2]
 
 
 pygame.draw.polygon(showed_display, (100,100,100),hexagon1 )
@@ -54,11 +55,14 @@ while True:
             sys.exit()     
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                #print("You pressed the left mouse button")
-                if point_in_hexagon(hexagon1, event.pos) == True or point_in_hexagon(hexagon2, event.pos) == True:
+                point_in_hexagon_list = []
+                for x in hexagons:
+                    point_in_hexagon_list.append(point_in_hexagon(x, event.pos))
+                for i in range(len(hexagons)):
+                    if point_in_hexagon_list[i] == True:
+                        pygame.draw.circle(showed_display,((20*i)%256,(20*i+100)%256,(20*i+200)%256), event.pos, 5)
+                if True not in point_in_hexagon_list:
                     pygame.draw.circle(showed_display,(255,0,0), event.pos, 5)
-                else:
-                    pygame.draw.circle(showed_display,(0,255,255), event.pos, 5)
             elif event.button == 3:
                 print("You pressed the right mouse button")
         #elif event.type == pygame.MOUSEBUTTONUP:
