@@ -5,3 +5,7 @@ stone.py:
 
 player.py:
 	Man könnte hier in create_stones auch die Steine mit self.color initialisieren.
+
+
+Quelle Background:
+http://img.fotocommunity.com/waldboden-mit-blaettern-018e389d-7399-42e9-bf44-65c687a86d04.jpg?height=1080

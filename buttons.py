@@ -15,7 +15,7 @@ class Button:
         return surface
 
     def write_text(self, surface, text, text_color, length, height, x, y):
-        font_size = int(length//len(text))
+        font_size = 2*int(length//len(text))
         myFont = pygame.font.SysFont("Calibri", font_size)
         myText = myFont.render(text, 1, text_color)
         surface.blit(myText, ((x+length/2) - myText.get_width()/2, (y+height/2) - myText.get_height()/2))
@@ -35,12 +35,12 @@ class Button:
         pygame.draw.rect(surface, (190,190,190), (x,y,length,height), 1)  
         return surface
 
-    def pressed(self, mouse):
-        if mouse[0] > self.rect.topleft[0]:
-            if mouse[1] > self.rect.topleft[1]:
-                if mouse[0] < self.rect.bottomright[0]:
-                    if mouse[1] < self.rect.bottomright[1]:
-                        print ("Some button was pressed!")
+    def pressed(self, position):
+        if position[0] > self.rect.topleft[0]:
+            if position[1] > self.rect.topleft[1]:
+                if position[0] < self.rect.bottomright[0]:
+                    if position[1] < self.rect.bottomright[1]:
+                        #print ("Some button was pressed!")
                         return True
                     else: return False
                 else: return False
