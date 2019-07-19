@@ -52,7 +52,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
+            sys.exit()     
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 point_in_hexagon_list = []
