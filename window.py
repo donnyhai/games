@@ -1,14 +1,17 @@
-import pygame, sys
+import pygame, sys, buttons
 
 pygame.init()
 
-showed_display = pygame.display.set_mode((1280, 720), 0, 32)
+showed_display = pygame.display.set_mode((1920, 1080),0, 32)
+#showed_display = pygame.display.set_mode((1920, 1080),pygame.RESIZABLE, 32)
 pygame.display.set_caption('Spielfeld')
-showed_display.fill((100,25,255))
+showed_display.fill((250,200,255))
 
 
-test_image = pygame.image.load('ball.jpg')
-test_image_position = (test_image.get_width()-150, test_image.get_height()-400)
+test_image = pygame.image.load('ant.png')
+test_image = pygame.transform.scale(test_image, (40, 50))
+test_image_position = (test_image.get_width(), test_image.get_height())
+start_game_button = buttons.Button.create_button(showed_display, (107,142,35),225,135,200,100,0, "Example", (255,255,255))
 
 
 while True:

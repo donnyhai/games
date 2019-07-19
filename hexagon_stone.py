@@ -21,6 +21,9 @@ class hexagon_stone:
         for x,y in scaled_coords:
             points.append([x+start_vector[0], y + start_vector[1]])
         return points
+    
+    def hexagon_center(self, hexagon_points):
+        return hexagon_points[0]+((hexagon_points[1]-hexagon_points[0])*0.5, (hexagon_points[1]-hexagon_points[0])* 3**(0.5)*0.5)
 
     def hexa_stone_draw(self):
         pygame.draw.lines(self.surface, (100,100,100), True, self.getting_hexa(self.size, self.position))
