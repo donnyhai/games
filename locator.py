@@ -68,5 +68,5 @@ class Locator:
         cond3 = len(neighbours1.intersection(neighbours2)) == 1
         #coord2 is not lying "outside" nonempty fields (that means at least "two" steps away of them)
         cond4 = len(neighbours2) >= 1 if which_board.board[coord1[0]][coord1[1]].is_empty else len(neighbours2) >= 2
-        return cond1 and cond2 and cond3 and cond
+        return cond1 and cond2 and cond3 and cond4
     

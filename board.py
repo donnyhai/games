@@ -1,12 +1,10 @@
 import hexagon
-import pygame
-pygame.init()
 
 class Board:
     def __init__(self, board_size, surface_position, hexagon_size):
         self.size = board_size
-        self.hexagon_size = hexagon_size
         self.position = surface_position
+        self.hexagon_size = hexagon_size
         self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
         self.nonempty_fields = [] #will contain coordinates
         self.drawed_hexagons = []
@@ -63,11 +61,3 @@ class Board:
                     return False
             return True
     
-    #draw hexagon on surface
-    def draw_hexagon(self, hexagon, surface):
-        pygame.draw.lines(surface, (100,100,100), True, hexagon.points)
-        hexagon.is_drawed = True 
-        self.drawed_hexagons.append(hexagon)
-        
-    def erase_hexagon(self, hexagon, surface):
-        pass
