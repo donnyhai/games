@@ -2,23 +2,54 @@ import pygame, sys, buttons
 
 pygame.init()
 
-showed_display = pygame.display.set_mode((1920, 1080),0, 32)
+#Set window and button sizes
+window_x_size =  1050
+window_y_size = int(405*1050/720)
+button_x_size = 200
+button_y_size = 120
+
+
+#creating showable window on display with, set name and set background color
+start_showed_display = pygame.display.set_mode((window_x_size,window_y_size),0,32)
 #showed_display = pygame.display.set_mode((1920, 1080),pygame.RESIZABLE, 32)
-pygame.display.set_caption('Spielfeld')
-showed_display.fill((250,200,255))
+pygame.display.set_caption("Spielfeld")
+start_showed_display.fill((100,100,100))
 
 
-test_image = pygame.image.load('ant.png')
-test_image = pygame.transform.scale(test_image, (40, 50))
+#initialize class buttons.Button as name Button
+Button = buttons.Button()
+
+
+#try showing an image on screen AFTER pressing left mousekey
+test_image = pygame.image.load("ant.png")
+test_image = pygame.transform.scale(test_image, (100, 150))
 test_image_position = (test_image.get_width(), test_image.get_height())
-start_game_button = buttons.Button.create_button(showed_display, (107,142,35),225,135,200,100,0, "Example", (255,255,255))
 
 
+#set a centered "Spiel Starten" - Button
+start_game_button = Button.create_button(start_showed_display, (200,200,200),
+                                         (pygame.Surface.get_size(start_showed_display)[0]-button_x_size)*0.5,
+                                         (pygame.Surface.get_size(start_showed_display)[1]-button_y_size)*0.5,
+                                         button_x_size,    button_y_size,
+                                         0,       "Spiel Starten", (255,255,255))
+
+
+#update the window so that the button is shown
+pygame.display.update()
+
+
+#run the window and wait for mouseclicks or quit
 while True:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: pygame.quit(), sys.exit()
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
         
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                showed_display.blit(test_image,test_image_position)
+                #start_showed_display.blit(test_image,test_image_position)
+                if Button.pressed(event.pos) == True:
+                    print("Spiel wird gestartet")
+                else:
+                    print("Spiel wird nicht gestartet")
         pygame.display.update()
