@@ -1,7 +1,4 @@
-import pygame
 from math import sqrt
-
-pygame.init()
 
 class hexagon_stone:
     
