@@ -17,8 +17,6 @@ start_showed_display.fill((100,100,100))
 
 
 
-
-
 #initialize class buttons.Button as name Button
 Button = buttons.Button()
 
@@ -56,13 +54,14 @@ while True:
             if event.button == 1:
                 start_showed_display.blit(test_image,test_image_position)
                 if Button.pressed(event.pos) == True:
+                    start_showed_display.fill
                     Text = "Spiel wird gestartet"
                     print(Text)
                     #creating board_window
-                    board_window = pygame.display.set_mode(background_position, 0, 32)
-                    pygame.display.set_caption("Spielbrett")
-                    board_window.fill((255,255,255))
-                    start_showed_display.blit(background,(0,0))
+                    #board_window = pygame.display.set_mode(background_position, 0, 32)
+                    #pygame.display.set_caption("Spielbrett")
+                    #board_window.fill((255,255,255))
+                    #start_showed_display.blit(background,(0,0))
                     
                 else:
                     print("Spiel wird nicht gestartet")
