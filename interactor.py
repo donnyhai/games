@@ -1,9 +1,11 @@
-
+import pygame
+pygame.init()
 
 class Interactor:
-    def __init__(self, board, board_subset):
+    def __init__(self, board, surface, calculator):
         self.board = board
-        self.board_subset = board_subset
+        self.surface = surface
+        self.calculator = calculator
         
     #player want to put stone on coord. is that a legal move ?
     def put_stone_condition(self, player, stone, coord):
@@ -60,9 +62,10 @@ class Interactor:
     #player puts stone on coord (if possible)
     def put_stone(self, player, stone, coord):
         if  not self.put_stone_condition(player, stone, coord):
-            print("stoneput not possible")
+            print("stoneput not possible") #ADD surface print etc #######################################
         else:
-            self.board[coord[0]][coord[1]].put_stone(stone)
+            self.board[coord[0]][coord[1]].put_stone(stone) #first put stone on hexagon
+            self.draw_hexagon(self.board[coord[0]][coord[1]]) #then draw hexagon on surface
             stone.is_on_board = True
             self.board.nonempty_fields.append(coord)
     
@@ -92,7 +95,40 @@ class Interactor:
                 if coord in self.board_subset.get_bug_fields(coord): move(stone, coord)
                 else: print("bug move not possible") 
                     
-                    
+    #draw hexagon on surface
+    def draw_hexagon(self, hexagon):
+        pygame.draw.lines(self.surface, (100,100,100), True, hexagon.points)
+        self.board.drawed_hexagons.append(hexagon)
+        hexagon.is_drawed = True
+        
+    def erase_hexagon(self, hexagon):
+        pass
 
+    
+    def potential_move_stone(self, player, first_clicked_hexagon, second_clicked_hexagon):
+        cond1 = self.move_stone_condition(player, first_clicked_hexagon.stone, second_clicked_hexagon.coordinate)
+        cond2 = second_clicked_hexagon in self.get_shaded_hexagons(first_clicked_hexagon)
+        if cond1 and cond2:
+            #for bug special cases have to be implemented
+            stone = first_clicked_hexagon.stone
+            self.board.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
+            self.board.board[coord[0]][coord[1]].put_stone(stone)
+        
+    #clicked_hexagon was clicked. return list of all possible hexagons to move (shaded hexagons, but actually not yet shaded)
+    def get_shaded_hexagons(self, clicked_hexagon):
+        return self.calculator.get_possible_fields(clicked_hexagon.coordinate, clicked_hexagon.stone.type)
+    
+    #NOT COMPLETE
+    #clicked_hexagon was clicked. draw shadings on the hexagons possible to move the stone to, and return those in list
+    def draw_shadings_after_click(self, clicked_hexagon):
+        shading_hexagons = self.get_shaded_hexagons(clicked_hexagon)
+        ###draw shadings on hexagons in shading_hexagons
+    
+    
+    
+    
+    
+    
+    
     
     

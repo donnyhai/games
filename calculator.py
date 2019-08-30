@@ -1,6 +1,6 @@
 
 
-class Board_Subset:
+class Calculator:
     def __init__(self, locator):
         self.locator = locator
         self.board = self.locator.board #note that the locator always contains the board object of the actual game
@@ -13,6 +13,19 @@ class Board_Subset:
     def all_fields(self):
         return [[1] * self.board.size for i in range(self.board.size)]
     
+    def get_possible_fields(self, coord, stone_type):
+        if stone_type == "ant":
+            return self.get_ant_fields(coord)
+        elif stone_type == "spider":
+            return self.get_spider_fields(coord)
+        elif stone_type == "hopper":
+            return self.get_hopper_fields(coord)
+        elif stone_type == "bug":
+            return self.get_bug_fields(coord)
+        elif stone_type == "bee":
+            return self.get_bee_fields(coord)
+        elif stone_type == "empty":
+            return []
     
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
