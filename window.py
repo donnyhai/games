@@ -20,12 +20,6 @@ showed_display.fill((100,100,100))
 #initialize class buttons.Button as name Button
 Button = buttons.Button()
 
-#try showing an image on screen AFTER pressing left mousekey
-#test_image = pygame.image.load(os.path.join("hive", "pictures", "ant.png"))
-#test_image = pygame.transform.scale(test_image, (100, 150))
-#test_image_position = (test_image.get_width(), test_image.get_height())
-
-
 
 #colors
 white = (255,255,255)
@@ -40,8 +34,8 @@ start_game_button = Button.create_button(showed_display, (200,200,200),
                                          (pygame.Surface.get_size(showed_display)[1]-button_y_size)*0.5,
                                          button_x_size,    button_y_size,
                                          0,       "Spiel Starten", (255,255,255))
-start_game_mode = True
 
+start_game_mode = True
 
 #run the window and wait for mouseclicks or quit
 while True:
@@ -55,7 +49,7 @@ while True:
                     Text = "Spiel wird gestartet"
                     print(Text)
                     pygame.display.set_caption("Spielbrett")
-                    cb.color_background(showed_display, background_color2, 70, window_size)
+                    cb.color_background(showed_display, background_color2, 128, window_size)
                     cb.set_ingame_frame(showed_display)
                     cb.draw_insects(showed_display,(255,255,230))
                     start_game_mode = False 

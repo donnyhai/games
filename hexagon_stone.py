@@ -25,10 +25,10 @@ class hexagon_stone:
     def hexagon_center(self, hexagon_points):
         return hexagon_points[0]+((hexagon_points[1]-hexagon_points[0])*0.5, (hexagon_points[1]-hexagon_points[0])* 3**(0.5)*0.5)
 
-    def hexa_stone_draw_frame(self, position= self.position):
+    def hexa_stone_draw_frame(self, position):
         pygame.draw.aalines(self.surface, self.color , True, self.getting_hexa(self.size, position), 2)
         
-    def draw_stone(self, position = self.position):
+    def draw_stone(self, position):
         pygame.draw.polygon(self.surface, self.color , self.getting_hexa(self.size, position))
         
     def euclidean_metric(self, vector):
