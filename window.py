@@ -52,7 +52,7 @@ while True:
         
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                start_showed_display.blit(test_image,test_image_position)
+                #start_showed_display.blit(test_image,test_image_position)
                 if Button.pressed(event.pos) == True:
                     start_showed_display.fill
                     Text = "Spiel wird gestartet"
