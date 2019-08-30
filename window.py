@@ -29,7 +29,7 @@ test_image = pygame.transform.scale(test_image, (100, 150))
 test_image_position = (test_image.get_width(), test_image.get_height())
 
 #gamebackground
-background = pygame.image.load("background.jpg")
+background = pygame.image.load("background1.jpg")
 background_position = (background.get_width(), background.get_height())
 
 
