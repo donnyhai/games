@@ -60,7 +60,7 @@ while True:
                     point_in_hexagon_list.append(point_in_hexagon(x, event.pos))
                 for i in range(len(hexagons)):
                     if point_in_hexagon_list[i] == True:
-                        pygame.draw.circle(showed_display,((20*i)%256,(20*i+100)%256,(20*i+200)%256), event.pos, 6)
+                        pygame.draw.circle(showed_display,((20*i)%256,(20*i+100)%256,(20*i+200)%256), event.pos, 5)
                 if True not in point_in_hexagon_list:
                     pygame.draw.circle(showed_display,(255,0,0), event.pos, 5)
             elif event.button == 3:

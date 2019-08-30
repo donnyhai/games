@@ -1,15 +1,18 @@
 from math import sqrt
+import pygame
+
 
 class hexagon_stone:
     
-    def __init__(self, size, position, surface, stone):
+    def __init__(self, size, surface, position, stone, color):
         self.size = size
-        self.position = position
         self.surface = surface
+        self.position = position
         self.stone = stone
+        self.color = color
            
     
-    def getting_hexa(scaling_ratio, start_vector):    
+    def getting_hexa(self, scaling_ratio, start_vector):    
         hex_coords = [(0,0), (1,0), (1.5, 3**(1/2)/2), (1, 3**(1/2)), (0,3**(1/2)), (-0.5, 3**(1/2)/2)]
         scaled_coords = []
         for x,y in hex_coords:
@@ -22,8 +25,11 @@ class hexagon_stone:
     def hexagon_center(self, hexagon_points):
         return hexagon_points[0]+((hexagon_points[1]-hexagon_points[0])*0.5, (hexagon_points[1]-hexagon_points[0])* 3**(0.5)*0.5)
 
-    def hexa_stone_draw(self):
-        pygame.draw.lines(self.surface, (100,100,100), True, self.getting_hexa(self.size, self.position))
+    def hexa_stone_draw_frame(self, position= self.position):
+        pygame.draw.aalines(self.surface, self.color , True, self.getting_hexa(self.size, position), 2)
+        
+    def draw_stone(self, position = self.position):
+        pygame.draw.polygon(self.surface, self.color , self.getting_hexa(self.size, position))
         
     def euclidean_metric(self, vector):
         squared = [x*x for x in vector]
@@ -43,3 +49,5 @@ class hexagon_stone:
             if angles[i] <= -0.5:
                 test = False
         return test
+    
+
