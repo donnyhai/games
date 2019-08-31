@@ -23,3 +23,5 @@ class HvsC_Game(Game):
         self.locator = locator.Locator(Game.board, self.players, look_into_past = 100)
         self.interactor = interactor.Interactor(Game.board, board_subset.Board_Subset(self.locator))
     
+def start_game(surface):
+    pass
