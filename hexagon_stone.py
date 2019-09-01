@@ -4,15 +4,15 @@ import pygame
 
 class hexagon_stone:
     
-    def __init__(self, size, surface, position, stone, color):
+    def __init__(self, size, surface, stone):
         self.size = size
         self.surface = surface
-        self.position = position
         self.stone = stone
-        self.color = color
+        
+    def set_position(self, coord):
+        self.position = coord
            
-    
-    def getting_hexa(self, scaling_ratio, start_vector):    
+    def getting_hexa(scaling_ratio, start_vector):    
         hex_coords = [(0,0), (1,0), (1.5, 3**(1/2)/2), (1, 3**(1/2)), (0,3**(1/2)), (-0.5, 3**(1/2)/2)]
         scaled_coords = []
         for x,y in hex_coords:
