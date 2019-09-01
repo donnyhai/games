@@ -130,11 +130,3 @@ def create_all_stones(surface, white_color, black_color):
     draw_insects_images(surface, white_color)
     draw_insects_hexa(surface, black_color)
     draw_insects_images(surface, black_color)
-    
-    
-
-#test_image = pygame.image.load(os.path.join("hive", "pictures", "ant.png"))
-#test_image = pygame.transform.scale(test_image, (100, 150))
-#test_image_position = (test_image.get_width(), test_image.get_height())
-
-    
