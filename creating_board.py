@@ -1,4 +1,4 @@
-import pygame, os, hexagon_stone as hs
+import pygame, os, stone, stone, hexagon_stone as hs
 
 
 def white_background(surface, window_size):
@@ -22,23 +22,6 @@ def set_ingame_frame(surface):
     pygame.draw.line(surface, (0,0,0), (0, int(surface_height*0.8)), (int(surface_width*0.1), int(surface_height*0.8)), line_width)
     pygame.draw.line(surface, (0,0,0), (int(surface_width*0.9), int(surface_height*0.8)), (int(surface_width), int(surface_height*0.8)), line_width)
     
-#def initialize_insects(surface, player_color):
-#    surface_width = surface.get_width()
-#    surface_height = surface.get_height()
-#    frame_x_size = surface_width*0.1
-#    hexa_size = int(frame_x_size*0.5)
-#    y_distance = int((surface_height-4*hexa_size*3**(1/2)))
-#    ant1 = hs.hexagon_stone(hexa_size, (frame_x_size/3, y_distance ) , surface, "ant", player_color)
-#    ant2 = hs.hexagon_stone(hexa_size, (frame_x_size/3, y_distance ) , surface, "ant", player_color)
-#    ant3 = hs.hexagon_stone(hexa_size, (frame_x_size/3, y_distance ) , surface, "ant", player_color)
-#    hopper1 = hs.hexagon_stone(hexa_size, (frame_x_size/3, 2*y_distance + hexa_size) , surface, "hopper", player_color)
-#    hopper2 = hs.hexagon_stone(hexa_size, (frame_x_size/3, 2*y_distance + hexa_size) , surface, "hopper", player_color)
-#    hopper3 = hs.hexagon_stone(hexa_size, (frame_x_size/3, 2*y_distance + hexa_size) , surface, "hopper", player_color)
-#    spider1 = hs.hexagon_stone(hexa_size, (frame_x_size/3, 3*y_distance + 2*hexa_size) , surface, "spider", player_color)
-#    spider2 = hs.hexagon_stone(hexa_size, (frame_x_size/3, 3*y_distance + 2*hexa_size) , surface, "spider", player_color)
-#    bee = hs.hexagon_stone(hexa_size, (frame_x_size/3, 4*y_distance + 3*hexa_size) , surface, "bee", player_color)
-
-
 
 hive_paths = [os.path.join("pictures", "ant.png"), os.path.join("pictures", "bee.png"),
                os.path.join("pictures", "hopper.png"), os.path.join("pictures", "spider.png")]
@@ -70,10 +53,20 @@ def draw_insects_hexa(surface, color):
         bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
     
     #create/initialize one stone of each type
-    ant = hs.hexagon_stone(hexa_size, surface, ant_position, "ant", color)
-    hopper = hs.hexagon_stone(hexa_size , surface,hopper_position, "hopper", color)
-    spider = hs.hexagon_stone(hexa_size , surface, spider_position, "spider", color)
-    bee = hs.hexagon_stone(hexa_size, surface,bee_position , "bee", color)
+    ant_stone = stone.Stone("ant", 1)
+    hopper_stone = stone.Stone("hopper", 1)
+    spider_stone = stone.Stone("spider", 1)
+    bee_stone = stone.Stone("bee", 1)
+    
+    ant_stone.set_color(color)
+    hopper_stone.set_color(color)
+    spider_stone.set_color(color)
+    bee_stone.set_color(color)
+    
+    ant = hs.hexagon_stone(hexa_size, surface, ant_stone)
+    hopper = hs.hexagon_stone(hexa_size, surface, hopper_stone)
+    spider = hs.hexagon_stone(hexa_size, surface, spider_stone)
+    bee = hs.hexagon_stone(hexa_size, surface, bee_stone)
     
     #draw the hexagons
     ant.draw_stone(ant_position)
@@ -130,11 +123,3 @@ def create_all_stones(surface, white_color, black_color):
     draw_insects_images(surface, white_color)
     draw_insects_hexa(surface, black_color)
     draw_insects_images(surface, black_color)
-    
-    
-
-#test_image = pygame.image.load(os.path.join("hive", "pictures", "ant.png"))
-#test_image = pygame.transform.scale(test_image, (100, 150))
-#test_image_position = (test_image.get_width(), test_image.get_height())
-
-    
