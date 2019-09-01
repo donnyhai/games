@@ -51,11 +51,23 @@ def draw_insects_hexa(surface, color):
     frame_x_size = surface_width*0.1
     hexa_size = int(frame_x_size*0.3)
     y_distance = int((surface_height-4*hexa_size*3**(0.5))/5)
+    right_frame_translate = (surface_width*0.9, 0)
     
     ant_position = (frame_x_size*0.25, y_distance)
     hopper_position = (frame_x_size/4, 2*y_distance + hexa_size*3**(0.5))
     spider_position = (frame_x_size/4, 3*y_distance + 2*hexa_size*3**(0.5))
     bee_position = (frame_x_size/4, 4*y_distance + 3*hexa_size*3**(0.5))
+    
+    if len(color) >= 4 and (sum(color) - color[3] <= 350):
+        ant_position = (ant_position[0] + right_frame_translate[0], ant_position[1] + right_frame_translate[1])
+        hopper_position = (hopper_position[0] + right_frame_translate[0], hopper_position[1] + right_frame_translate[1])
+        spider_position = (spider_position[0] + right_frame_translate[0], spider_position[1] + right_frame_translate[1])
+        bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
+    elif sum(color) <= 350:
+        ant_position = (ant_position[0] + right_frame_translate[0], ant_position[1] + right_frame_translate[1])
+        hopper_position = (hopper_position[0] + right_frame_translate[0], hopper_position[1] + right_frame_translate[1])
+        spider_position = (spider_position[0] + right_frame_translate[0], spider_position[1] + right_frame_translate[1])
+        bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
     
     #create/initialize one stone of each type
     ant = hs.hexagon_stone(hexa_size, surface, ant_position, "ant", color)
@@ -69,17 +81,30 @@ def draw_insects_hexa(surface, color):
     spider.draw_stone(spider_position)
     bee.draw_stone(bee_position)
     
-def draw_insects_images(surface):
+def draw_insects_images(surface, color):
     surface_width = surface.get_width()
     surface_height = surface.get_height()*0.8
     frame_x_size = surface_width*0.1
     hexa_size = int(frame_x_size*0.3)
     y_distance = int((surface_height-4*hexa_size*3**(0.5))/5)
+    right_frame_translate = (surface_width*0.9, 0)
     
     ant_position = (frame_x_size*0.25, y_distance)
     hopper_position = (frame_x_size/4, 2*y_distance + hexa_size*3**(0.5))
     spider_position = (frame_x_size/4, 3*y_distance + 2*hexa_size*3**(0.5))
     bee_position = (frame_x_size/4, 4*y_distance + 3*hexa_size*3**(0.5))
+    
+    #Translate the positions of the images/hexas if they are black
+    if len(color) >= 4 and (sum(color) - color[3] <= 350):
+        ant_position = (ant_position[0] + right_frame_translate[0], ant_position[1] + right_frame_translate[1])
+        hopper_position = (hopper_position[0] + right_frame_translate[0], hopper_position[1] + right_frame_translate[1])
+        spider_position = (spider_position[0] + right_frame_translate[0], spider_position[1] + right_frame_translate[1])
+        bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
+    elif sum(color) <= 350:
+        ant_position = (ant_position[0] + right_frame_translate[0], ant_position[1] + right_frame_translate[1])
+        hopper_position = (hopper_position[0] + right_frame_translate[0], hopper_position[1] + right_frame_translate[1])
+        spider_position = (spider_position[0] + right_frame_translate[0], spider_position[1] + right_frame_translate[1])
+        bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
     
     #loading the images
     ant_image = pygame.image.load(hive_paths[0])
@@ -99,6 +124,12 @@ def draw_insects_images(surface):
     surface.blit(spider_image, spider_position)
     surface.blit(bee_image, bee_position)
     
+
+def create_all_stones(surface, white_color, black_color):
+    draw_insects_hexa(surface, white_color)
+    draw_insects_images(surface, white_color)
+    draw_insects_hexa(surface, black_color)
+    draw_insects_images(surface, black_color)
     
     
 

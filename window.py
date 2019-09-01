@@ -4,8 +4,8 @@ pygame.init()
 pygame.display.init()
 
 #Set window and button sizes
-window_x_size =  1920
-window_y_size = int(window_x_size*9/16)
+window_x_size =  1500
+window_y_size = int(window_x_size*9/16)-50
 window_size = (window_x_size, window_y_size)
 button_x_size = 200
 button_y_size = 120
@@ -36,6 +36,7 @@ start_game_button = Button.create_button(showed_display, (200,200,200),
                                          0,       "Spiel Starten", (255,255,255))
 
 start_game_mode = True
+first_turn= False
 
 #run the window and wait for mouseclicks or quit
 while True:
@@ -51,9 +52,11 @@ while True:
                     pygame.display.set_caption("Spielbrett")
                     cb.color_background(showed_display, background_color2, 128, window_size)
                     cb.set_ingame_frame(showed_display)
-                    cb.draw_insects_hexa(showed_display,(255,255,230))
-                    cb.draw_insects_images(showed_display)
+                    #cb.draw_insects_hexa(showed_display,(255,255,230))
+                    #cb.draw_insects_images(showed_display)
+                    cb.create_all_stones(showed_display, (255,255,230), (60,60,60))
                     start_game_mode = False 
+                    first_turn = True
                 else:
                     print("Spiel wird nicht gestartet")
     pygame.display.update()
