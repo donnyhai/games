@@ -95,11 +95,11 @@ class Interactor:
                 if coord in self.board_subset.get_bug_fields(coord): move(stone, coord)
                 else: print("bug move not possible") 
                     
-#    #draw hexagon on surface
-#    def draw_hexagon(self, hexagon):
-#        pygame.draw.lines(self.surface, (100,100,100), True, hexagon.points)
-#        self.board.drawed_hexagons.append(hexagon)
-#        hexagon.is_drawed = True
+    #draw hexagon on surface
+    def draw_hexagon(self, hexagon):
+        pygame.draw.lines(self.surface, (100,100,100), True, hexagon.points)
+        self.board.drawed_hexagons.append(hexagon)
+        hexagon.is_drawed = True
 #        
 #    def erase_hexagon(self, hexagon):
 #        pass

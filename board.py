@@ -1,13 +1,16 @@
 import hexagon
 
 class Board:
-    def __init__(self, board_size, surface_position, hexagon_size):
+    def __init__(self, board_size, surface):
         self.size = board_size
-        self.position = surface_position
-        self.hexagon_size = hexagon_size
+        self.hexagon_size = 0 ########################################################for example 0.05 * surface
         self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
         self.nonempty_fields = [] #will contain coordinates
         self.drawed_hexagons = []
+    
+    #where shall the hexagon matrix be drawn ? position will be upper left corner of upper left hexagon
+    def set_draw_position(self, position):
+        self.draw_position = position
     
     #get neighbour coordinates of (i,j) starting from top going clockwise, number them from 0 to 5
     def get_neighbours(self, coord):
