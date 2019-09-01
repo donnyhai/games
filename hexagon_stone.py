@@ -10,7 +10,7 @@ class hexagon_stone:
         self.stone = stone
         self.pixel_position = pixel_position
         
-    def getting_hexa(scaling_ratio, start_vector):    
+    def getting_hexa(self, scaling_ratio, start_vector):    
         hex_coords = [(0,0), (1,0), (1.5, 3**(1/2)/2), (1, 3**(1/2)), (0,3**(1/2)), (-0.5, 3**(1/2)/2)]
         scaled_coords = []
         for x,y in hex_coords:

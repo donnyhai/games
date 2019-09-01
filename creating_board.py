@@ -1,4 +1,4 @@
-import pygame, os, stone, stone, hexagon_stone as hs
+import pygame, os, stone, hexagon_stone as hs
 
 
 def white_background(surface, window_size):
