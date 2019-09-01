@@ -2,7 +2,7 @@ from math import sqrt
 import pygame
 
 
-class Hexagon_Stone:
+class hexagon_stone:
     
     def __init__(self, size, surface, stone):
         self.size = size
