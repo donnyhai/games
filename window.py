@@ -51,6 +51,7 @@ start_game_button = buttons.Button(showed_display, button_color, start_game_x, s
                                          0,       "Spiel Starten", (0,0,0))
 
 #"save" the standard showed image
+pygame.display.update()
 start_window = showed_display.copy()
 
 start_game_mode = True
@@ -64,15 +65,12 @@ while True:
             pygame.quit()
             sys.exit()
         elif start_game_mode == True:
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if settings_window_shown == True:
-                    print(type(start_window))
                     showed_display.blit(start_window, (0,0))
                     settings_window_shown = False                    
                 elif settings_button.pressed(event.pos) == True:
-                    print("Einstellungsmenue wird geöffnet")
                     if settings_window_shown == False:
-                        print(type(start_window))
                         pygame.draw.rect(showed_display, (230,230,240), pygame.Rect(event.pos[0], event.pos[1]- button_y_size, button_x_size, button_y_size))
                         settings_window_shown = True
                 elif start_game_button.pressed(event.pos) == True:
@@ -82,6 +80,9 @@ while True:
                     cb.create_all_stones(showed_display, (255,255,230), (60,60,60))
                     start_game_mode = False 
                     first_turn = True
+        elif start_game_mode == False and first_turn == True:
+            if event.type== pygame.MOUSEBUTTONDOWN:
+                pass
     pygame.display.update()
     
     

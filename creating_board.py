@@ -1,4 +1,4 @@
-import pygame, os, stone, hexagon_stone as hs
+import pygame, os, hexagon_stone as hs
 
 
 def white_background(surface, window_size):
@@ -53,10 +53,10 @@ def draw_insects_hexa(surface, color):
         bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
     
     #create/initialize one stone of each type
-    ant_stone = stone.Stone("ant", 1)
-    hopper_stone = stone.Stone("hopper", 1)
-    spider_stone = stone.Stone("spider", 1)
-    bee_stone = stone.Stone("bee", 1)
+    ant_stone = hs.Stone("ant", 1)
+    hopper_stone = hs.Stone("hopper", 1)
+    spider_stone = hs.Stone("spider", 1)
+    bee_stone = hs.Stone("bee", 1)
     
     ant_stone.set_color(color)
     hopper_stone.set_color(color)
@@ -67,6 +67,7 @@ def draw_insects_hexa(surface, color):
     hopper = hs.hexagon_stone(hexa_size, surface, hopper_stone)
     spider = hs.hexagon_stone(hexa_size, surface, spider_stone)
     bee = hs.hexagon_stone(hexa_size, surface, bee_stone)
+    
     
     #draw the hexagons
     ant.draw_stone(ant_position)
