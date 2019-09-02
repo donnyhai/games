@@ -4,7 +4,7 @@ class Player:
     def __init__(self, color, surface):
         self.color = color
         self.surface = surface
-        self.stone_size = 0 ####################################edit, example: 0.05 * surface
+        self.stone_size = int(0.03 * self.surface.get_width())
         self.stones = self.create_stones(self.stone_size)
         
     def create_stones(self, stone_size):
