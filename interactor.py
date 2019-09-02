@@ -100,29 +100,48 @@ class Interactor:
         pygame.draw.lines(self.surface, (100,100,100), True, hexagon.points)
         self.board.drawed_hexagons.append(hexagon)
         hexagon.is_drawed = True
-#        
-#    def erase_hexagon(self, hexagon):
-#        pass
-#
-#    
-#    def potential_move_stone(self, player, first_clicked_hexagon, second_clicked_hexagon):
-#        cond1 = self.move_stone_condition(player, first_clicked_hexagon.stone, second_clicked_hexagon.coordinate)
-#        cond2 = second_clicked_hexagon in self.get_shaded_hexagons(first_clicked_hexagon)
-#        if cond1 and cond2:
-#            #for bug special cases have to be implemented
-#            stone = first_clicked_hexagon.stone
-#            self.board.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
-#            self.board.board[coord[0]][coord[1]].put_stone(stone)
-#        
-#    #clicked_hexagon was clicked. return list of all possible hexagons to move (shaded hexagons, but actually not yet shaded)
-#    def get_shaded_hexagons(self, clicked_hexagon):
-#        return self.calculator.get_possible_fields(clicked_hexagon.coordinate, clicked_hexagon.stone.type)
-#    
-#    #NOT COMPLETE
-#    #clicked_hexagon was clicked. draw shadings on the hexagons possible to move the stone to, and return those in list
-#    def draw_shadings_after_click(self, clicked_hexagon):
-#        shading_hexagons = self.get_shaded_hexagons(clicked_hexagon)
-#        ###draw shadings on hexagons in shading_hexagons
+    
+    def draw_set_of_hexagons(self, hexagon_list):
+        for hexagon in hexagon_list:
+            self.draw_hexagon(hexagon)
+    
+    #draw the whole board of hexagons on surface
+    def draw_board(self):
+        for row in self.board.board:
+            for hexagon in row:
+                self.draw_hexagon(hexagon)
+        
+    def erase_hexagon(self, hexagon):
+        pass
+    
+    #NOT COMPLETE
+    #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
+    #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
+    def execute__stone_move(self, player, first_clicked_hexagon, second_clicked_hexagon):
+        cond1 = self.move_stone_condition(player, first_clicked_hexagon.stone, second_clicked_hexagon.coordinate)
+        cond2 = second_clicked_hexagon in self.get_shaded_hexagons(first_clicked_hexagon)
+        if cond1 and cond2: #############################################INCOMPLETE
+            #stone move has to be executed in this case -> abstract stone move and draw stone move
+            #for bug special cases have to be implemented
+            #stone = first_clicked_hexagon.stone
+            #self.board.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
+            #self.board.board[coord[0]][coord[1]].put_stone(stone)
+            pass
+        else:
+            print("not possible") ##############################################print in surface
+        
+    #clicked_hexagon was clicked. return list of all possible hexagons to move (shaded hexagons, but actually not yet shaded)
+    def get_shaded_hexagons(self, clicked_hexagon):
+        return self.calculator.get_possible_fields(clicked_hexagon.coordinate, clicked_hexagon.stone.type)
+    
+    def draw_color_in_hexagon(self, hexagon):
+        pass
+    
+    #clicked_hexagon was clicked. draw shadings on the hexagons possible to move the stone to, and return those in list
+    def draw_shadings_after_click(self, clicked_hexagon):
+        pass
+    
+    
     
     
     
