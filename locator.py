@@ -11,10 +11,11 @@ import test_objects as test
 #to create a locator board and players have to be given, then a test_board and test_players are 
 #set to give the possibility to test out moves etc
 class Locator:
-    def __init__(self, board, players, look_into_past):
+    def __init__(self, board, players, look_into_past, surface):
+        self.surface = surface
         #board, test_board and players
         self.board = board #this is a Board object
-        self.test_board = test.Test_Board(self.board.size) 
+        self.test_board = test.Test_Board(self.board.size, self.surface) 
         self.players = players #this is a list of Player objects
         
         self.look_into_past = look_into_past
