@@ -68,6 +68,7 @@ def draw_insects_hexa(surface, color):
     spider = hs.hexagon_stone(hexa_size, surface, spider_stone)
     bee = hs.hexagon_stone(hexa_size, surface, bee_stone)
     
+    
     #draw the hexagons
     ant.draw_stone(ant_position)
     hopper.draw_stone(hopper_position)
