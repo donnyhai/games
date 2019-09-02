@@ -1,5 +1,3 @@
-
-
 class Calculator:
     def __init__(self, locator):
         self.locator = locator
@@ -115,12 +113,10 @@ class Calculator:
     #spider is on coord. where can it move ?
     def get_spider_fields(self, coord): 
         
-        start_key = 0
-        
         #function to simulate the moving of the spider. rule: the spider cannot return
         #to a field she was coming from, unless it is the only possible field to walk. 
         #when she has walked three fields with this rule, she has to stop
-        def func(sour_coord, dir_coord):
+        def func(sour_coord, dir_coord, start_key):
             self.locator.move_to_position(dir_coord, self.locator.test_board)
             if self.locator.new_key - start_key == 3:
                 spider_fields.append(dir_coord)
@@ -156,7 +152,7 @@ class Calculator:
             #start_key to be able to count to 3 for the steps taken by locator
             start_key = self.locator.new_key
             #run the recursive function
-            func(coord, neigh)
+            func(coord, neigh, start_key)
         
         #set indicator matrix
         for i in range(self.board.size):
@@ -167,14 +163,14 @@ class Calculator:
         return spider_fields
 
 
-        #bug is on coord. where can it move ?
-        def get_bug_fields(self, coord):
-            return self.board.get_neighbours(coord).values()
+    #bug is on coord. where can it move ?
+    def get_bug_fields(self, coord):
+        return self.board.get_neighbours(coord).values()
         
         
-        #marienbug is on coord. where can it move ?
-        def get_marienbug_fields(self, coord):
-            pass
+    #marienbug is on coord. where can it move ?
+    def get_marienbug_fields(self, coord):
+        pass
 
 
 
