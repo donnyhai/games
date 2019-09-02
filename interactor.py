@@ -1,5 +1,8 @@
 import pygame
+import hexagon_stone as hs
 pygame.init()
+
+
 
 class Interactor:
     def __init__(self, board, surface, calculator):
@@ -114,18 +117,25 @@ class Interactor:
             for hexagon in row:
                 self.draw_hexagon(hexagon)
         
-    #NOT COMPLETE
+    #NOT COMPLETE, 
     #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
     #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
     def execute_stone_move(self, player, first_clicked_hexagon, second_clicked_hexagon):
         cond1 = self.move_stone_condition(player, first_clicked_hexagon.stone, second_clicked_hexagon.coordinate)
         cond2 = second_clicked_hexagon in self.get_shaded_hexagons(first_clicked_hexagon)
         if cond1 and cond2: #############################################INCOMPLETE
-            first_stone = first_clicked_hexagon.stone
+            first_hexagon = first_clicked_hexagon
+            second_hexagon = second_clicked_hexagon
             
-            #self.board.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
-            #self.board.board[coord[0]][coord[1]].put_stone(stone)
-            pass
+            old_position = first_hexagon.pixel_position
+            first_hexagon.pixel_position = second_hexagon.pixel_position
+            #if not bug:
+            self.board.board[first_hexagon.board_position[0]][first_hexagon.board_position[1]].change_stone(hs.Stone("empty",1))
+            self.board.board[second_hexagon.board_position[0]][second_hexagon.board_position[1]].change_stone(first_hexagon.stone)
+            
+            self.draw_insect_image(first_hexagon)
+            #if not bug:
+            self.draw_empty_hexagon(old_position)
         else:
             print("not possible") ##############################################print in surface
         
@@ -139,10 +149,11 @@ class Interactor:
         for hexagon in possible_hexagons:
             self.draw_colored_hexagon(hexagon)
     
-    def draw_insect_image(self, stone_type):
+    #draw hexagon_stone at pixel_position with image according to stone_type
+    def draw_insect_image(self, hexagon):
         pass
     
-    def draw_empty_hexagon(self):
+    def draw_empty_hexagon(self, position):
         pass
     
     

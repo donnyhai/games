@@ -6,7 +6,6 @@ class Stone:
         self.type = stone_type
         self.number = number
         self.is_on_board = False
-        self.coordinate = (-1,-1)
         self.has_bug_on = False
         self.is_mosquito = False
         
@@ -16,13 +15,16 @@ class Stone:
 class hexagon_stone:
     
     def __init__(self, size, surface, stone = Stone("empty",1), pixel_position = (0,0)):
+        #surface and pixel attributes
         self.size = size
         self.surface = surface
-        self.stone = stone
         self.pixel_position = pixel_position
-        
         self.points = self.getting_hexa(self.size, pixel_position)
         self.is_drawed = False
+        
+        #stone and board attributes
+        self.stone = stone
+        self.board_position = (-1,-1)
         self.is_empty = True
         
     #calculate the six hexagon points with starting point start_vector (point top left) and side size scaling    
@@ -64,14 +66,14 @@ class hexagon_stone:
                 test = False
         return test
     
-    def put_stone(self, stone):
-        self.stone = stone
-        self.is_empty = False
-        stone.coordinate = self.coordinate
-    def remove_stone(self, stone):
-        stone.coordinate = (-1,-1)
-        self.is_empty = True
-        self.stone = stone("empty", 0)
+    #change stone on this hexagon
+    def change_stone(self, new_stone):
+        self.stone = new_stone
+        if new_stone.stone_type == "empty":
+            self.is_empty = True
+            self.board_position = (-1,-1)
+        else:
+            self.is_empty = False
         
 class get_stones:
     def __init__(self, surface):
