@@ -50,8 +50,8 @@ start_game_button = buttons.Button(showed_display, button_color, start_game_x, s
                                          button_x_size,    button_y_size,
                                          0,       "Spiel Starten", (0,0,0))
 
+#"save" the standard showed image
 start_window = showed_display.copy()
-
 
 start_game_mode = True
 settings_window_shown = False
@@ -66,12 +66,8 @@ while True:
         elif start_game_mode == True:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if settings_window_shown == True:
-                    pygame.Surface.blit(start_window, (0,0))
-#                    showed_display.fill((100,100,100))
-#                    settings_button.draw_button(showed_display, button_color, button_x_size, button_y_size, settings_x, settings_y)
-#                    settings_button.write_text(showed_display, "Einstellungen", (0,0,0), button_x_size, button_y_size, settings_x, settings_y)
-#                    start_game_button.draw_button(showed_display, button_color, button_x_size, button_y_size, start_game_x, start_game_y)
-#                    start_game_button.write_text(showed_display, "Spiel Starten", (0,0,0),button_x_size, button_y_size, start_game_x, start_game_y)
+                    print(type(start_window))
+                    showed_display.blit(start_window, (0,0))
                     settings_window_shown = False                    
                 elif settings_button.pressed(event.pos) == True:
                     print("Einstellungsmenue wird geöffnet")
