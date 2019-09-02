@@ -1,8 +1,6 @@
 import board
 import player
 
-
-
 class Test_Board(board.Board):
     
     def copy_board(self, board):
@@ -25,7 +23,6 @@ class Test_Board(board.Board):
         if self.move_stone_condition(stone, coord):
             self.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
             self.board[coord[0]][coord[1]].put_stone(stone)
-
 
 
 class Test_Player(player.Player):
