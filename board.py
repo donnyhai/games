@@ -16,7 +16,7 @@ class Board:
     def get_neighbours(self, coord):
         i = coord[0]
         j = coord[1]
-        return {0: (i-1,j), 1: (i-1,j+1), 2: (i,j+1), 3: (i+1,j+1), 4: (i+1,j), 5: (i,j-1)} 
+        return {0: (i-2,j), 1: (i-1,j+1), 2: (i+1,j+1), 3: (i+2,j), 4: (i+1,j), 5: (i-1,j)} 
     
     #create a quadratic board of hexagons as a matrix of hexagon objects with respective correct positions    
     def calculate_hexagon_board(self):
