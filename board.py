@@ -1,16 +1,15 @@
-import hexagon
+import hexagon_stone as hs
 
 class Board:
     def __init__(self, board_size, surface):
         self.size = board_size
+        self.surface = surface
         self.hexagon_size = 0 ########################################################for example 0.05 * surface
         self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
-        self.nonempty_fields = [] #will contain coordinates
-        self.drawed_hexagons = []
-    
-    #where shall the hexagon matrix be drawn ? position will be upper left corner of upper left hexagon
-    def set_draw_position(self, position):
-        self.draw_position = position
+        self.nonempty_fields = [] #will matrix contain coordinates
+        self.drawed_hexagons = [] #will contain hexagon_stone objects (if used)
+        self.draw_position = (0,0)#where on the surface shall the hexagon matrix be drawn ? 
+        #(reference point is upper left corner of upper left hexagon)
     
     #get neighbour coordinates of (i,j) starting from top going clockwise, number them from 0 to 5
     def get_neighbours(self, coord):
@@ -26,7 +25,7 @@ class Board:
             hexagon_chain = []
             for i in range (self.size):
                 position = (start_position[0] + i * 3 * self.hexagon_size, start_position[1])
-                hexagon_chain.append(hexagon.Hexagon(position, self.hexagon_size))
+                hexagon_chain.append(hs.hexagon_stone(self.hexagon_size, self.surface, pixel_position = position))
             return hexagon_chain
         
         hexagon_board = [0] * self.size
@@ -35,17 +34,17 @@ class Board:
         
         #fill hexagon_board with the correct horizontal chains, first even than odd rows
         for i in even_numbers:
-            position = (self.position[0], self.position[1] + i/2 * 3**(1/2) * self.hexagon_size)
+            position = (self.draw_position[0], self.draw_position[1] + i/2 * 3**(1/2) * self.hexagon_size)
             hexagon_board[i] = create_horizontal_hexagon_chain(position)
         for i in odd_numbers:
-            start_position = (self.position[0] + 3/2 * self.hexagon_size, self.position[1] + 3**(1/2)/2 * self.hexagon_size)
+            start_position = (self.draw_position[0] + 3/2 * self.hexagon_size, self.draw_position[1] + 3**(1/2)/2 * self.hexagon_size)
             position = (start_position[0], start_position[1] + (i-1)/2 * 3**(1/2) * self.hexagon_size)
             hexagon_board[i] = create_horizontal_hexagon_chain(position)
             
         #set board coordinates for each hexagon
         for i in range(self.size):
             for j in range(self.size):
-                hexagon_board[i][j].coordinate = (i,j)
+                hexagon_board[i][j].stone.coordinate = (i,j)
                 
         return hexagon_board
     

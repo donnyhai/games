@@ -1,21 +1,25 @@
-from math import sqrt
-import pygame
-
+class Stone:
+    def __init__(self, stone_type, number):
+        self.type = stone_type
+        self.number = number
+        self.is_on_board = False
+        self.coordinate = (-1,-1)
+        self.has_bug_on = False
+        self.is_mosquito = False
+    def set_color(self, color):
+        self.color = color
 
 class hexagon_stone:
     
-    def __init__(self, size, surface, stone, pixel_position = (0,0)):
+    def __init__(self, size, surface, stone = Stone("empty",1), pixel_position = (0,0)):
         self.size = size
         self.surface = surface
         self.stone = stone
         self.pixel_position = pixel_position
         
-        #Hier Aenderungen aus hexagon.py
-        self.points = self.getting_hexa(self.size, pixel_position,)
+        self.points = self.getting_hexa(self.size, pixel_position)
         self.is_drawed = False
         self.is_empty = True
-        self.coordinate = (-1,-1)
-        #self.stone = stone.Stone("empty", 0)   <--- redundant, da hexagon_stone bereits mit stein initialisiert wird?
         
     #calculate the six hexagon points with starting point start_vector (point top left) and side size scaling    
     def getting_hexa(self, scaling_ratio, start_vector):    
@@ -56,7 +60,6 @@ class hexagon_stone:
                 test = False
         return test
     
-# ab hier wieder Methoden aus hexagon.py
     def put_stone(self, stone):
         self.stone = stone
         self.is_empty = False
@@ -65,10 +68,4 @@ class hexagon_stone:
         stone.coordinate = (-1,-1)
         self.is_empty = True
         self.stone = stone("empty", 0)
-        
-    #the board coordinate is the "matrix" coordinate on the board, compare with Board object    
-    def set_board_coordinate(self, coord):
-        self.board_coord = coord
-        
-        
         
