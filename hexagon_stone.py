@@ -1,3 +1,6 @@
+from math import sqrt
+import pygame
+
 class Stone:
     def __init__(self, stone_type, number):
         self.type = stone_type
