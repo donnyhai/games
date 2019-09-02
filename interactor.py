@@ -121,7 +121,8 @@ class Interactor:
         cond1 = self.move_stone_condition(player, first_clicked_hexagon.stone, second_clicked_hexagon.coordinate)
         cond2 = second_clicked_hexagon in self.get_shaded_hexagons(first_clicked_hexagon)
         if cond1 and cond2: #############################################INCOMPLETE
-#            stone = first_clicked_hexagon.stone
+            first_stone = first_clicked_hexagon.stone
+            
             #self.board.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
             #self.board.board[coord[0]][coord[1]].put_stone(stone)
             pass
@@ -139,6 +140,9 @@ class Interactor:
             self.draw_colored_hexagon(hexagon)
     
     def draw_insect_image(self, stone_type):
+        pass
+    
+    def draw_empty_hexagon(self):
         pass
     
     
