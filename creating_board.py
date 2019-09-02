@@ -1,5 +1,14 @@
 import pygame, os, hexagon_stone as hs
 
+class stones:
+    def __init__(self, surface):
+        self.surface = surface
+        self.hexa_size = int(self.surface.get_width()*0.03)
+        self.ant = hs.hexagon_stone(self.hexa_size, self.surface, hs.Stone("ant", 1))
+        self.hopper = hs.hexagon_stone(self.hexa_size, self.surface, hs.Stone("hopper", 1))
+        self.spider = hs.hexagon_stone(self.hexa_size, self.surface, hs.Stone("spider", 1))
+        self.bee = hs.hexagon_stone(self.hexa_size, self.surface, hs.Stone("bee", 1))
+
 
 def white_background(surface, window_size):
     s1 = pygame.Surface(window_size)  # the size of the surface
@@ -52,28 +61,20 @@ def draw_insects_hexa(surface, color):
         spider_position = (spider_position[0] + right_frame_translate[0], spider_position[1] + right_frame_translate[1])
         bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
     
-    #create/initialize one stone of each type
-    ant_stone = hs.Stone("ant", 1)
-    hopper_stone = hs.Stone("hopper", 1)
-    spider_stone = hs.Stone("spider", 1)
-    bee_stone = hs.Stone("bee", 1)
+    stones = hs.get_stones(surface)
     
-    ant_stone.set_color(color)
-    hopper_stone.set_color(color)
-    spider_stone.set_color(color)
-    bee_stone.set_color(color)
-    
-    ant = hs.hexagon_stone(hexa_size, surface, ant_stone)
-    hopper = hs.hexagon_stone(hexa_size, surface, hopper_stone)
-    spider = hs.hexagon_stone(hexa_size, surface, spider_stone)
-    bee = hs.hexagon_stone(hexa_size, surface, bee_stone)
-    
-    
+    stones.ant.stone.set_color(color)
+    stones.hopper.stone.set_color(color)
+    stones.spider.stone.set_color(color)
+    stones.bee.stone.set_color(color)
+       
     #draw the hexagons
-    ant.draw_stone(ant_position)
-    hopper.draw_stone(hopper_position)
-    spider.draw_stone(spider_position)
-    bee.draw_stone(bee_position)
+    stones.ant.draw_stone(ant_position)
+    stones.hopper.draw_stone(hopper_position)
+    stones.spider.draw_stone(spider_position)
+    stones.bee.draw_stone(bee_position)
+    
+    return [color, stones]
     
 def draw_insects_images(surface, color):
     surface_width = surface.get_width()
@@ -120,10 +121,12 @@ def draw_insects_images(surface, color):
     
 #draw all insects
 def create_all_stones(surface, white_color, black_color):
-    draw_insects_hexa(surface, white_color)
+    white_stones = draw_insects_hexa(surface, white_color)
     draw_insects_images(surface, white_color)
-    draw_insects_hexa(surface, black_color)
+    black_stones = draw_insects_hexa(surface, black_color)
     draw_insects_images(surface, black_color)
+    
+    return [white_stones, black_stones]
     
 #draw number of insects
 
@@ -136,8 +139,6 @@ def write_text(surface, text, text_color, length, height, x, y):
 
 def draw_number_text(surface, text_color, text):
     pass
-
-
 
 
 

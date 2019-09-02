@@ -9,6 +9,7 @@ class Stone:
         self.coordinate = (-1,-1)
         self.has_bug_on = False
         self.is_mosquito = False
+        
     def set_color(self, color):
         self.color = color
 
@@ -71,4 +72,13 @@ class hexagon_stone:
         stone.coordinate = (-1,-1)
         self.is_empty = True
         self.stone = stone("empty", 0)
+        
+class get_stones:
+    def __init__(self, surface):
+        self.surface = surface
+        self.hexa_size = int(self.surface.get_width()*0.03)
+        self.ant = hexagon_stone(self.hexa_size, self.surface, Stone("ant", 1))
+        self.hopper = hexagon_stone(self.hexa_size, self.surface, Stone("hopper", 1))
+        self.spider =hexagon_stone(self.hexa_size, self.surface,Stone("spider", 1))
+        self.bee = hexagon_stone(self.hexa_size, self.surface, Stone("bee", 1))
         
