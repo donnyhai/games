@@ -78,10 +78,15 @@ while True:
                     pygame.display.set_caption("Spielbrett")
                     cb.color_background(showed_display, background_color2, 128, window_size)
                     cb.set_ingame_frame(showed_display)
-                    cb.create_all_stones(showed_display, (255,255,230), (60,60,60))
+                    stones = cb.create_all_stones(showed_display, (255,255,230), (60,60,60))
+                    print(stones[1][1].ant)
                     
-                    game = game.HvsH_Game(showed_display)
+                    
+                    test_surface = showed_display.subsurface(pygame.Rect(int(window_x_size*0.1), 0, int(window_x_size*0.8), window_y_size))
+                    game = game.HvsH_Game(test_surface)
                     game.interactor.draw_board()
+                    
+
                     
                     start_game_mode = False 
                     first_turn = True

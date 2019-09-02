@@ -74,6 +74,8 @@ def draw_insects_hexa(surface, color):
     stones.spider.draw_stone(spider_position)
     stones.bee.draw_stone(bee_position)
     
+    return [color, stones]
+    
 def draw_insects_images(surface, color):
     surface_width = surface.get_width()
     surface_height = surface.get_height()*0.8
