@@ -78,7 +78,7 @@ while True:
                     pygame.display.set_caption("Spielbrett")
                     cb.color_background(showed_display, background_color2, 128, window_size)
                     cb.set_ingame_frame(showed_display)
-                    stones = cb.create_all_stones(showed_display, (255,255,230), (60,60,60))
+                    cb.create_all_stones(showed_display, (255,255,230), (60,60,60))
                     
                     game = game.HvsH_Game(showed_display)
                     game.interactor.draw_board()
