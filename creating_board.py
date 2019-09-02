@@ -117,9 +117,28 @@ def draw_insects_images(surface, color):
     surface.blit(spider_image, spider_position)
     surface.blit(bee_image, bee_position)
     
-
+#draw all insects
 def create_all_stones(surface, white_color, black_color):
     draw_insects_hexa(surface, white_color)
     draw_insects_images(surface, white_color)
     draw_insects_hexa(surface, black_color)
     draw_insects_images(surface, black_color)
+    
+#draw number of insects
+
+def write_text(surface, text, text_color, length, height, x, y):
+    font_size = 2*int(length//len(text))
+    myFont = pygame.font.SysFont("Calibri", font_size)
+    myText = myFont.render(text, 1, text_color)
+    surface.blit(myText, ((x+length/2) - myText.get_width()/2, (y+height/2) - myText.get_height()/2))
+    return surface
+
+def draw_number_text(surface, text_color, text):
+    pass
+
+
+
+
+
+
+

@@ -8,15 +8,14 @@ import pygame
 pygame.init()
 
 class Button:
-    def create_button(self, surface, color, x, y, length, height, width, text, text_color):
-        surface = self.draw_button(surface, color, length, height, x, y, width)
-        surface = self.write_text(surface, text, text_color, length, height, x, y)
+    def __init__(self, surface, color, x, y, length, height, width, text, text_color):
+        self.button = self.draw_button(surface, color, length, height, x, y, width)
+        self.button = self.write_text(surface, text, text_color, length, height, x, y)
         self.rect = pygame.Rect(x,y, length, height)
-        return surface
 
     def write_text(self, surface, text, text_color, length, height, x, y):
         font_size = 2*int(length//len(text))
-        myFont = pygame.font.SysFont("Calibri", font_size)
+        myFont = pygame.font.SysFont("Comic Sans MS", font_size)
         myText = myFont.render(text, 1, text_color)
         surface.blit(myText, ((x+length/2) - myText.get_width()/2, (y+height/2) - myText.get_height()/2))
         return surface
