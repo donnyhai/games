@@ -14,7 +14,7 @@ pygame.display.init()
 #if settings_split[0] == "resolution" and settings_split[2] == settings_split[3]
 
 #Set window and button sizes
-window_x_size =  1920
+window_x_size =  1000
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6
@@ -81,6 +81,8 @@ while True:
                     cb.create_all_stones(showed_display, (255,255,230), (60,60,60))
                     
                     game = game.HvsH_Game(showed_display)
+                    game.interactor.draw_board()
+                    
                     start_game_mode = False 
                     first_turn = True
         elif start_game_mode == False and first_turn == True:
