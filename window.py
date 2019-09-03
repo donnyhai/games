@@ -89,6 +89,7 @@ while True:
                                         
                     start_game_mode = False 
                     first_turn = True
+            
         elif start_game_mode == False and first_turn == True and event.type== pygame.MOUSEBUTTONDOWN:
             if some_stone_clicked == False:
                 clicked_on_list = Game.frame_stones.click_on_frame_stone(gstones_list, event.pos)

@@ -17,6 +17,7 @@ class HvsH_Game(Game):
         self.locator = locator.Locator(self.board, self.players, 100, self.surface)
         self.interactor = interactor.Interactor(self.board, self.surface, calculator.Calculator(self.locator))
         self.frame_stones = frame_stones.frame_stones(stones_from_cb)
+        self.turn = 0
         
         
 #class HvsC_Game(Game):

@@ -8,7 +8,7 @@ class Board:
         self.draw_position = (0,0) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
         self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
-        self.nonempty_fields = [] #will matrix contain coordinates
+        self.nonempty_fields = [] #will contain matrix coordinates
         self.drawed_hexagons = [] #will contain hexagon_stone objects (if used)
         
     
