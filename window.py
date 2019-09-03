@@ -14,7 +14,7 @@ pygame.display.init()
 #if settings_split[0] == "resolution" and settings_split[2] == settings_split[3]
 
 #Set window and button sizes
-window_x_size =  2440
+window_x_size =  1920
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6
@@ -92,11 +92,11 @@ while True:
         elif start_game_mode == False and first_turn == True and event.type== pygame.MOUSEBUTTONDOWN:
             if some_stone_clicked == False:
                 clicked_on_list = Game.frame_stones.click_on_frame_stone(gstones_list, event.pos)
-                #print(clicked_on_list)
                 if True in clicked_on_list:
                     display_before = showed_display.copy()
                     index = clicked_on_list.index(True)
                     gstones_list[index].hexa_stone_draw_frame(gstones_list[index].pixel_position , (255,0,0), 3)
+                    Game.board.board[10][4].hexa_stone_draw_frame(Game.board.board[10][4].pixel_position, (0,255,0), 3)
                     some_stone_clicked = True
             else:
                 showed_display.blit(display_before, (0,0))
