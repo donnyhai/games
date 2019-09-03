@@ -14,7 +14,7 @@ pygame.display.init()
 #if settings_split[0] == "resolution" and settings_split[2] == settings_split[3]
 
 #Set window and button sizes
-window_x_size =  1900
+window_x_size =  2440
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6
@@ -58,6 +58,7 @@ start_window = showed_display.copy()
 start_game_mode = True
 settings_window_shown = False
 first_turn= False
+some_stone_clicked = False
 
 #run the window and wait for mouseclicks or quit
 while True:
@@ -72,27 +73,34 @@ while True:
                     settings_window_shown = False                    
                 elif settings_button.pressed(event.pos) == True:
                     if settings_window_shown == False:
-                        pygame.draw.rect(showed_display, (230,230,240), pygame.Rect(event.pos[0], event.pos[1]- button_y_size, button_x_size, button_y_size))
+                        pygame.draw.rect(showed_display, (230,230,240), pygame.Rect(event.pos[0],
+                                         event.pos[1]- button_y_size, button_x_size, button_y_size))
                         settings_window_shown = True
                 elif start_game_button.pressed(event.pos) == True:
                     pygame.display.set_caption("Spielbrett")
                     cb.color_background(showed_display, background_color2, 128, window_size)
                     cb.set_ingame_frame(showed_display)
                     stones = cb.create_all_stones(showed_display, (255,255,230), (60,60,60))
-                    print(stones[1][1].ant)
                     
-                    
-                    test_surface = showed_display.subsurface(pygame.Rect(int(window_x_size*0.1), 0, int(window_x_size*0.8), window_y_size))
-                    game = game.HvsH_Game(test_surface)
-                    game.interactor.draw_board()
-                    
-
-                    
+                    game_surface = showed_display.subsurface(pygame.Rect(int(window_x_size*0.1)+5, 0, int(window_x_size*0.8)-10, window_y_size))
+                    Game = game.HvsH_Game(game_surface, stones)
+                    gstones_list = Game.frame_stones.stones_list
+                    Game.interactor.draw_board()
+                                        
                     start_game_mode = False 
                     first_turn = True
-        elif start_game_mode == False and first_turn == True:
-            if event.type== pygame.MOUSEBUTTONDOWN:
-                pass
+        elif start_game_mode == False and first_turn == True and event.type== pygame.MOUSEBUTTONDOWN:
+            if some_stone_clicked == False:
+                clicked_on_list = Game.frame_stones.click_on_frame_stone(gstones_list, event.pos)
+                #print(clicked_on_list)
+                if True in clicked_on_list:
+                    display_before = showed_display.copy()
+                    index = clicked_on_list.index(True)
+                    gstones_list[index].hexa_stone_draw_frame(gstones_list[index].pixel_position , (255,0,0), 3)
+                    some_stone_clicked = True
+            else:
+                showed_display.blit(display_before, (0,0))
+                some_stone_clicked = False
     pygame.display.update()
     
     

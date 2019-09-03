@@ -32,8 +32,8 @@ def set_ingame_frame(surface):
     pygame.draw.line(surface, (0,0,0), (int(surface_width*0.9), int(surface_height*0.8)), (int(surface_width), int(surface_height*0.8)), line_width)
     
 
-hive_paths = [os.path.join("pictures", "ant.png"), os.path.join("pictures", "bee.png"),
-               os.path.join("pictures", "hopper.png"), os.path.join("pictures", "spider.png")]
+hive_paths = [os.path.join("pictures", "ant.png"), os.path.join("pictures", "hopper.png"),
+               os.path.join("pictures", "spider.png"), os.path.join("pictures", "bee.png")]
 
 def draw_insects_hexa(surface, color):
     
@@ -63,6 +63,11 @@ def draw_insects_hexa(surface, color):
     
     stones = hs.get_stones(surface)
     
+    stones.ant.set_pixel_pos(ant_position)
+    stones.hopper.set_pixel_pos(hopper_position)
+    stones.spider.set_pixel_pos(spider_position)
+    stones.bee.set_pixel_pos(bee_position)
+    
     stones.ant.stone.set_color(color)
     stones.hopper.stone.set_color(color)
     stones.spider.stone.set_color(color)
@@ -78,16 +83,17 @@ def draw_insects_hexa(surface, color):
     
 def draw_insects_images(surface, color):
     surface_width = surface.get_width()
-    surface_height = surface.get_height()*0.8
+    frame_height = surface.get_height()*0.8
     frame_x_size = surface_width*0.1
     hexa_size = int(frame_x_size*0.3)
-    y_distance = int((surface_height-4*hexa_size*3**(0.5))/5)
+    y_distance = (frame_height - 4 * hexa_size * 3**(0.5)) // 5
     right_frame_translate = (surface_width*0.9, 0)
     
     ant_position = (frame_x_size*0.25, y_distance)
     hopper_position = (frame_x_size/4, 2*y_distance + hexa_size*3**(0.5))
     spider_position = (frame_x_size/4, 3*y_distance + 2*hexa_size*3**(0.5))
     bee_position = (frame_x_size/4, 4*y_distance + 3*hexa_size*3**(0.5))
+    
     
     #Translate the positions of the images/hexas if they are black
     if len(color) >= 4 and (sum(color) - color[3] <= 350):

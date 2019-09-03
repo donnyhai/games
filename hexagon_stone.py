@@ -27,6 +27,11 @@ class hexagon_stone:
         self.board_position = (-1,-1)
         self.is_empty = True
         
+    # like always, the postion is the coordinate of the top left corner    
+    def set_pixel_pos(self, new_pixel_pos):
+        self.pixel_position = new_pixel_pos
+        self.points = self.getting_hexa(self.size, new_pixel_pos)
+        
     #calculate the six hexagon points with starting point start_vector (point top left) and side size scaling    
     def getting_hexa(self, scaling_ratio, start_vector):    
         hex_coords = [(0,0), (1,0), (1.5, 3**(1/2)/2), (1, 3**(1/2)), (0,3**(1/2)), (-0.5, 3**(1/2)/2)]
@@ -41,8 +46,12 @@ class hexagon_stone:
     def hexagon_center(self, hexagon_points):
         return hexagon_points[0]+((hexagon_points[1]-hexagon_points[0])*0.5, (hexagon_points[1]-hexagon_points[0])* 3**(0.5)*0.5)
 
-    def hexa_stone_draw_frame(self, position):
-        pygame.draw.aalines(self.surface, self.stone.color , True, self.getting_hexa(self.size, position), 2)
+    def hexa_stone_draw_frame(self, position, color, mark_mode = 0):
+        if mark_mode == 0:
+            pygame.draw.lines(self.surface, color , True, self.getting_hexa(self.size, position), 2 )
+        elif mark_mode > 0:
+            pygame.draw.lines(self.surface, color, True, self.getting_hexa(self.size + 2* mark_mode / sqrt(3) - 2,
+                                        (int(self.pixel_position[0]- mark_mode / sqrt(3)) + 1, int(self.pixel_position[1]- mark_mode))  ) , int(mark_mode)+1 )
         
     def draw_stone(self, position):
         pygame.draw.polygon(self.surface, self.stone.color , self.getting_hexa(self.size, position))
