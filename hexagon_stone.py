@@ -1,5 +1,4 @@
 from math import sqrt
-import pygame
 
 class Stone:
     def __init__(self, stone_type, number):
@@ -14,10 +13,9 @@ class Stone:
 
 class hexagon_stone:
     
-    def __init__(self, size, surface, stone = Stone("empty",1), pixel_position = (0,0)):
+    def __init__(self, size, stone = Stone("empty",1), pixel_position = (0,0)):
         #surface and pixel attributes
         self.size = size
-        self.surface = surface
         self.pixel_position = pixel_position
         self.points = self.getting_hexa(self.size, pixel_position)
         self.is_drawed = False
@@ -37,25 +35,12 @@ class hexagon_stone:
         hex_coords = [(0,0), (1,0), (1.5, 3**(1/2)/2), (1, 3**(1/2)), (0,3**(1/2)), (-0.5, 3**(1/2)/2)]
         scaled_coords = []
         for x,y in hex_coords:
-            scaled_coords.append([x*scaling_ratio, y*scaling_ratio])
-        points = []
-        for x,y in scaled_coords:
-            points.append([x+start_vector[0], y + start_vector[1]])
-        return points
+            scaled_coords.append([x*scaling_ratio + start_vector[0], y*scaling_ratio + start_vector[1]])
+        return scaled_coords
     
     def hexagon_center(self, hexagon_points):
         return hexagon_points[0]+((hexagon_points[1]-hexagon_points[0])*0.5, (hexagon_points[1]-hexagon_points[0])* 3**(0.5)*0.5)
 
-    def hexa_stone_draw_frame(self, position, color, mark_mode = 0):
-        if mark_mode == 0:
-            pygame.draw.lines(self.surface, color , True, self.getting_hexa(self.size, position), 2 )
-        elif mark_mode > 0:
-            pygame.draw.lines(self.surface, color, True, self.getting_hexa(self.size + 2* mark_mode / sqrt(3) - 2,
-                                        (int(self.pixel_position[0]- mark_mode / sqrt(3)) + 1, int(self.pixel_position[1]- mark_mode))  ) , int(mark_mode)+1 )
-        
-    def draw_stone(self, position):
-        pygame.draw.polygon(self.surface, self.stone.color , self.getting_hexa(self.size, position))
-        
     def euclidean_metric(self, vector):
         squared = [x*x for x in vector]
         return sqrt(sum(squared))
@@ -83,13 +68,3 @@ class hexagon_stone:
             self.board_position = (-1,-1)
         else:
             self.is_empty = False
-        
-class get_stones:
-    def __init__(self, surface):
-        self.surface = surface
-        self.hexa_size = int(self.surface.get_width()*0.03)
-        self.ant = hexagon_stone(self.hexa_size, self.surface, Stone("ant", 1))
-        self.hopper = hexagon_stone(self.hexa_size, self.surface, Stone("hopper", 1))
-        self.spider =hexagon_stone(self.hexa_size, self.surface,Stone("spider", 1))
-        self.bee = hexagon_stone(self.hexa_size, self.surface, Stone("bee", 1))
-        

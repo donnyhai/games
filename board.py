@@ -26,7 +26,7 @@ class Board:
             hexagon_chain = []
             for i in range (self.size):
                 position = (start_position[0] + i * 3 * self.hexagon_size, start_position[1])
-                hexagon_chain.append(hs.hexagon_stone(self.hexagon_size, self.surface, pixel_position = position))
+                hexagon_chain.append(hs.hexagon_stone(self.hexagon_size, pixel_position = position))
             return hexagon_chain
         
         hexagon_board = [0] * self.size

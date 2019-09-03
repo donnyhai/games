@@ -5,10 +5,11 @@ pygame.init()
 
 
 class Interactor:
-    def __init__(self, board, surface, calculator):
-        self.board = board
-        self.surface = surface
+    def __init__(self, painter, calculator):
+        self.painter = painter
         self.calculator = calculator
+        self.board = self.calculator.board
+        self.surface = self.painter.surface
         
     #player want to put stone on coord. is that a legal move ?
     def put_stone_condition(self, player, stone, coord):
@@ -61,7 +62,7 @@ class Interactor:
         cond4 = self.board.is_connected(nonempty_fields.remove(stone.coordinate))
         return cond00 and cond0 and cond1 and cond2 and cond3 and cond4
             
-    
+    #HAS TO BE ADAPTED
     #player puts stone on coord (if possible)
     def put_stone(self, player, stone, coord):
         if  not self.put_stone_condition(player, stone, coord):
@@ -72,7 +73,7 @@ class Interactor:
             stone.is_on_board = True
             self.board.nonempty_fields.append(coord)
     
-    
+    #HAS TO BE ADAPTED
     #move stone of player to coord (if possible)       
     def move_stone(self, player, stone, coord):
         def move(stone, coord):
@@ -98,25 +99,6 @@ class Interactor:
                 if coord in self.board_subset.get_bug_fields(coord): move(stone, coord)
                 else: print("bug move not possible") 
                     
-    #draw hexagon on surface
-    def draw_hexagon(self, hexagon):
-        pygame.draw.aalines(self.surface, (100,100,100), True, hexagon.points)
-        self.board.drawed_hexagons.append(hexagon)
-        hexagon.is_drawed = True
-        
-    def draw_colored_hexagon(self, hexagon):
-        pass
-    
-    def draw_set_of_hexagons(self, hexagon_list):
-        for hexagon in hexagon_list:
-            self.draw_hexagon(hexagon)
-    
-    #draw the whole board of hexagons on surface
-    def draw_board(self):
-        for row in self.board.board:
-            for hexagon in row:
-                self.draw_hexagon(hexagon)
-        
     #NOT COMPLETE, 
     #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
     #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
@@ -142,25 +124,4 @@ class Interactor:
     #clicked_hexagon was clicked. return list of all possible hexagons to move
     def get_possible_move_hexagons(self, clicked_hexagon):
         return self.calculator.get_possible_fields(clicked_hexagon.coordinate, clicked_hexagon.stone.type)
-    
-    #clicked_hexagon was clicked. draw shadings on the hexagons possible to move the stone to, and return those in list
-    def draw_colored_hexagons_after_click(self, clicked_hexagon):
-        possible_hexagons = self.get_possible_move_hexagons(clicked_hexagon)
-        for hexagon in possible_hexagons:
-            self.draw_colored_hexagon(hexagon)
-    
-    #draw hexagon_stone at pixel_position with image according to stone_type
-    def draw_insect_image(self, hexagon):
-        pass
-    
-    def draw_empty_hexagon(self, position):
-        pass
-    
-    
-    
-    
-    
-    
-    
-    
     
