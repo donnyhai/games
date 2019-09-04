@@ -10,18 +10,24 @@ class Painter:
     
     #fill background with color
     def draw_background(self, color, alpha_value = 255):
-        self.surface.fill(color)
+        s1 = pygame.Surface((self.surface.get_width(),self.surface.get_height()) )
+        s1.fill((255,255,255))
+        self.surface.blit(s1, (0,0))
+        s = pygame.Surface((self.surface.get_width(),self.surface.get_height()) )
+        s.set_alpha(alpha_value)
+        s.fill(color)
+        self.surface.blit(s, (0,0))
     
     #draw the frame of an hexagon in color with respect to mark_mode (mark_mode = 0 is normal thin line) 
     def draw_hexagon_frame(self, hexagon, subsurface, color = (0,0,0), mark_mode = 0):
         if mark_mode == 0:
-            pygame.draw.aalines(subsurface, color , True, hexagon.points, 2) 
+            pygame.draw.lines(subsurface, color , True, hexagon.points, 2) 
         elif mark_mode > 0:
             scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - 2
             start_vector = (int(hexagon.pixel_position[0] - mark_mode / sqrt(3)) + 1, 
                             int(hexagon.pixel_position[1] - mark_mode)) 
             points = hexagon.getting_hexa(scaling_ratio, start_vector) 
-            pygame.draw.aalines(subsurface, color, True, points, int(mark_mode) + 1)
+            pygame.draw.lines(subsurface, color, True, points, int(mark_mode) + 1)
             hexagon.is_marked = True
     
     #draw hexagon frame and fill it with color
@@ -38,7 +44,7 @@ class Painter:
     def draw_board(self, board, subsurface):
         for row in board.board:
             for hexagon in row:
-                self.draw_hexagon_frame(hexagon, subsurface)
+                self.draw_hexagon_frame(hexagon, subsurface, color = (100,100,100))
     
     #draw hexagon_stone at pixel_position with image according to stone_type
     def draw_insect_hexagon(self, hexagon):

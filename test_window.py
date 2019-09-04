@@ -1,5 +1,6 @@
-import pygame, sys, buttons,  creating_board as cb
+import pygame, sys, buttons
 import game
+import start_menu
 
 pygame.init()
 pygame.display.init()
@@ -74,8 +75,12 @@ while True:
                     display.blit(start_window, (0,0))
                     settings_window_shown = False                    
                 elif settings_button.pressed(event.pos) == True: 
-                    pygame.draw.rect(display, (220,230,220), pygame.Rect(event.pos[0],
-                                     event.pos[1]- 1.5 * button_y_size, 1.5 * button_x_size, 1.5 * button_y_size))
+                    #init  settings_window
+                    settings_window  = start_menu.settings_window(display, (220,230,220), event.pos)
+                    #draw setting_window
+                    settings_window.draw_settings_window(1.5 * button_x_size, 1.5 * button_y_size)
+                    #pygame.draw.rect(display, (220,230,220), pygame.Rect(event.pos[0],
+                    #                 event.pos[1]- 1.5 * button_y_size, 1.5 * button_x_size, 1.5 * button_y_size))
                     settings_window_shown = True
                 ####
                 elif start_game_button.pressed(event.pos) == True:
@@ -83,7 +88,7 @@ while True:
                     pygame.display.set_caption("Spielbrett")
                     game = game.HvsH_Game(display)
                     
-                    game.painter.draw_background(background_color1, 128)
+                    game.painter.draw_background(background_color2, 127)
                     game.painter.draw_ingame_frame()
                     game.painter.draw_set_of_insect_stones(game.players["white"].side_stones.values())
                     game.painter.draw_set_of_insect_stones(game.players["black"].side_stones.values())
