@@ -63,9 +63,11 @@ some_stone_marked = False
 #run the window and wait for mouseclicks or quit
 while True:
     for event in pygame.event.get():
+        
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+            
         elif start_game_mode:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 ####NC: settings_window still has to be implemented functionally
