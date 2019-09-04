@@ -24,7 +24,7 @@ button_y_size = window_y_size//6
 
 
 #creating showable start_window on display with, set name and set background color
-display = pygame.display.set_mode(window_size,0,32)
+display = pygame.display.set_mode(window_size, pygame.RESIZABLE, 0 ,32)
 #showed_display = pygame.display.set_mode((1920, 1080),pygame.RESIZABLE, 32)
 pygame.display.set_caption("Spiel-Menue")
 display.fill((100,100,100))
@@ -69,18 +69,15 @@ while True:
             pygame.quit()
             sys.exit()
         elif start_game_mode:
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONUP:
                 ####NC: settings_window still has to be implemented functionally
                 if settings_window_shown == True: 
                     display.blit(start_window, (0,0))
                     settings_window_shown = False                    
-                elif settings_button.pressed(event.pos) == True: 
-                    #init  settings_window
-                    settings_window  = start_menu.settings_window(display, (220,230,220), event.pos)
-                    #draw setting_window
-                    settings_window.draw_settings_window(1.5 * button_x_size, 1.5 * button_y_size)
-                    #pygame.draw.rect(display, (220,230,220), pygame.Rect(event.pos[0],
-                    #                 event.pos[1]- 1.5 * button_y_size, 1.5 * button_x_size, 1.5 * button_y_size))
+                elif settings_button.pressed(event.pos) == True:
+                    settings_window  = start_menu.settings_window(display, (220,230,220, 128), event.pos, (1.5 * button_x_size, 1.5 * button_y_size))
+                    settings_window.draw_settings_window()
+                    settings_window.write_settings(settings_window.settings, (0,0,0), 15)
                     settings_window_shown = True
                 ####
                 elif start_game_button.pressed(event.pos) == True:
