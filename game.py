@@ -12,7 +12,7 @@ class Game:
 class HvsH_Game(Game):
     def __init__(self, surface):
         self.surface = surface
-        self.painter = painter.Painter(self.surface)
+        self.painter = painter.Painter()
         
         self.turn = ("white", 1)
         
