@@ -4,12 +4,12 @@ class Board:
     def __init__(self, board_size, surface):
         self.size = board_size
         self.surface = surface
-        self.hexagon_size = int(0.03 * self.surface.get_width()*5/4)
+        self.hexagon_size = int(0.03 * self.surface.get_width())
         self.draw_position = (0,0) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
         self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
         self.nonempty_fields = [] #will contain matrix coordinates
-        self.drawed_hexagons = [] #will contain hexagon_stone objects (if used)
+        self.drawn_hexagons = [] #will contain hexagon_stone objects (if used)
         
     
     #get neighbour coordinates of (i,j) starting from top going clockwise, number them from 0 to 5
@@ -26,7 +26,7 @@ class Board:
             hexagon_chain = []
             for i in range (self.size):
                 position = (start_position[0] + i * 3 * self.hexagon_size, start_position[1])
-                hexagon_chain.append(hs.hexagon_stone(self.hexagon_size, self.surface, pixel_position = position))
+                hexagon_chain.append(hs.hexagon_stone(self.hexagon_size, pixel_position = position))
             return hexagon_chain
         
         hexagon_board = [0] * self.size

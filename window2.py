@@ -14,7 +14,8 @@ pygame.display.init()
 #if settings_split[0] == "resolution" and settings_split[2] == settings_split[3]
 
 #Set window and button sizes
-window_x_size =  1920
+
+window_x_size =  1020
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6
@@ -82,7 +83,7 @@ while True:
                     pygame.display.set_caption("Spielbrett")
                     game = game.HvsH_Game(display)
                     
-                    game.painter.draw_background(background_color3, 128)
+                    game.painter.draw_background(background_color2, 128)
                     game.painter.draw_ingame_frame()
                     game.painter.draw_set_of_insect_stones(game.players["white"].side_stones.values())
                     game.painter.draw_set_of_insect_stones(game.players["black"].side_stones.values())
