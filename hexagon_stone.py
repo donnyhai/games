@@ -4,7 +4,10 @@ class Stone:
     def __init__(self, stone_type, number):
         self.type = stone_type
         self.number = number
-        self.is_on_board = False
+        self.is_on_board = False #note that this attribute makes more sense for actual playing stones.
+        #for side_stones (see player) this attributes just claims, whether a certain kind of stone is still 
+        #available at the side or not. for example, if a side_stone "ant" has this attribute on is_on_board = True,
+        #than there is no ant on the side anymore and therefore all three ants were already put on the board. 
         self.has_bug_on = False
         self.is_mosquito = False
         
@@ -18,7 +21,8 @@ class hexagon_stone:
         self.size = size
         self.pixel_position = pixel_position
         self.points = self.getting_hexa(self.size, pixel_position)
-        self.is_drawed = False
+        self.is_drawn = False
+        self.is_marked = False
         
         #stone and board attributes
         self.stone = stone
@@ -45,15 +49,15 @@ class hexagon_stone:
         squared = [x*x for x in vector]
         return sqrt(sum(squared))
     
-    def point_in_hexagon(self, hexa_points, coords):
+    def point_in_hexagon(self, coords):
         boundary_vectors = []
         connection_vectors = []
-        for i in range(len(hexa_points)):
-            boundary_vectors.append((hexa_points[(i+1)%len(hexa_points)][0]-hexa_points[i][0],hexa_points[(i+1)%len(hexa_points)][1]-hexa_points[i][1]))
-            connection_vectors.append((coords[0]-hexa_points[i][0], coords[1]-hexa_points[i][1]))
+        for i in range(len(self.points)):
+            boundary_vectors.append((self.points[(i+1)%len(self.points)][0]-self.points[i][0],self.points[(i+1)%len(self.points)][1]-self.points[i][1]))
+            connection_vectors.append((coords[0]-self.points[i][0], coords[1]-self.points[i][1]))
         test = True
         angles = []
-        for i in range(len(hexa_points)):
+        for i in range(len(self.points)):
             angles.append((boundary_vectors[i][0]*connection_vectors[i][0]+boundary_vectors[i][1]*connection_vectors[i][1])
                           /(self.euclidean_metric(boundary_vectors[i])*self.euclidean_metric(connection_vectors[i])))
             if angles[i] <= -0.5:

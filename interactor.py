@@ -3,11 +3,11 @@ import hexagon_stone as hs
 pygame.init()
 
 
-
 class Interactor:
     def __init__(self, painter, calculator):
         self.painter = painter
         self.calculator = calculator
+        self.players = self.calculator.locator.players
         self.board = self.calculator.board
         self.surface = self.painter.surface
         
@@ -103,8 +103,8 @@ class Interactor:
     #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
     #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
     def execute_stone_move(self, player, first_clicked_hexagon, second_clicked_hexagon):
-        cond1 = self.move_stone_condition(player, first_clicked_hexagon.stone, second_clicked_hexagon.coordinate)
-        cond2 = second_clicked_hexagon in self.get_shaded_hexagons(first_clicked_hexagon)
+        cond1 = self.move_stone_condition(player, first_clicked_hexagon.stone, second_clicked_hexagon.board_position)
+        cond2 = second_clicked_hexagon in self.get_possible_move_hexagons(first_clicked_hexagon)
         if cond1 and cond2: #############################################INCOMPLETE
             first_hexagon = first_clicked_hexagon
             second_hexagon = second_clicked_hexagon
@@ -121,7 +121,52 @@ class Interactor:
         else:
             print("not possible") ##############################################print in surface
         
+    #NOT COMPLETE, 
+    #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
+    #first the hexagon at the side, second a hexagon on the board   
+    def execute_stone_put(self, player, first_hex, second_hex):
+        cond1 = self.put_stone_condition(player, first_hex.stone, second_hex.board_position)
+        cond2 = second_hex.board_position in self.get_possible_put_hexagons(first_hex.stone.color)
+        if cond1 and cond2:
+            stone_type = first_hex.stone.type
+            
+            
+            
+            
+            
+        
     #clicked_hexagon was clicked. return list of all possible hexagons to move
     def get_possible_move_hexagons(self, clicked_hexagon):
         return self.calculator.get_possible_fields(clicked_hexagon.coordinate, clicked_hexagon.stone.type)
     
+    #clicked_hexagon was clicked (side stone). return list of all possible hexagons on the board to put this hexagon
+    def get_possible_put_hexagons(self, clicked_hexagon):
+        self.calculator.get_possible_put_fields(clicked_hexagon.stone.color)
+    
+    #which hexagon was clicked ? return is a hexagon pertaining to one of the players (no empty hexagon)
+    def get_clicked_hexagon(self, event_pos):
+        for player in self.players.values():
+            for hstone in player.side_stones.values():
+                if hstone.point_in_hexagon(event_pos) == True:
+                    return [hstone]
+            for hstone in player.stones.values():
+                if hstone.point_in_hexagon(event_pos) == True and hstone.is_drawn:
+                    return [hstone]
+        return []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

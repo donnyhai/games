@@ -20,7 +20,7 @@ class HvsH_Game(Game):
         self.locator = locator.Locator(self.board, self.players, 100)
         self.interactor = interactor.Interactor(self.painter, calculator.Calculator(self.locator))
         
-        self.turn = 0
+        self.turn = ("white", 1)
         
         
 #class HvsC_Game(Game):

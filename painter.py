@@ -21,11 +21,12 @@ class Painter:
         if mark_mode == 0:
             pygame.draw.aalines(subsurface, color , True, hexagon.points, 2) 
         elif mark_mode > 0:
-            scaling_ratio = hexagon.size + 2* mark_mode / sqrt(3) - 2
-            start_vector = (int(hexagon.pixel_position[0]- mark_mode / sqrt(3)) + 1, 
-                            int(hexagon.pixel_position[1]- mark_mode)) 
+            scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - 2
+            start_vector = (int(hexagon.pixel_position[0] - mark_mode / sqrt(3)) + 1, 
+                            int(hexagon.pixel_position[1] - mark_mode)) 
             points = hexagon.getting_hexa(scaling_ratio, start_vector) 
-            pygame.draw.aalines(subsurface, color, True, points, int(mark_mode)+1 )
+            pygame.draw.aalines(subsurface, color, True, points, int(mark_mode) + 1)
+            hexagon.is_marked = True
     
     #draw hexagon frame and fill it with color
     def fill_hexagon_frame(self, hexagon, color, alpha_value = 1):
@@ -33,9 +34,9 @@ class Painter:
         
     #draw set of hexagons with respective color and mark_mode, for example when drawing all possible 
     #hexagons a stone can move to 
-    def draw_set_of_hexagons(self, hexagon_list, color, mark_mode = 0):
+    def draw_set_of_hexagon_frames(self, hexagon_list, subsurface, color, mark_mode = 0):
         for hexagon in hexagon_list:
-            self.draw_hexagon_frame(hexagon, color, mark_mode)
+            self.draw_hexagon_frame(hexagon, subsurface, color, mark_mode)
     
     #draw the whole board of hexagons on surface
     def draw_board(self, board, subsurface):
