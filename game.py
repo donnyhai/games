@@ -14,13 +14,13 @@ class HvsH_Game(Game):
         self.surface = surface
         self.painter = painter.Painter(self.surface)
         
+        self.turn = ("white", 1)
+        
         self.board = board.Board(Game.board_size, self.surface)
         self.players = {"white": player.Human_Player("white", self.surface), 
                         "black": player.Human_Player("black", self.surface)}
         self.locator = locator.Locator(self.board, self.players, 100)
-        self.interactor = interactor.Interactor(self.painter, calculator.Calculator(self.locator))
-        
-        self.turn = ("white", 1)
+        self.interactor = interactor.Interactor(self.painter, calculator.Calculator(self.locator), self.turn)
         
         
 #class HvsC_Game(Game):

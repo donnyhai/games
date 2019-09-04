@@ -58,7 +58,7 @@ start_window = display.copy()
 
 start_game_mode = True
 settings_window_shown = False
-some_stone_clicked = False
+some_stone_marked = False
 
 #run the window and wait for mouseclicks or quit
 while True:
@@ -96,31 +96,36 @@ while True:
             
         elif not start_game_mode:
             if event.type== pygame.MOUSEBUTTONDOWN:
-                clicked_hexagon = game.interactor.get_clicked_hexagon(event.pos) #note, this is a list
-                #it contains exactly one hexagon iff the click was on this hexagon
+                clicked_hexagon = game.interactor.calculator.get_clicked_hexagon(event.pos) #note, this is a list
+                #it shall contain exactly one hexagon iff the click was on this hexagon
                 
                 if game.turn == ("white", 1):
                     dir_hexagon = game.board.board[10][4] #shall be middle hexagon of the empty board
-                    if not some_stone_clicked:
+                    if not some_stone_marked:
                         display_before = display.copy()
                         if len(clicked_hexagon) == 1 and clicked_hexagon[0].stone.color == "white":
-                            game.painter.draw_hexagon_frame(clicked_hexagon[0], display, (255,0,0), mark_mode = 5)
-                            game.painter.draw_hexagon_frame(dir_hexagon, game_surface, (255,0,0), mark_mode = 5)
                             src_hexagon = clicked_hexagon[0]
-                            some_stone_clicked = True
+                            game.painter.draw_hexagon_frame(src_hexagon, display, (255,0,0), mark_mode = 5)
+                            game.painter.draw_hexagon_frame(dir_hexagon, game_surface, (255,0,0), mark_mode = 5)
+                            some_stone_marked = True
+                    #in this case stone put will be executed and the turn goes one up
                     elif dir_hexagon.point_in_hexagon(event.pos) == True and dir_hexagon.is_marked:
                         display.blit(display_before, (0,0))
                         game.interactor.execute_stone_put(game.players["white"], src_hexagon, dir_hexagon)
                         game.turn = ("black", 1)
-                        some_stone_clicked = False
+                        some_stone_marked = False
                     else:
                         display.blit(display_before, (0,0))
-                        some_stone_clicked = False
+                        some_stone_marked = False
+                        #unmark both hexagons which were marked during the process (in painter.draw_hexagon_frame)
+                        src_hexagon.is_marked = False
+                        dir_hexagon.is_marked = False
+                        
                         
                 elif game.turn == ("black", 1):
                     neigh_coords = game.board.get_neighbours((10,4)).values()
                     dir_hexagons = [game.board.board[i][j] for i,j in neigh_coords] #all empty neighbours of the middle hexagon
-                    if not some_stone_clicked:
+                    if not some_stone_marked:
                         display_before = display.copy()
                         if len(clicked_hexagon) == 1 and clicked_hexagon[0].stone.color == "black":
                             game.painter.draw_hexagon_frame(clicked_hexagon[0], display, (255,0,0), mark_mode = 5)

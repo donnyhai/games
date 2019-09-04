@@ -4,12 +4,13 @@ pygame.init()
 
 
 class Interactor:
-    def __init__(self, painter, calculator):
+    def __init__(self, painter, calculator, turn):
         self.painter = painter
         self.calculator = calculator
         self.players = self.calculator.locator.players
         self.board = self.calculator.board
         self.surface = self.painter.surface
+        self.turn = turn
     
     #NOT COMPLETE, 
     #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
@@ -17,20 +18,55 @@ class Interactor:
     def execute_stone_put(self, player, first_clicked_hex, second_clicked_hex):
         fhex = first_clicked_hex
         shex = second_clicked_hex
-        cond1 = self.put_stone_condition(player, fhex.stone, shex.board_position)
-        cond2 = shex.board_position in self.get_possible_put_hexagons(fhex.color)
+        possible_put_fields = self.calculator.get_possible_put_fields(fhex.stone.color)
+        cond1 = self.put_stone_condition(player, fhex, shex)
+        cond2 = True
+        if self.turn[1] >= 2:
+            cond2 = shex.board_position in possible_put_fields
         if cond1 and cond2:
+            ##first execute logical aspects
             stone_type = fhex.stone.type
-
+            #find stone in player.stones which is not yet on the board
+            for hstone in player.stones[stone_type].values():
+                if not hstone.stone.is_on_board:
+                    draw_hexagon = hstone
+                    break
+            #set the corresponding side_stone_number one down
+            player.side_stones_numbers[stone_type] -= 1
+            #set new position for the stone which wants to be drawn
+            draw_hexagon.set_pixel_pos(shex.pixel_position)
+            #set new board_position
+            new_board_pos = shex.board_position
+            draw_hexagon.board_position = new_board_pos
+            #put the hexagon abstractly on the board at the corresponding position and adapt board attributes
+            self.board.board[new_board_pos[0]][new_board_pos[1]] = draw_hexagon
+            self.board.nonempty_fields.append(new_board_pos)
+            self.board.drawn_hexagons.append(draw_hexagon)
+            #set is_drawn
+            draw_hexagon.is_drawn = True
+            draw_hexagon.stone.is_on_board = True
+            
+            
+            ##then excute drawing aspects
+            self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type)
+            self.painter.draw_insect_hexagon(draw_hexagon)
     
-    #player want to put stone on coord. is that a legal move ?
-    def put_stone_condition(self, player, stone, coord):
+    #player want to put src_hstone on dir_stone. is that a legal ?
+    def put_stone_condition(self, player, src_hstone, dir_hstone):
+        coord = dir_hstone.board_position
+        
+        #there are still stones of the src_hstone type left at the side
+        cond0 = player.side_stones_numbers[src_hstone.stone.type] != 0
+        if not cond0:
+            print("cond0 nicht erfüllt")
         #stone belongs to player
-        cond1 = stone.color == player.color 
-        #stone is not on board
-        cond2 = not stone.is_on_board 
+        cond1 = src_hstone.stone.color == player.color 
+        if not cond1:
+            print("cond1 nicht erfüllt")
         #field at coord is empty
         cond3 = self.board.board[coord[0]][coord[1]].is_empty 
+        if not cond3:
+            print("cond3 nicht erfüllt")
         #at least one same color neighbour, no other color neighbour.
         #watch the cases, that no or just one stone is on the board
         cond4 = False
@@ -43,16 +79,22 @@ class Interactor:
             for neigh in neighbours:
                 field = self.board.board[neigh[0]][neigh[1]]
                 if not field.is_empty:
-                    if field.stone.color != stone.color:
+                    if field.stone.color != src_hstone.stone.color:
                         cond4 = False
                         break
                     else:
                         cond4 = True
+        if not cond4:
+            print("cond4 nicht erfüllt")
         #bee has been put until 4. stoneput
         cond5 = True
-        if len(self.board.nonempty_fields) in {6,7} and not player.stones["bee"].is_on_board:
-            cond5 = stone.type == "bee"
-        return cond1 and cond2 and cond3  and cond4 and cond5
+        if self.turn[1] == 4 and not player.stones["bee"].values()[0].is_on_board:
+            cond5 = src_hstone.type == "bee"
+        if not cond5:
+            print("cond5 nicht erfüllt")
+        return cond0 and cond1 and cond3  and cond4 and cond5
+    
+    
     
     #player want to move stone to coord. is that generally possible ? that means independently of 
     #the stone type ? note that this game is yet without the "assel" stone    
@@ -133,42 +175,21 @@ class Interactor:
         else:
             print("not possible") ##############################################print in surface
         
-   
-    def print_text_for_player(self):
-        pass
-            
+    ###### shall be in painter
+    #HAS TO BE ADAPTED, should use painter to draw       
     def write_text(surface, text, text_color, length, height, x, y):
         font_size = 2*int(length//len(text))
         myFont = pygame.font.SysFont("Calibri", font_size)
         myText = myFont.render(text, 1, text_color)
         surface.blit(myText, ((x+length/2) - myText.get_width()/2, (y+height/2) - myText.get_height()/2))
         return surface
-
-    def draw_number_text(surface, text_color, text):
+    
+    #draw side_numbers at corresponding position depending on insect_type
+    def draw_new_stone_number(text, insect_type, text_color = (0,0,0)):
         pass
-            
-            
-        
-    #clicked_hexagon was clicked. return list of all possible hexagons to move
-    def get_possible_move_hexagons(self, clicked_hexagon):
-        return self.calculator.get_possible_fields(clicked_hexagon.coordinate, clicked_hexagon.stone.type)
-    
-    #clicked_hexagon was clicked (side stone). return list of all possible hexagons on the board to put this hexagon
-    def get_possible_put_hexagons(self, clicked_hexagon):
-        self.calculator.get_possible_put_fields(clicked_hexagon.stone.color)
-    
-    #which hexagon was clicked ? return is a hexagon pertaining to one of the players (no empty hexagon)
-    def get_clicked_hexagon(self, event_pos):
-        for player in self.players.values():
-            for hstone in player.side_stones.values():
-                if hstone.point_in_hexagon(event_pos) == True:
-                    return [hstone]
-            for hstone in player.stones.values():
-                if hstone.point_in_hexagon(event_pos) == True and hstone.is_drawn:
-                    return [hstone]
-        return []
-
-
+    ######        
+     
+       
 
 
 

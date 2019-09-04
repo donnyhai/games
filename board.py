@@ -9,7 +9,7 @@ class Board:
         #(reference point is upper left corner of upper left hexagon)
         self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
         self.nonempty_fields = [] #will contain matrix coordinates
-        self.drawed_hexagons = [] #will contain hexagon_stone objects (if used)
+        self.drawn_hexagons = [] #will contain hexagon_stone objects (if used)
         
     
     #get neighbour coordinates of (i,j) starting from top going clockwise, number them from 0 to 5

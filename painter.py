@@ -56,8 +56,8 @@ class Painter:
         surface_width = self.surface.get_width()
         surface_height = self.surface.get_height()
         line_width = 10 
-        pygame.draw.line(self.surface, (0,0,0), (int(surface_width*0.1),0),(int(surface_width*0.1), surface_height), line_width  )
-        pygame.draw.line(self.surface, (0,0,0), (int(surface_width*0.9),0),(int(surface_width*0.9), surface_height), line_width  )
+        pygame.draw.line(self.surface, (0,0,0), (int(surface_width*0.1),0),(int(surface_width*0.1), surface_height), line_width)
+        pygame.draw.line(self.surface, (0,0,0), (int(surface_width*0.9),0),(int(surface_width*0.9), surface_height), line_width)
         pygame.draw.line(self.surface, (0,0,0), (0, int(surface_height*0.8)), (int(surface_width*0.1), int(surface_height*0.8)), line_width)
         pygame.draw.line(self.surface, (0,0,0), (int(surface_width*0.9), int(surface_height*0.8)), (int(surface_width), int(surface_height*0.8)), line_width)
     

@@ -1,6 +1,7 @@
 class Calculator:
     def __init__(self, locator):
         self.locator = locator
+        self.players = self.locator.players
         self.board = self.locator.board #note that the locator always contains the board object of the actual game
         #matrix has the sime size as board, is 1 in i,j iff we consider this field to be part 
         #of the set of fields we want to include at the moment (initialized with all fields, therefore all 1). 
@@ -189,8 +190,20 @@ class Calculator:
                     if cond:
                         sol_fields.append(neigh)
         return sol_fields
-                    
-            
+    
+    
+    #event click at event_pos. in which hexagon is it ? return is a list containing exactly one hexagon 
+    #iff the clickd was in this hexagon                
+    def get_clicked_hexagon(self, event_pos):
+        for player in self.players.values():
+            for hstone in player.side_stones.values():
+                if hstone.point_in_hexagon(event_pos) == True:
+                    return [hstone]
+            for hstone1 in player.stones.values():
+                for hstone2 in hstone1.values():
+                    if hstone2.point_in_hexagon(event_pos) == True and hstone2.is_drawn:
+                        return [hstone]
+        return []
             
 
 
