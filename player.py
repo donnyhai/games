@@ -11,14 +11,14 @@ class Player:
         
     def create_stones(self, stone_size):
         hstones = {"bee": hs.hexagon_stone(stone_size, hs.Stone("bee", 1)),
-                "ant1": hs.hexagon_stone(stone_size, hs.Stone("ant",1)),
-                "ant2": hs.hexagon_stone(stone_size, hs.Stone("ant",2)),
-                "ant3": hs.hexagon_stone(stone_size, hs.Stone("ant",3)),
-                "hopper1": hs.hexagon_stone(stone_size, hs.Stone("hopper", 1)),
-                "hopper2": hs.hexagon_stone(stone_size, hs.Stone("hopper", 2)),
-                "hopper3": hs.hexagon_stone(stone_size, hs.Stone("hopper", 3)),
-                "spider1": hs.hexagon_stone(stone_size, hs.Stone("spider", 1)),
-                "spider2": hs.hexagon_stone(stone_size, hs.Stone("spider", 2))}
+                   "ant": {1: hs.hexagon_stone(stone_size, hs.Stone("ant", 1)),
+                           2: hs.hexagon_stone(stone_size, hs.Stone("ant", 2)),
+                           3: hs.hexagon_stone(stone_size, hs.Stone("ant", 3))},
+                   "hopper": {1: hs.hexagon_stone(stone_size, hs.Stone("hopper", 1)),
+                              2: hs.hexagon_stone(stone_size, hs.Stone("hopper", 2)),
+                              3: hs.hexagon_stone(stone_size, hs.Stone("hopper", 3))},
+                   "spider": {1: hs.hexagon_stone(stone_size, hs.Stone("spider", 1)),
+                              2: hs.hexagon_stone(stone_size, hs.Stone("spider", 2))}}
         for hstone in hstones.values():
             hstone.stone.set_color(self.color)
         return hstones
@@ -48,12 +48,8 @@ class Player:
         spider_position = (frame_x_size/4, 3*y_distance + 2*hexa_size*3**(0.5))
         bee_position = (frame_x_size/4, 4*y_distance + 3*hexa_size*3**(0.5))
         
-        if self.color == "white":
-            ant_position = (ant_position[0] + right_frame_translate[0], ant_position[1] + right_frame_translate[1])
-            hopper_position = (hopper_position[0] + right_frame_translate[0], hopper_position[1] + right_frame_translate[1])
-            spider_position = (spider_position[0] + right_frame_translate[0], spider_position[1] + right_frame_translate[1])
-            bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
-        elif self.color == "black":
+        #translate stones to the right side if they are black
+        if self.color == "black":
             ant_position = (ant_position[0] + right_frame_translate[0], ant_position[1] + right_frame_translate[1])
             hopper_position = (hopper_position[0] + right_frame_translate[0], hopper_position[1] + right_frame_translate[1])
             spider_position = (spider_position[0] + right_frame_translate[0], spider_position[1] + right_frame_translate[1])
