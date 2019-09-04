@@ -10,7 +10,19 @@ class Interactor:
         self.players = self.calculator.locator.players
         self.board = self.calculator.board
         self.surface = self.painter.surface
-        
+    
+    #NOT COMPLETE, 
+    #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
+    #first the hexagon at the side, second a hexagon on the board   
+    def execute_stone_put(self, player, first_clicked_hex, second_clicked_hex):
+        fhex = first_clicked_hex
+        shex = second_clicked_hex
+        cond1 = self.put_stone_condition(player, fhex.stone, shex.board_position)
+        cond2 = shex.board_position in self.get_possible_put_hexagons(fhex.color)
+        if cond1 and cond2:
+            stone_type = fhex.stone.type
+
+    
     #player want to put stone on coord. is that a legal move ?
     def put_stone_condition(self, player, stone, coord):
         #stone belongs to player
@@ -121,17 +133,19 @@ class Interactor:
         else:
             print("not possible") ##############################################print in surface
         
-    #NOT COMPLETE, 
-    #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
-    #first the hexagon at the side, second a hexagon on the board   
-    def execute_stone_put(self, player, first_hex, second_hex):
-        cond1 = self.put_stone_condition(player, first_hex.stone, second_hex.board_position)
-        cond2 = second_hex.board_position in self.get_possible_put_hexagons(first_hex.stone.color)
-        if cond1 and cond2:
-            stone_type = first_hex.stone.type
+   
+    def print_text_for_player(self):
+        pass
             
-            
-            
+    def write_text(surface, text, text_color, length, height, x, y):
+        font_size = 2*int(length//len(text))
+        myFont = pygame.font.SysFont("Calibri", font_size)
+        myText = myFont.render(text, 1, text_color)
+        surface.blit(myText, ((x+length/2) - myText.get_width()/2, (y+height/2) - myText.get_height()/2))
+        return surface
+
+    def draw_number_text(surface, text_color, text):
+        pass
             
             
         

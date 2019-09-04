@@ -10,10 +10,6 @@ class Painter:
     
     #fill background with color
     def draw_background(self, color, alpha_value = 255):
-#        s = pygame.Surface((self.surface.get_width(), self.surface.get_height()))
-#        s.set_alpha(alpha_value)
-#        s.fill(color)
-#        self.surface.blit(s, (0,0))
         self.surface.fill(color)
     
     #draw the frame of an hexagon in color with respect to mark_mode (mark_mode = 0 is normal thin line) 

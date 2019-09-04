@@ -9,8 +9,9 @@ class Player:
         self.side_stones = self.create_side_stones(self.stone_size)
         self.set_side_positions() #side positions for the side stones
         
+        
     def create_stones(self, stone_size):
-        hstones = {"bee": hs.hexagon_stone(stone_size, hs.Stone("bee", 1)),
+        hstones = {"bee": {1: hs.hexagon_stone(stone_size, hs.Stone("bee", 1))},
                    "ant": {1: hs.hexagon_stone(stone_size, hs.Stone("ant", 1)),
                            2: hs.hexagon_stone(stone_size, hs.Stone("ant", 2)),
                            3: hs.hexagon_stone(stone_size, hs.Stone("ant", 3))},
@@ -19,15 +20,17 @@ class Player:
                               3: hs.hexagon_stone(stone_size, hs.Stone("hopper", 3))},
                    "spider": {1: hs.hexagon_stone(stone_size, hs.Stone("spider", 1)),
                               2: hs.hexagon_stone(stone_size, hs.Stone("spider", 2))}}
-        for hstone in hstones.values():
-            hstone.stone.set_color(self.color)
+        for hstones in hstones.values():
+            for hstone in hstones.values():
+                hstone.stone.set_color(self.color)
         return hstones
     
     def create_side_stones(self, stone_size):
+        #the numbers in these side_stones shall display how many of these stone types are not yet on the board
         hstones = {"bee": hs.hexagon_stone(stone_size, hs.Stone("bee", 1)),
-                "ant": hs.hexagon_stone(stone_size, hs.Stone("ant",1)),
-                "hopper": hs.hexagon_stone(stone_size, hs.Stone("hopper", 1)),
-                "spider": hs.hexagon_stone(stone_size, hs.Stone("spider", 1))}
+                "ant": hs.hexagon_stone(stone_size, hs.Stone("ant", 3)),
+                "hopper": hs.hexagon_stone(stone_size, hs.Stone("hopper", 3)),
+                "spider": hs.hexagon_stone(stone_size, hs.Stone("spider", 2))}
         for hstone in hstones.values():
             hstone.stone.set_color(self.color)
         return hstones
@@ -61,7 +64,10 @@ class Player:
         self.side_stones["hopper"].set_pixel_pos(hopper_position)
         self.side_stones["spider"].set_pixel_pos(spider_position)
     
-    
+    def set_side_stones_numbers(self):
+        for insect in self.stones:
+            pass
+        
 class Human_Player(Player):
     pass
 
