@@ -172,15 +172,26 @@ class Calculator:
     def get_marienbug_fields(self, coord):
         pass
 
-
-
-
-
-
-
-
-
-
+    
+    #input is the color of a stone which wants to be put onto the board from the side.
+    #return is a list of board coords where this stone can be legally put to 
+    def get_possible_put_fields(self, color):
+        sol_fields = []
+        for coord in self.board.nonempty_fields:
+            neighbours = self.board.get_neighours(coord).values()
+            for neigh in neighbours:
+                if self.board.board[neigh[0]][neigh[1]].is_empty:
+                    neighbours2 = self.board.get_neighbours(neigh).values()
+                    cond = True
+                    for neigh2 in neighbours2:
+                        if self.board.board[neigh2[0]][neigh2[1]].stone.color != color:
+                            cond = False
+                    if cond:
+                        sol_fields.append(neigh)
+        return sol_fields
+                    
+            
+            
 
 
 
