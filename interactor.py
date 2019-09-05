@@ -9,8 +9,11 @@ class Interactor:
         self.calculator = calculator
         self.players = self.calculator.locator.players
         self.board = self.calculator.board
-        self.surface = self.painter.surface
+        self.surface = self.board.surface
         self.turn = turn
+    
+    def set_game_surface(self, game_surface):
+        self.game_surface = game_surface
     
     #NOT COMPLETE, 
     #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
@@ -49,7 +52,7 @@ class Interactor:
             
             ##then excute drawing aspects
             self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type)
-            self.painter.draw_insect_hexagon(draw_hexagon)
+            self.painter.draw_insect_hexagon(draw_hexagon, self.game_surface)
     
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):
