@@ -95,10 +95,10 @@ while True:
         elif not start_game_mode:
             if event.type== pygame.MOUSEBUTTONDOWN:
                 #note, this is a list it shall contain exactly one nonempty hexagon iff the click was on this hexagon
-                clicked_hexagon = game.interactor.calculator.get_clicked_hexagon(event.pos)
+                clicked_hexagon_l = game.interactor.calculator.get_clicked_hexagon(event.pos)
                 
-                if len(clicked_hexagon) == 1:
-                    clicked_hexagon = clicked_hexagon[0]
+                if len(clicked_hexagon_l) == 1:
+                    clicked_hexagon = clicked_hexagon_l[0]
 
 # (white, 1)                
                     if game.turn == ("white", 1):
@@ -110,12 +110,15 @@ while True:
                                 game.painter.draw_hexagon_marking(src_hexagon, display, (255,0,0), mark_mode = 5)
                                 game.painter.draw_hexagon_marking(dir_hexagon, game_surface, (0,255,0), mark_mode = 5)
                                 marked_hexagons = [src_hexagon, dir_hexagon]
-                                some_stone_marked = True
                         #in this case stone put will be executed and the turn goes one up
                         elif clicked_hexagon == dir_hexagon:
                             display.blit(display_before, (0,0))
                             game.interactor.execute_stone_put(game.players["white"], src_hexagon, dir_hexagon)
                             game.turn = ("black", 1)
+                            #unmark marked hexagons which were marked during the process (in painter.draw_hexagon_frame)
+                            for hexagon in marked_hexagons:
+                                hexagon.is_marked = False
+                                hexagon.is_marked = False
                             marked_hexagons = []
                         #unmark marked hexagons
                         else:
@@ -188,7 +191,6 @@ while True:
                             else:
                                 if marked_hexagons:
                                     display.blit(display_before, (0,0))
-                                    some_stone_marked = False
                                     #unmark marked hexagons which were marked during the process (in painter.draw_hexagon_frame)
                                     for hexagon in marked_hexagons:
                                         hexagon.is_marked = False
@@ -198,7 +200,6 @@ while True:
                 else:
                     if marked_hexagons:
                         display.blit(display_before, (0,0))
-                        some_stone_marked = False
                         #unmark marked hexagons which were marked during the process (in painter.draw_hexagon_frame)
                         for hexagon in marked_hexagons:
                             hexagon.is_marked = False
