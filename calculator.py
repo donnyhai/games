@@ -193,16 +193,24 @@ class Calculator:
     
     
     #event click at event_pos. in which hexagon is it ? return is a list containing exactly one hexagon 
-    #iff the clicked was in this hexagon                
+    #iff the clicked was in this hexagon. look for empty or nonempty hexagons on the board, and for side_stones                
     def get_clicked_hexagon(self, event_pos, stones_surface, side_stones_surface):
+        #look for both players
         for player in self.players.values():
+            #look in player.stones for a clicked hexagon
             for hstone in player.side_stones.values():
-                if hstone.point_in_hexagon(event_pos, stones_surface) == True:
+                if hstone.point_in_hexagon(event_pos, stones_surface):
                     return [hstone]
+            #look in player.side_stones for a clicked hexagon
             for hstone1 in player.stones.values():
                 for hstone2 in hstone1.values():
                     if hstone2.point_in_hexagon(event_pos, side_stones_surface) == True and hstone2.is_drawn:
                         return [hstone]
+        #look on the board
+        for row in self.board.board:
+            for hstone in row:
+                if hstone.point_in_hexagon(event_pos, stones_surface):
+                    return [hstone]
         return []
             
 

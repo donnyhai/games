@@ -20,6 +20,7 @@ class Painter:
     def draw_hexagon_frame(self, hexagon, surface, color = (0,0,0), mark_mode = 0):
         if mark_mode == 0:
             pygame.draw.lines(surface, color , True, hexagon.points, 2) 
+            hexagon.is_drawn = True
         elif mark_mode > 0:
             scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - 2
             start_vector = (int(hexagon.pixel_position[0] - mark_mode / sqrt(3)) + 1, 
@@ -27,6 +28,7 @@ class Painter:
             points = hexagon.getting_hexa(scaling_ratio, start_vector) 
             pygame.draw.lines(surface, color, True, points, int(mark_mode) + 1)
             hexagon.is_marked = True
+            hexagon.is_drawn = True
     
     #draw hexagon frame and fill it with color
     def fill_hexagon_frame(self, hexagon, surface, color, alpha_value = 1):

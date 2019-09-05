@@ -10,6 +10,7 @@ class Stone:
         #than there is no ant on the side anymore and therefore all three ants were already put on the board. 
         self.has_bug_on = False
         self.is_mosquito = False
+        self.color = ""
         
     def set_color(self, color):
         self.color = color
@@ -29,7 +30,7 @@ class hexagon_stone:
         self.stone = stone
         self.board_position = (-1,-1)
         self.is_empty = True
-        
+    
     # like always, the postion is the coordinate of the top left corner    
     def set_pixel_pos(self, new_pixel_pos):
         self.pixel_position = new_pixel_pos
@@ -77,6 +78,7 @@ class hexagon_stone:
         #reset pixel_pos to the save_pixel_pos 
         self.set_pixel_pos(save_pixel_position)
         return test
+    
     
     #change stone on this hexagon
     def change_stone(self, new_stone):
