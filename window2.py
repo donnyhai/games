@@ -1,5 +1,6 @@
 import pygame, sys, buttons
 import game
+import start_menu
 
 pygame.init()
 pygame.display.init()
@@ -69,8 +70,8 @@ while True:
                     display.blit(start_window, (0,0))
                     settings_window_shown = False                    
                 elif settings_button.pressed(event.pos): 
-                    pygame.draw.rect(display, (230,230,240), pygame.Rect(event.pos[0],
-                                     event.pos[1]- button_y_size, button_x_size, button_y_size))
+                    settings_window  = start_menu.settings_window(display, (220,230,220, 128), event.pos, (2 * button_x_size, 1.5 * button_y_size))
+                    settings_window.write_settings(settings_window.settings, (0,0,0))
                     settings_window_shown = True
                 ####
                 elif start_game_button.pressed(event.pos):
@@ -81,8 +82,10 @@ while True:
                     game.painter.draw_ingame_frame(display)
                     game.painter.draw_set_of_hexagons(game.players["white"].side_stones.values(), display)
                     game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), display)
+                    game.painter.write_side_numbers(game.players["white"], display)
+                    game.painter.write_side_numbers(game.players["black"], display)
                     
-                    game_surface = display.subsurface(pygame.Rect(int(window_x_size*0.1)+5, 0, int(window_x_size*0.8)-10, window_y_size))
+                    game_surface = display.subsurface(pygame.Rect(int(window_x_size*0.1)+5, 0, int(window_x_size*0.8)- 9, window_y_size))
                     game.painter.draw_board(game.board, game_surface)
                     
                     game.interactor.set_game_surface(game_surface) #add game_surface as a attribute in interactor
@@ -92,6 +95,8 @@ while True:
                     #print a text claiming that white begins
             
         elif not start_game_mode:
+            #game.painter.write_side_numbers(game.players["white"], display)
+            #game.painter.write_side_numbers(game.players["black"], display)
             if event.type== pygame.MOUSEBUTTONDOWN:
                 #note, this is a list it shall contain exactly one nonempty hexagon iff the click was on this hexagon
                 clicked_hexagon = game.interactor.calculator.get_clicked_hexagon(event.pos) 
@@ -206,9 +211,7 @@ while True:
 
 
 
-
-
-                    
+              
     pygame.display.update()
     
     
