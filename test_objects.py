@@ -19,10 +19,13 @@ class Test_Board(board.Board):
         cond4 = self.is_connected(nonempty_fields.remove(stone.coordinate))
         return cond2 and cond3 and cond4
     
+    #NOTE: this method is old. it shall work with board.empty_board. when a stone get moved, put the empty stone
+    #on the position where the moved stone was. this empty stone shall be taken out of empty_board, which consists
+    #of the init matrix of empty stones when board was init
     def move_stone(self, stone, coord):
         if self.move_stone_condition(stone, coord):
-            self.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
-            self.board[coord[0]][coord[1]].put_stone(stone)
+            self.board[stone.coordinate[0]][stone.coordinate[1]].make_empty()
+            self.board[coord[0]][coord[1]] = stone
 
 
 class Test_Player(player.Player):

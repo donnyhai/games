@@ -14,13 +14,13 @@ class Locator:
     def __init__(self, board, players, look_into_past):
         #board, test_board and players
         self.board = board #this is a Board object
-        self.test_board = test.Test_Board(self.board.size) 
+        self.test_board = test.Test_Board(self.board.size, self.board.surface) 
         self.players = players #this is a list of Player objects
         
         self.look_into_past = look_into_past
         
-        self.initial_stone = self.board.board[round(self.board.size / 2)][round(self.board.size / 2)].stone
-        self.locations = {0: (self.initial_stone, self.initial_stone.coordinate)} #potential error source
+        self.initial_stone = self.board.board[round(self.board.size / 2)][round(self.board.size / 2)]
+        self.locations = {0: (self.initial_stone, self.initial_stone.board_pos)} #potential error source
         self.new_key = 1
     
     #move locator to position coord, add the stone there to the locator. 
@@ -30,10 +30,10 @@ class Locator:
     #it then may land on a different stone
     def move_to_position(self, coord, which_board):
         if self.get_position()[1] != coord:
-            stone = which_board.board[coord[0]][coord[1]].stone
+            stone = which_board.board[coord[0]][coord[1]]
             if len(self.locations) == self.look_into_past:
                 self.remove_stone()
-            self.locations[self.new_key] = (stone, stone.coordinate) #add stone with key new_key 
+            self.locations[self.new_key] = (stone, stone.board_pos) #add stone with key new_key 
             self.new_key += 1
     
     #get actual position, return stone
@@ -46,7 +46,7 @@ class Locator:
         
     #clear locations and initialize as in __init__, set new_key to 1
     def clear_stones(self):
-        self.locations = {0: (self.initial_stone, self.initial_stone.coordinate)}
+        self.locations = {0: (self.initial_stone, self.initial_stone.board_pos)}
         self.new_key = 1
         
     #is it possible to move from coord1 to coord2 on the ground?

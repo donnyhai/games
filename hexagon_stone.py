@@ -1,74 +1,84 @@
 from math import sqrt
-import pygame
-
-class Stone:
-    def __init__(self, stone_type, number):
-        self.type = stone_type
-        self.number = number
-        self.is_on_board = False
-        self.coordinate = (-1,-1)
-        self.has_bug_on = False
-        self.is_mosquito = False
-    def set_color(self, color):
-        self.color = color
 
 class hexagon_stone:
     
-    def __init__(self, size, surface, stone = Stone("empty",1), pixel_position = (0,0)):
-        self.size = size
-        self.surface = surface
-        self.stone = stone
-        self.pixel_position = pixel_position
+    def __init__(self, size, stone_type = "empty", number = 1):
         
-        self.points = self.getting_hexa(self.size, pixel_position)
-        self.is_drawed = False
+        self.type = stone_type
+        self.number = number
+        
+        self.size = size
+        self.empty_color = (255, 255, 255) #save empty color, to color the hexagon "empty" when he moves on 
+        #the board and leaves an "empty" stone
+        self.color = self.empty_color
+        
         self.is_empty = True
+        self.is_on_board = False
+        self.is_drawn = False
+        self.is_marked = False
+        
+        self.has_bug_on = False
+        self.is_mosquito = False
+    
+###setting methods    
+    def set_board_pos(self, board_pos):
+        self.board_pos = board_pos
+        
+    def set_color(self, color):
+        self.color = color    
+    
+    #hexagon gets drawn on a surface, save it here in this attribute
+    def set_drawn_surface(self, surface):
+        self.drawn_surface = surface
+    
+    #set pixel position of the hexagon. if it gets drawn, it will get drawn with these pixel positions onto
+    #self.drawn_surface
+    def set_pixel_pos(self, pixel_pos):
+        self.pixel_pos = pixel_pos
+        self.points = self.getting_hexa(self.size, self.pixel_pos)
+    
+    #calculate global pixel pos to for example check whether a blick was inside this hexagon or not
+    #simply add the drawn_surface offset to self.pixel_pos
+    def calculate_global_pixel_pos(self):
+        if self.is_drawn:
+            self.global_pixel_pos = (self.pixel_pos[0] + self.drawn_surface.get_offset()[0],
+                                     self.pixel_pos[1] + self.drawn_surface.get_offset()[1])
+            self.global_points = self.getting_hexa(self.size, self.global_pixel_pos)
+###
+    
         
     #calculate the six hexagon points with starting point start_vector (point top left) and side size scaling    
     def getting_hexa(self, scaling_ratio, start_vector):    
         hex_coords = [(0,0), (1,0), (1.5, 3**(1/2)/2), (1, 3**(1/2)), (0,3**(1/2)), (-0.5, 3**(1/2)/2)]
         scaled_coords = []
         for x,y in hex_coords:
-            scaled_coords.append([x*scaling_ratio, y*scaling_ratio])
-        points = []
-        for x,y in scaled_coords:
-            points.append([x+start_vector[0], y + start_vector[1]])
-        return points
+            scaled_coords.append([x*scaling_ratio + start_vector[0], y*scaling_ratio + start_vector[1]])
+        return scaled_coords
     
     def hexagon_center(self, hexagon_points):
         return hexagon_points[0]+((hexagon_points[1]-hexagon_points[0])*0.5, (hexagon_points[1]-hexagon_points[0])* 3**(0.5)*0.5)
 
-    def hexa_stone_draw_frame(self, position):
-        pygame.draw.aalines(self.surface, self.stone.color , True, self.getting_hexa(self.size, position), 2)
+    #hex_stone was drawn on subsurface, and click was on global pixel_coords. is it inside the hex_stone ? 
+    def point_in_hexagon(self, event_pos):
         
-    def draw_stone(self, position):
-        pygame.draw.polygon(self.surface, self.stone.color , self.getting_hexa(self.size, position))
+        points = self.global_points
         
-    def euclidean_metric(self, vector):
-        squared = [x*x for x in vector]
-        return sqrt(sum(squared))
-    
-    def point_in_hexagon(self, hexa_points, coords):
+        def euclidean_metric(vector):
+            squared = [x*x for x in vector]
+            return sqrt(sum(squared))
+        
         boundary_vectors = []
         connection_vectors = []
-        for i in range(len(hexa_points)):
-            boundary_vectors.append((hexa_points[(i+1)%len(hexa_points)][0]-hexa_points[i][0],hexa_points[(i+1)%len(hexa_points)][1]-hexa_points[i][1]))
-            connection_vectors.append((coords[0]-hexa_points[i][0], coords[1]-hexa_points[i][1]))
+        for i in range(len(points)):
+            boundary_vectors.append((points[(i+1)%len(points)][0]-points[i][0],points[(i+1)%len(points)][1]-points[i][1]))
+            connection_vectors.append((event_pos[0]-points[i][0], event_pos[1]-points[i][1]))
         test = True
         angles = []
-        for i in range(len(hexa_points)):
+        for i in range(len(points)):
             angles.append((boundary_vectors[i][0]*connection_vectors[i][0]+boundary_vectors[i][1]*connection_vectors[i][1])
-                          /(self.euclidean_metric(boundary_vectors[i])*self.euclidean_metric(connection_vectors[i])))
+                          /(euclidean_metric(boundary_vectors[i])*euclidean_metric(connection_vectors[i])))
             if angles[i] <= -0.5:
                 test = False
+                
         return test
     
-    def put_stone(self, stone):
-        self.stone = stone
-        self.is_empty = False
-        stone.coordinate = self.coordinate
-    def remove_stone(self, stone):
-        stone.coordinate = (-1,-1)
-        self.is_empty = True
-        self.stone = stone("empty", 0)
-        
