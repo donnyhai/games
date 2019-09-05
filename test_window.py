@@ -5,15 +5,6 @@ import start_menu
 pygame.init()
 pygame.display.init()
 
-#with open("settings.txt", "r") as f:
-#    settings = ""
-#    for line in f:
-#        settings = settings + line
-#     
-#settings_split = settings.split()
-#
-#if settings_split[0] == "resolution" and settings_split[2] == settings_split[3]
-
 #Set window and button sizes
 
 window_x_size =  1920
@@ -75,9 +66,8 @@ while True:
                     display.blit(start_window, (0,0))
                     settings_window_shown = False                    
                 elif settings_button.pressed(event.pos) == True:
-                    settings_window  = start_menu.settings_window(display, (220,230,220, 128), event.pos, (1.5 * button_x_size, 1.5 * button_y_size))
-                    settings_window.draw_settings_window()
-                    settings_window.write_settings(settings_window.settings, (0,0,0), 15)
+                    settings_window  = start_menu.settings_window(display, (220,230,220, 128), event.pos, (2 * button_x_size, 1.5 * button_y_size))
+                    settings_window.write_settings(settings_window.settings, (0,0,0))
                     settings_window_shown = True
                 ####
                 elif start_game_button.pressed(event.pos) == True:
