@@ -8,6 +8,8 @@ class Board:
         self.draw_position = (0,0) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
         self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
+        self.empty_board = self.board #save matrix with empty hexagons, for later using them to make a field
+        #empty again, for example when a stone moves from that field away
         self.nonempty_fields = [] #will contain matrix coordinates
         self.drawn_hexagons = [] #will contain hexagon_stone objects (if used)
         
@@ -29,7 +31,9 @@ class Board:
             hexagon_chain = []
             for i in range (self.size):
                 position = (start_position[0] + i * 3 * self.hexagon_size, start_position[1])
-                hexagon_chain.append(hs.hexagon_stone(self.hexagon_size, pixel_position = position))
+                new_hexagon = hs.hexagon_stone(self.hexagon_size)
+                new_hexagon.set_pixel_pos(position)
+                hexagon_chain.append(new_hexagon)
             return hexagon_chain
         
         hexagon_board = [0] * self.size
@@ -48,7 +52,7 @@ class Board:
         #set board coordinates for each hexagon
         for i in range(self.size):
             for j in range(self.size):
-                hexagon_board[i][j].stone.coordinate = (i,j)
+                hexagon_board[i][j].set_board_pos((i,j))
                 
         return hexagon_board
     
@@ -62,8 +66,8 @@ class Board:
         if len(indexset) in {0,1}:
             return True
         else:
-            for i,j in indexset:
-                if len(indexset.intersection(self.get_neighbours(i,j).values())) == 0:
+            for coord in indexset:
+                if len(indexset.intersection(self.get_neighbours(coord).values())) == 0:
                     return False
             return True
     

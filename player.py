@@ -13,28 +13,28 @@ class Player:
         
         
     def create_stones(self, stone_size):
-        hstones = {"bee": {1: hs.hexagon_stone(stone_size, hs.Stone("bee", 1))},
-                   "ant": {1: hs.hexagon_stone(stone_size, hs.Stone("ant", 1)),
-                           2: hs.hexagon_stone(stone_size, hs.Stone("ant", 2)),
-                           3: hs.hexagon_stone(stone_size, hs.Stone("ant", 3))},
-                   "hopper": {1: hs.hexagon_stone(stone_size, hs.Stone("hopper", 1)),
-                              2: hs.hexagon_stone(stone_size, hs.Stone("hopper", 2)),
-                              3: hs.hexagon_stone(stone_size, hs.Stone("hopper", 3))},
-                   "spider": {1: hs.hexagon_stone(stone_size, hs.Stone("spider", 1)),
-                              2: hs.hexagon_stone(stone_size, hs.Stone("spider", 2))}}
+        hstones = {"bee": {1: hs.hexagon_stone(stone_size, "bee", 1)},
+                   "ant": {1: hs.hexagon_stone(stone_size, "ant", 1),
+                           2: hs.hexagon_stone(stone_size, "ant", 2),
+                           3: hs.hexagon_stone(stone_size, "ant", 3)},
+                   "hopper": {1: hs.hexagon_stone(stone_size, "hopper", 1),
+                              2: hs.hexagon_stone(stone_size, "hopper", 2),
+                              3: hs.hexagon_stone(stone_size, "hopper", 3)},
+                   "spider": {1: hs.hexagon_stone(stone_size, "spider", 1),
+                              2: hs.hexagon_stone(stone_size, "spider", 2)}}
         for hstones1 in hstones.values():
             for hstone in hstones1.values():
-                hstone.stone.set_color(self.color)
+                hstone.set_color(self.color)
                 hstone.is_empty = False
         return hstones
     
     def create_side_stones(self, stone_size):
-        hstones = {"bee": hs.hexagon_stone(stone_size, hs.Stone("bee", 1)),
-                "ant": hs.hexagon_stone(stone_size, hs.Stone("ant", 1)),
-                "hopper": hs.hexagon_stone(stone_size, hs.Stone("hopper", 1)),
-                "spider": hs.hexagon_stone(stone_size, hs.Stone("spider", 1))}
+        hstones = {"bee": hs.hexagon_stone(stone_size, "bee"),
+                "ant": hs.hexagon_stone(stone_size, "ant"),
+                "hopper": hs.hexagon_stone(stone_size, "hopper"),
+                "spider": hs.hexagon_stone(stone_size, "spider")}
         for hstone in hstones.values():
-            hstone.stone.set_color(self.color)
+            hstone.set_color(self.color)
             hstone.is_empty = False
         return hstones
     
@@ -73,7 +73,7 @@ class Player:
         for insect in self.stones:
             counter = 0
             for hstone in self.stones[insect].values():
-                if not hstone.stone.is_on_board:
+                if not hstone.is_on_board:
                     counter += 1
             self.side_stones_numbers[insect] = counter
         

@@ -45,14 +45,13 @@ class Interactor:
             self.board.board[new_board_pos[0]][new_board_pos[1]] = draw_hexagon
             self.board.nonempty_fields.append(new_board_pos)
             self.board.drawn_hexagons.append(draw_hexagon)
-            #set is_drawn
-            draw_hexagon.is_drawn = True
+            #set is_on_board
             draw_hexagon.stone.is_on_board = True
             
             
             ##then excute drawing aspects
             self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type)
-            self.painter.draw_insect_hexagon(draw_hexagon, self.game_surface)
+            self.painter.draw_hexagon(draw_hexagon, self.game_surface)
     
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):
@@ -131,7 +130,10 @@ class Interactor:
             self.board.nonempty_fields.append(coord)
     
     #HAS TO BE ADAPTED
-    #move stone of player to coord (if possible)       
+    #move stone of player to coord (if possible)    
+    #NOTE: this method shall work with board.empty_board. when a stone get moved, put the empty stone
+    #on the position where the moved stone was. this empty stone shall be taken out of empty_board, which consists
+    #of the init matrix of empty stones when board was init
     def move_stone(self, player, stone, coord):
         def move(stone, coord):
             self.board.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
