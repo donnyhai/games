@@ -4,17 +4,8 @@ import game
 pygame.init()
 pygame.display.init()
 
-#with open("settings.txt", "r") as f:
-#    settings = ""
-#    for line in f:
-#        settings = settings + line
-#     
-#settings_split = settings.split()
-#
-#if settings_split[0] == "resolution" and settings_split[2] == settings_split[3]
-
 #Set window and button sizes
-window_x_size =  1020
+window_x_size =  1920
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6

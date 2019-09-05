@@ -23,8 +23,8 @@ class Painter:
             hexagon.is_drawn = True
         elif mark_mode > 0:
             scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - 2
-            start_vector = (int(hexagon.pixel_position[0] - mark_mode / sqrt(3)) + 1, 
-                            int(hexagon.pixel_position[1] - mark_mode)) 
+            start_vector = (int(hexagon.pixel_position[0] - mark_mode / sqrt(3)) + 2, 
+                            int(hexagon.pixel_position[1] - mark_mode) + 2 ) 
             points = hexagon.getting_hexa(scaling_ratio, start_vector) 
             pygame.draw.lines(surface, color, True, points, int(mark_mode) + 1)
             hexagon.is_marked = True
