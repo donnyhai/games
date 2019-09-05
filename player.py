@@ -7,7 +7,7 @@ class Player:
         self.stone_size = int(0.03 * self.surface.get_width())
         self.stones = self.create_stones(self.stone_size)
         self.side_stones = self.create_side_stones(self.stone_size)
-        self.set_side_positions() #side positions for the side stones
+        self.set_side_stones_positions() #side positions for the side stones
         #side_stone_numbers shall display how many of each insect type are not yet on the board
         self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2}
         
@@ -40,7 +40,7 @@ class Player:
     
     #calculate positions of hexagons laying at the side depending on player white or black and set them 
     #for self.stones
-    def set_side_positions(self):
+    def set_side_stones_positions(self):
         
         surface_width = self.surface.get_width()
         surface_height = self.surface.get_height()*0.8
@@ -77,6 +77,8 @@ class Player:
                     counter += 1
             self.side_stones_numbers[insect] = counter
         
+
+
 class Human_Player(Player):
     pass
 

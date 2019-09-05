@@ -76,8 +76,6 @@ class Painter:
         for hexagon in hexagon_list:
             self.draw_hexagon_marking(hexagon, surface, color, mark_mode)
     
-    
-    
     #draw standard game frame (left and right side areas with text fields at the bottom and middle board area)
     def draw_ingame_frame(self, surface):
         surface_width = surface.get_width()
