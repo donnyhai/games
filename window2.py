@@ -65,15 +65,15 @@ while True:
         elif start_game_mode:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 ####NC: settings_window still has to be implemented functionally
-                if settings_window_shown == True: 
+                if settings_window_shown: 
                     display.blit(start_window, (0,0))
                     settings_window_shown = False                    
-                elif settings_button.pressed(event.pos) == True: 
+                elif settings_button.pressed(event.pos): 
                     pygame.draw.rect(display, (230,230,240), pygame.Rect(event.pos[0],
                                      event.pos[1]- button_y_size, button_x_size, button_y_size))
                     settings_window_shown = True
                 ####
-                elif start_game_button.pressed(event.pos) == True:
+                elif start_game_button.pressed(event.pos):
                     
                     pygame.display.set_caption("Spielbrett")
                     
@@ -107,7 +107,7 @@ while True:
                             some_stone_marked = True
                     #in this case stone put will be executed and the turn goes one up
                     elif clicked_hexagon[0] == dir_hexagon and dir_hexagon.is_marked:
-#                    elif dir_hexagon.point_in_hexagon(event.pos, game_surface) == True and dir_hexagon.is_marked:
+#                    elif dir_hexagon.point_in_hexagon(event.pos) == True and dir_hexagon.is_marked:
                         display.blit(display_before, (0,0))
                         game.interactor.execute_stone_put(game.players["white"], src_hexagon, dir_hexagon)
                         game.turn = ("black", 1)

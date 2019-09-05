@@ -27,7 +27,7 @@ class Painter:
         hexagon.calculate_global_pixel_pos()
         
         if hexagon.type == "empty":
-            empty_color = (255,255,255)
+            empty_color = (255,50,3)
             pygame.draw.polygon(surface, empty_color, hexagon.points)
         else:
             if hexagon.color == "white":
@@ -70,7 +70,7 @@ class Painter:
     #hexagons a stone can move to 
     def draw_set_of_hexagon_markings(self, hexagon_list, surface, color, mark_mode = 0):
         for hexagon in hexagon_list:
-            self.draw_hexagon_frame(hexagon, surface, color, mark_mode)
+            self.draw_hexagon_marking(hexagon, surface, color, mark_mode)
     
     
     

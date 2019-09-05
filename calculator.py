@@ -179,7 +179,7 @@ class Calculator:
     def get_possible_put_fields(self, color):
         sol_fields = []
         for coord in self.board.nonempty_fields:
-            neighbours = self.board.get_neighours(coord).values()
+            neighbours = self.board.get_neighbours(coord).values()
             for neigh in neighbours:
                 if self.board.board[neigh[0]][neigh[1]].is_empty:
                     neighbours2 = self.board.get_neighbours(neigh).values()
@@ -204,8 +204,9 @@ class Calculator:
             #look in player.side_stones for a clicked hexagon
             for hstone1 in player.stones.values():
                 for hstone2 in hstone1.values():
-                    if hstone2.point_in_hexagon(event_pos) and hstone2.is_drawn:
-                        return [hstone]
+                    if hstone2.is_drawn:
+                        if hstone2.point_in_hexagon(event_pos):
+                            return [hstone]
         #look on the board
         for row in self.board.board:
             for hstone in row:

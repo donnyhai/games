@@ -21,32 +21,34 @@ class Interactor:
     def execute_stone_put(self, player, first_clicked_hex, second_clicked_hex):
         fhex = first_clicked_hex
         shex = second_clicked_hex
-        possible_put_fields = self.calculator.get_possible_put_fields(fhex.stone.color)
-        cond1 = self.put_stone_condition(player, fhex, shex)
+        cond1 = True
         cond2 = True
         if self.turn[1] >= 2:
-            cond2 = shex.board_position in possible_put_fields
+            cond1 = self.put_stone_condition(player, fhex, shex)
+            
+            possible_put_fields = self.calculator.get_possible_put_fields(fhex.color)
+            cond2 = shex.board_pos in possible_put_fields
         if cond1 and cond2:
             ##first execute logical aspects
-            stone_type = fhex.stone.type
+            stone_type = fhex.type
             #find stone in player.stones which is not yet on the board
             for hstone in player.stones[stone_type].values():
-                if not hstone.stone.is_on_board:
+                if not hstone.is_on_board:
                     draw_hexagon = hstone
                     break
             #set the corresponding side_stone_number one down
             player.side_stones_numbers[stone_type] -= 1
             #set new position for the stone which wants to be drawn
-            draw_hexagon.set_pixel_pos(shex.pixel_position)
+            draw_hexagon.set_pixel_pos(shex.pixel_pos)
             #set new board_position
-            new_board_pos = shex.board_position
-            draw_hexagon.board_position = new_board_pos
+            new_board_pos = shex.board_pos
+            draw_hexagon.board_pos = new_board_pos
             #put the hexagon abstractly on the board at the corresponding position and adapt board attributes
             self.board.board[new_board_pos[0]][new_board_pos[1]] = draw_hexagon
             self.board.nonempty_fields.append(new_board_pos)
             self.board.drawn_hexagons.append(draw_hexagon)
             #set is_on_board
-            draw_hexagon.stone.is_on_board = True
+            draw_hexagon.is_on_board = True
             
             
             ##then excute drawing aspects
@@ -55,14 +57,14 @@ class Interactor:
     
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):
-        coord = dir_hstone.board_position
+        coord = dir_hstone.board_pos
         
         #there are still stones of the src_hstone type left at the side
-        cond0 = player.side_stones_numbers[src_hstone.stone.type] != 0
+        cond0 = player.side_stones_numbers[src_hstone.type] != 0
         if not cond0:
             print("cond0 nicht erfüllt")
         #stone belongs to player
-        cond1 = src_hstone.stone.color == player.color 
+        cond1 = src_hstone.color == player.color 
         if not cond1:
             print("cond1 nicht erfüllt")
         #field at coord is empty
@@ -81,7 +83,7 @@ class Interactor:
             for neigh in neighbours:
                 field = self.board.board[neigh[0]][neigh[1]]
                 if not field.is_empty:
-                    if field.stone.color != src_hstone.stone.color:
+                    if field.color != src_hstone.color:
                         cond4 = False
                         break
                     else:
