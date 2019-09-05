@@ -15,7 +15,6 @@ class Interactor:
     def set_game_surface(self, game_surface):
         self.game_surface = game_surface
     
-    #NOT COMPLETE, 
     #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
     #first the hexagon at the side, second a hexagon on the board   
     def execute_stone_put(self, player, first_clicked_hex, second_clicked_hex):
@@ -23,11 +22,12 @@ class Interactor:
         shex = second_clicked_hex
         cond1 = True
         cond2 = True
+        
         if self.turn[1] >= 2:
-            cond1 = self.put_stone_condition(player, fhex, shex)
-            
             possible_put_fields = self.calculator.get_possible_put_fields(fhex.color)
+            cond1 = self.put_stone_condition(player, fhex, shex)
             cond2 = shex.board_pos in possible_put_fields
+            
         if cond1 and cond2:
             ##first execute logical aspects
             stone_type = fhex.type
@@ -50,10 +50,10 @@ class Interactor:
             #set is_on_board
             draw_hexagon.is_on_board = True
             
-            
             ##then excute drawing aspects
             self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
+    
     
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):

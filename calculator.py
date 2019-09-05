@@ -181,8 +181,10 @@ class Calculator:
         for coord in self.board.nonempty_fields:
             neighbours = self.board.get_neighbours(coord).values()
             for neigh in neighbours:
+                #neigh must be empty
                 if self.board.board[neigh[0]][neigh[1]].is_empty:
                     neighbours2 = self.board.get_neighbours(neigh).values()
+                    #neigh shall not have neighbours with different color as color
                     cond = True
                     for neigh2 in neighbours2:
                         if self.board.board[neigh2[0]][neigh2[1]].color != color:

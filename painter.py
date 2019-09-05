@@ -27,7 +27,7 @@ class Painter:
         hexagon.calculate_global_pixel_pos()
         
         if hexagon.type == "empty":
-            empty_color = (255,50,3)
+            empty_color = (100,50,3)
             pygame.draw.polygon(surface, empty_color, hexagon.points)
         else:
             if hexagon.color == "white":
