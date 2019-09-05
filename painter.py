@@ -60,8 +60,8 @@ class Painter:
             pygame.draw.lines(surface, color , True, hexagon.points, 2)
         elif mark_mode > 0:
             scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - 2
-            start_vector = (int(hexagon.pixel_position[0] - mark_mode / sqrt(3)) + 2, 
-                            int(hexagon.pixel_position[1] - mark_mode) + 2 ) 
+            start_vector = (int(hexagon.pixel_pos[0] - mark_mode / sqrt(3)) + 2, 
+                            int(hexagon.pixel_pos[1] - mark_mode) + 2 ) 
             points = hexagon.getting_hexa(scaling_ratio, start_vector)
             points[2][0] -= scaling_ratio // 15
             points[3][1] -= scaling_ratio // 20

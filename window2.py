@@ -83,7 +83,7 @@ while True:
                     game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), display)
                     
                     game_surface = display.subsurface(pygame.Rect(int(window_x_size*0.1)+5, 0, int(window_x_size*0.8)-10, window_y_size))
-                   # game.painter.draw_board(game.board, game_surface)
+                    game.painter.draw_board(game.board, game_surface)
                     
                     game.interactor.set_game_surface(game_surface) #add game_surface as a attribute in interactor
                     
