@@ -48,7 +48,6 @@ class settings_window:
         for line in linewise_settings:
             myFont = pygame.font.SysFont("Arial", font_size)
             myText = myFont.render(line, 1, color)
-            print(self.location[1]- self.y_size - 5 + (counter-1) * height + counter * y_distance)
             self.surface.blit(myText, (self.location[0]+ 10, self.location[1]- self.y_size - 5 + (counter-1) * height + counter * y_distance))
             counter += 1
         #return self.surface

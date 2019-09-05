@@ -11,7 +11,7 @@ class Player:
         #side_stone_numbers shall display how many of each insect type are not yet on the board
         self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2}
         
-        
+
     def create_stones(self, stone_size):
         hstones = {"bee": {1: hs.hexagon_stone(stone_size, "bee", 1)},
                    "ant": {1: hs.hexagon_stone(stone_size, "ant", 1),
@@ -76,6 +76,15 @@ class Player:
                 if not hstone.is_on_board:
                     counter += 1
             self.side_stones_numbers[insect] = counter
+            
+    def draw_stone_numbers_text(self, surface):
+        
+        
+        self.side_stones["ant"].pixel_pos
+        self.side_stones["hopper"].pixel_pos
+        self.side_stones["spider"].pixel_pos
+        self.side_stones["bee"].pixel_pos
+        pass
         
 
 

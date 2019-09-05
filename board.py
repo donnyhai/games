@@ -5,7 +5,7 @@ class Board:
         self.size = board_size
         self.surface = surface
         self.hexagon_size = int(0.03 * self.surface.get_width())
-        self.draw_position = (0,-self.hexagon_size) #where on the surface shall the hexagon matrix be drawn ? 
+        self.draw_position = (0, -self.hexagon_size) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
         self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
         self.empty_board = self.board #save matrix with empty hexagons, for later using them to make a field
