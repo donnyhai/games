@@ -87,5 +87,8 @@ class Painter:
         pygame.draw.line(surface, (0,0,0), (int(surface_width*0.9),0),(int(surface_width*0.9), surface_height), line_width)
         pygame.draw.line(surface, (0,0,0), (0, int(surface_height*0.8)), (int(surface_width*0.1), int(surface_height*0.8)), line_width)
         pygame.draw.line(surface, (0,0,0), (int(surface_width*0.9), int(surface_height*0.8)), (int(surface_width), int(surface_height*0.8)), line_width)
-    
+        
+    def write_text(self, surface, text, font_size, color, position, size):
+        myText = pygame.font.SysFont("Arial", font_size).render(text, 1, color)
+        self.surface.blit(myText, position[0], position[1] - size[1], size[0], size[1] )
     
