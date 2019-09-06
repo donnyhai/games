@@ -7,16 +7,17 @@ pygame.init()
 pygame.display.init()
 
 #Set window and button sizes
-window_x_size =  1020
+window_x_size =  1520
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6
 button_y_size = window_y_size//6
+frame_size = window_x_size // 250
+mark_size = window_x_size // 400
 
 
 #creating showable start_window on display with, set name and set background color
 display = pygame.display.set_mode(window_size,0,32)
-#showed_display = pygame.display.set_mode((1920, 1080),pygame.RESIZABLE, 32)
 pygame.display.set_caption("Spiel-Menue")
 display.fill((100,100,100))
 
@@ -48,6 +49,9 @@ start_game_button = buttons.Button(display, button_color, start_game_x, start_ga
 #"save" the standard showed image
 pygame.display.update()
 start_window = display.copy()
+
+#write the settings from above to settings.txt
+
 
 start_game_mode = True
 settings_window_shown = False
@@ -117,8 +121,8 @@ while True:
                             display_before = display.copy()
                             if clicked_hexagon.color == "white":
                                 src_hexagon = clicked_hexagon
-                                game.painter.draw_hexagon_marking(src_hexagon, display, (255,0,0), mark_mode = 5)
-                                game.painter.draw_hexagon_marking(dir_hexagon, game_surface, (0,255,0), mark_mode = 5)
+                                game.painter.draw_hexagon_marking(src_hexagon, display, (255,0,0), mark_mode = mark_size)
+                                game.painter.draw_hexagon_marking(dir_hexagon, game_surface, (0,255,0), mark_mode = mark_size)
                                 marked_hexagons = [src_hexagon, dir_hexagon]
                         #in this case stone put will be executed and the turn goes one up
                         elif clicked_hexagon == dir_hexagon:
@@ -136,7 +140,7 @@ while True:
                         if not marked_hexagons:
                             display_before = display.copy()
                             if clicked_hexagon.color == "black":
-                                wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons)
+                                wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons, mark_size)
                                 src_hexagon = clicked_hexagon
                                 marked_hexagons = dir_hexagons + [src_hexagon]
                         #in this case stone put will be executed and the turn goes one up
@@ -164,7 +168,7 @@ while True:
                                     dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
                                     dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
                                     
-                                    wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons)
+                                    wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons, mark_size)
                                     
                                     src_hexagon = clicked_hexagon
                                     marked_hexagons = dir_hexagons + [src_hexagon]
@@ -220,3 +224,6 @@ while True:
 #        hexagon.is_marked = False
 #        hexagon.is_marked = False
 #    marked_hexagons = []
+#
+# from display initializing    
+##showed_display = pygame.display.set_mode((1920, 1080),pygame.RESIZABLE, 32)
