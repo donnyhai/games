@@ -59,9 +59,9 @@ class Painter:
         if mark_mode == 0:
             pygame.draw.lines(surface, color , True, hexagon.points, 2)
         elif mark_mode > 0:
-            scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - 2
-            start_vector = (int(hexagon.pixel_pos[0] - mark_mode / sqrt(3)) + 2, 
-                            int(hexagon.pixel_pos[1] - mark_mode) + 2 ) 
+            scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - (mark_mode // 2)
+            start_vector = (int(hexagon.pixel_pos[0] - mark_mode / sqrt(3)) + (mark_mode // 2), 
+                            int(hexagon.pixel_pos[1] - mark_mode) + (mark_mode // 2) ) 
             points = hexagon.getting_hexa(scaling_ratio, start_vector)
             points[2][0] -= scaling_ratio // 15
             points[3][1] -= scaling_ratio // 20
@@ -92,15 +92,22 @@ class Painter:
     
     def write_start_side_numbers(self, player, surface):
         stone_size = player.stone_size
-        height = pygame.font.SysFont("Arial", stone_size).render("1", 1, (0,0,0)).get_height()
-        self.write_text(surface, str(player.side_stones_numbers["ant"]), stone_size, (0,0,0),
-                        (player.side_stones["ant"].pixel_pos[0] + 1.5 * stone_size + 15, int(player.side_stones["ant"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["hopper"]), stone_size, (0,0,0),
-                        (player.side_stones["hopper"].pixel_pos[0] + 1.5 * stone_size + 15, int(player.side_stones["hopper"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["spider"]), stone_size, (0,0,0),
-                        (player.side_stones["spider"].pixel_pos[0] + 1.5 * stone_size + 15, int(player.side_stones["spider"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["bee"]), stone_size, (0,0,0),
-                        (player.side_stones["bee"].pixel_pos[0] + 1.5 * stone_size + 15, int(player.side_stones["bee"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+        text_size = int (1.2 * player.stone_size)
+        test_font = pygame.font.SysFont("Arial", text_size)
+        (width, height) = test_font.size("0")
+        
+        self.write_text(surface, str(player.side_stones_numbers["ant"]), text_size, (0,0,0),
+                        (int(player.side_stones["ant"].pixel_pos[0] - 13 * stone_size / 18 - width),
+                         int(player.side_stones["ant"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+        self.write_text(surface, str(player.side_stones_numbers["hopper"]), text_size, (0,0,0),
+                        (int(player.side_stones["hopper"].pixel_pos[0] - 13 * stone_size / 18 - width),
+                         int(player.side_stones["hopper"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+        self.write_text(surface, str(player.side_stones_numbers["spider"]), text_size, (0,0,0),
+                        (int(player.side_stones["spider"].pixel_pos[0] - 13 * stone_size / 18 - width),
+                         int(player.side_stones["spider"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+        self.write_text(surface, str(player.side_stones_numbers["bee"]), text_size, (0,0,0),
+                        (int(player.side_stones["bee"].pixel_pos[0] - 13 * stone_size / 18 - width),
+                         int(player.side_stones["bee"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
     
 
 
