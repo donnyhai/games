@@ -57,6 +57,7 @@ start_window = display.copy()
 start_game_mode = True
 settings_window_shown = False
 marked_hexagons = []
+current_player_color = "white"
 
 #create game object here firstly not encounter problems
 game = game.HvsH_Game(display)
@@ -336,8 +337,9 @@ while True:
 
 
 
-
-
+    #check winning condition (maybe not the right place, as it gets checked very often here)
+    if game.interactor.calculator.winning_condition(current_player_color):
+        print(current_player_color + " has won")
               
     pygame.display.update()
    

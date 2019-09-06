@@ -29,6 +29,21 @@ class Calculator:
         elif stone_type == "empty":
             return []
     
+    #define winning condition: player wins if opposite bee is surrounded
+    def winning_condition(self, color):
+        if color == "white":
+            opp_color = "black"
+        else:
+            opp_color = "white"
+        bee_stone = list(self.players[opp_color].stones["bee"].values())[0]
+        winning_condition = False
+        if bee_stone.is_on_board:
+            winning_condition = True
+            for neigh in self.board.get_neighbours(bee_stone.board_pos).values():
+                if self.board.board[neigh[0]][neigh[1]].is_empty:
+                    winning_condition = False
+        return winning_condition
+    
     #input is the color of a stone which wants to be put onto the board from the side.
     #return is a list of board coords where this stone can be legally put to 
     def get_possible_put_fields(self, color):
