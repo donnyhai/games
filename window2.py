@@ -7,7 +7,7 @@ pygame.init()
 pygame.display.init()
 
 #Set window and button sizes
-window_x_size =  1920
+window_x_size =  1020
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6
@@ -83,14 +83,16 @@ while True:
                     pygame.display.set_caption("Spielbrett")
                     
                     game.painter.draw_background(display, background_color2, 128)
-                    game.painter.draw_ingame_frame(display)
+
                     game.painter.draw_set_of_hexagons(game.players["white"].side_stones.values(), display)
                     game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), display)
                     game.painter.write_start_side_numbers(game.players["white"], display)
                     game.painter.write_start_side_numbers(game.players["black"], display)
                     
-                    game_surface = display.subsurface(pygame.Rect(int(window_x_size*0.1)+5, 0, int(window_x_size*0.8)- 9, window_y_size))
+                    game_surface = display.subsurface(pygame.Rect(int(window_x_size*0.1), 0, int(window_x_size*0.8), window_y_size))
                     game.painter.draw_board(game.board, game_surface)
+                    
+                    game.painter.draw_ingame_frame(display)
                     
                     game.interactor.set_game_surface(game_surface) #add game_surface as a attribute in interactor
                     

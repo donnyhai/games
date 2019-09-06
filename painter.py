@@ -80,7 +80,7 @@ class Painter:
     def draw_ingame_frame(self, surface):
         surface_width = surface.get_width()
         surface_height = surface.get_height()
-        line_width = 10 
+        line_width = surface_width // 250
         pygame.draw.line(surface, (0,0,0), (int(surface_width*0.1),0),(int(surface_width*0.1), surface_height), line_width)
         pygame.draw.line(surface, (0,0,0), (int(surface_width*0.9),0),(int(surface_width*0.9), surface_height), line_width)
         pygame.draw.line(surface, (0,0,0), (0, int(surface_height*0.8)), (int(surface_width*0.1), int(surface_height*0.8)), line_width)
