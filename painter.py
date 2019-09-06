@@ -22,7 +22,7 @@ class Painter:
         #draw the frame aswell:
         #self.draw_hexagon_marking(hexagon, surface, mark_mode = 2) #note that if mark_mode > 0, stone gets marked
         hexagon.is_drawn = True
-        hexagon.drawn_surface = surface
+        hexagon.set_drawn_surface(surface)
         #as the hexagon gets drawn, we can calculate the global pixel pos
         hexagon.calculate_global_pixel_pos()
         

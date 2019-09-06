@@ -43,7 +43,7 @@ class Interactor:
             draw_hexagon.set_pixel_pos(shex.pixel_pos)
             #set new board_position
             new_board_pos = shex.board_pos
-            draw_hexagon.board_pos = new_board_pos
+            draw_hexagon.set_board_pos(new_board_pos)
             #put the hexagon abstractly on the board at the corresponding position and adapt board attributes
             self.board.board[new_board_pos[0]][new_board_pos[1]] = draw_hexagon
             self.board.nonempty_fields.append(new_board_pos)

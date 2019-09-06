@@ -179,14 +179,12 @@ class Calculator:
     def get_possible_put_fields(self, color):
         sol_fields = []
         for coord in self.board.nonempty_fields:
-            neighbours = self.board.get_neighbours(coord).values()
-            for neigh in neighbours:
+            for neigh in list(self.board.get_neighbours(coord).values()):
                 #neigh must be empty
                 if self.board.board[neigh[0]][neigh[1]].is_empty:
-                    neighbours2 = self.board.get_neighbours(neigh).values()
                     #neigh shall not have neighbours with different color as color
                     cond = True
-                    for neigh2 in neighbours2:
+                    for neigh2 in list(self.board.get_neighbours(neigh).values()):
                         if self.board.board[neigh2[0]][neigh2[1]].color != color:
                             cond = False
                     if cond:
