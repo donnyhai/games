@@ -53,11 +53,11 @@ class Painter:
                 self.draw_hexagon(hexagon, surface)
 
     #draw the frame of an hexagon in color with respect to mark_mode (mark_mode = 0 is normal thin line) 
-    def draw_hexagon_marking(self, hexagon, surface, color = (0,0,0), mark_mode = 0):
+    def draw_hexagon_marking(self, hexagon, color = (0,0,0), mark_mode = 0):
         #if just a marking with mark_mode = 0 is drawn, hexagon shall not be considered as marked, 
         #therefore is_marked = False
         if mark_mode == 0:
-            pygame.draw.lines(surface, color , True, hexagon.points, 2)
+            pygame.draw.lines(hexagon.drawn_surface, color , True, hexagon.points, 2)
         elif mark_mode > 0:
             scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - (mark_mode // 2)
             start_vector = (int(hexagon.pixel_pos[0] - mark_mode / sqrt(3)) + (mark_mode // 2), 
@@ -67,14 +67,14 @@ class Painter:
             points[3][1] -= scaling_ratio // 20
             points[4][1] -= scaling_ratio // 20
             points[5][0] += scaling_ratio // 25
-            pygame.draw.lines(surface, color, True, points, int(mark_mode) + 1)
+            pygame.draw.lines(hexagon.drawn_surface, color, True, points, int(mark_mode) + 1)
             hexagon.is_marked = True
             
     #draw set of hexagons with respective color and mark_mode, for example when drawing all possible 
     #hexagons a stone can move to 
-    def draw_set_of_hexagon_markings(self, hexagon_list, surface, color, mark_mode = 0):
+    def draw_set_of_hexagon_markings(self, hexagon_list, color, mark_mode = 0):
         for hexagon in hexagon_list:
-            self.draw_hexagon_marking(hexagon, surface, color, mark_mode)
+            self.draw_hexagon_marking(hexagon, color, mark_mode)
     
     #draw standard game frame (left and right side areas with text fields at the bottom and middle board area)
     def draw_ingame_frame(self, surface):

@@ -65,9 +65,6 @@ black_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, 
 white_text_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
 black_text_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
 
-
-
-
 #run the window and wait for mouseclicks or quit
 while True:
     for event in pygame.event.get():
@@ -114,10 +111,9 @@ while True:
             #game.painter.write_start_side_numbers(game.players["black"], display)
             if event.type== pygame.MOUSEBUTTONDOWN:
                 #note, this is a list it shall contain exactly one nonempty hexagon iff the click was on this hexagon
-                clicked_hexagon_l = game.interactor.calculator.get_clicked_hexagon(event.pos)
+                clicked_hexagon = game.interactor.calculator.get_clicked_hexagon(event.pos)
                 
-                if len(clicked_hexagon_l) == 1:
-                    clicked_hexagon = clicked_hexagon_l[0]
+                if clicked_hexagon.number != 99: #special condition, see calculator.get_clicked_hexagon and calculator.empty_help_stone
 
 # (white, 1)                
                     if game.turn == ("white", 1):
@@ -126,9 +122,8 @@ while True:
                             display_before = display.copy()
                             if clicked_hexagon.color == "white":
                                 src_hexagon = clicked_hexagon
-                                game.painter.draw_hexagon_marking(src_hexagon, display, (255,0,0), mark_mode = mark_size)
-                                game.painter.draw_hexagon_marking(dir_hexagon, game_surface, (0,255,0), mark_mode = mark_size)
                                 marked_hexagons = [src_hexagon, dir_hexagon]
+                                wm.mark_hexagons(game, marked_hexagons, mark_size)
                         #in this case stone put will be executed and the turn goes one up
                         elif clicked_hexagon == dir_hexagon:
                             wm.unmark_hexagons(display, display_before, marked_hexagons)
@@ -145,15 +140,15 @@ while True:
                         if not marked_hexagons:
                             display_before = display.copy()
                             if clicked_hexagon.color == "black":
-                                wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons, mark_size)
                                 src_hexagon = clicked_hexagon
                                 marked_hexagons = dir_hexagons + [src_hexagon]
+                                wm.mark_hexagons(game, marked_hexagons, mark_size)
                         #in this case stone put will be executed and the turn goes one up
                         elif clicked_hexagon in dir_hexagons:
                             wm.unmark_hexagons(display, display_before, marked_hexagons)
                             game.interactor.execute_stone_put(game.players["black"], src_hexagon, clicked_hexagon)
                             game.turn = ("white", 2)
-                            dir_hexagons = [] #reset dir_hexagons so it wont cause problems in the following turns
+                            dir_hexagons.clear() #reset dir_hexagons so it wont cause problems in the following turns
                         #unmark marked hexagons
                         else:
                             if marked_hexagons:
@@ -161,7 +156,6 @@ while True:
 # turn 2 - 4                    
                     #at least one white and one black stone are put now. now be has to be put until 4. turn
                     elif game.turn[1] in {2,3,4}:
-                        
                         current_player_color = game.turn[0]
                         bee_stone = list(game.players[current_player_color].stones["bee"].values())[0]
                         
@@ -172,12 +166,11 @@ while True:
                                 if clicked_hexagon in game.players[current_player_color].side_stones.values():
                                     dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
                                     dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
-                                    
-                                    wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons, mark_size)
-                                    
+
                                     src_hexagon = clicked_hexagon
                                     marked_hexagons = dir_hexagons + [src_hexagon]
-                                    
+                                    wm.mark_hexagons(game, marked_hexagons, mark_size)
+                                    pos1 = event.pos
                             elif clicked_hexagon in dir_hexagons:
                                 wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
@@ -187,6 +180,7 @@ while True:
                                 else:
                                     game.turn[0] = "white"
                                     game.turn[1] += 1
+                                dir_hexagons.clear()
                             
                             else:
                                 if marked_hexagons:

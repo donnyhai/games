@@ -1,3 +1,5 @@
+import hexagon_stone as hs
+
 class Calculator:
     def __init__(self, locator):
         self.locator = locator
@@ -7,6 +9,7 @@ class Calculator:
         #of the set of fields we want to include at the moment (initialized with all fields, therefore all 1). 
         #the matrix will be helpful to get easier structural insides
         self.matrix = self.all_fields()
+        self.empty_help_stone = hs.hexagon_stone(self.board.hexagon_size, "empty", 99)
         
         
     def all_fields(self):
@@ -197,22 +200,22 @@ class Calculator:
     def get_clicked_hexagon(self, event_pos):
         #look for both players
         for player in self.players.values():
-            #look in player.stones for a clicked hexagon
+            #look in player.side_stones for a clicked hexagon
             for hstone in player.side_stones.values():
                 if hstone.point_in_hexagon(event_pos):
-                    return [hstone]
-            #look in player.side_stones for a clicked hexagon
+                    return hstone
+            #look in player.stones for a clicked hexagon
             for hstone1 in player.stones.values():
                 for hstone2 in hstone1.values():
                     if hstone2.is_drawn:
                         if hstone2.point_in_hexagon(event_pos):
-                            return [hstone]
+                            return hstone2
         #look on the board
         for row in self.board.board:
             for hstone in row:
                 if hstone.point_in_hexagon(event_pos):
-                    return [hstone]
-        return []
+                    return hstone
+        return self.empty_help_stone
             
 
 

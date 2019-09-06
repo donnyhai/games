@@ -39,20 +39,18 @@ class Interactor:
                     break
             #set the corresponding side_stone_number one down
             player.side_stones_numbers[stone_type] -= 1
-            #set new position for the stone which wants to be drawn
+            #set new pixel_pos and board_pos
             draw_hexagon.set_pixel_pos(shex.pixel_pos)
-            #set new board_position
-            new_board_pos = shex.board_pos
-            draw_hexagon.set_board_pos(new_board_pos)
+            draw_hexagon.set_board_pos(shex.board_pos)
             #put the hexagon abstractly on the board at the corresponding position and adapt board attributes
-            self.board.board[new_board_pos[0]][new_board_pos[1]] = draw_hexagon
-            self.board.nonempty_fields.append(new_board_pos)
+            self.board.board[draw_hexagon.board_pos[0]][draw_hexagon.board_pos[1]] = draw_hexagon
+            self.board.nonempty_fields.append(draw_hexagon.board_pos)
             self.board.drawn_hexagons.append(draw_hexagon)
             #set is_on_board
             draw_hexagon.is_on_board = True
             
             ##then excute drawing aspects
-            self.draw_new_stone_number0(str(player.side_stones_numbers[stone_type]), stone_type, player)
+            self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
     
     
@@ -204,7 +202,7 @@ class Interactor:
         height_text = pygame.font.SysFont("Arial", stone_size).render("1", 1, (0,0,0)).get_height()
         self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]), stone_size, (0,0,0), (5, 0.5 * (height_rect - height_text)))
 
-    def draw_new_stone_number0 (self, text, insect_type, player, text_color = (0,0,0)):
+    def draw_new_stone_number (self, text, insect_type, player, text_color = (0,0,0)):
         stone_size = player.stone_size
         text_size = int (1.2 * stone_size)
         test_font = pygame.font.SysFont("Arial", text_size)
