@@ -90,18 +90,20 @@ class Painter:
         myText = pygame.font.SysFont("Arial", font_size).render(text, 1, color)
         surface.blit(myText, position)
     
-    def write_side_numbers(self, player, surface):
+    def write_start_side_numbers(self, player, surface):
         stone_size = player.stone_size
         height = pygame.font.SysFont("Arial", stone_size).render("1", 1, (0,0,0)).get_height()
         self.write_text(surface, str(player.side_stones_numbers["ant"]), stone_size, (0,0,0),
-                        (player.side_stones["ant"].pixel_pos[0] + 1.5 * stone_size + 10, int(player.side_stones["ant"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+                        (player.side_stones["ant"].pixel_pos[0] + 1.5 * stone_size + 15, int(player.side_stones["ant"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
         self.write_text(surface, str(player.side_stones_numbers["hopper"]), stone_size, (0,0,0),
-                        (player.side_stones["hopper"].pixel_pos[0] + 1.5 * stone_size + 10, int(player.side_stones["hopper"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+                        (player.side_stones["hopper"].pixel_pos[0] + 1.5 * stone_size + 15, int(player.side_stones["hopper"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
         self.write_text(surface, str(player.side_stones_numbers["spider"]), stone_size, (0,0,0),
-                        (player.side_stones["spider"].pixel_pos[0] + 1.5 * stone_size + 10, int(player.side_stones["spider"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+                        (player.side_stones["spider"].pixel_pos[0] + 1.5 * stone_size + 15, int(player.side_stones["spider"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
         self.write_text(surface, str(player.side_stones_numbers["bee"]), stone_size, (0,0,0),
-                        (player.side_stones["bee"].pixel_pos[0] + 1.5 * stone_size + 10, int(player.side_stones["bee"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+                        (player.side_stones["bee"].pixel_pos[0] + 1.5 * stone_size + 15, int(player.side_stones["bee"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
     
+
+
 
 
 

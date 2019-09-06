@@ -1,5 +1,6 @@
 import pygame
 import hexagon_stone as hs
+from math import sqrt
 pygame.init()
 
 
@@ -51,7 +52,7 @@ class Interactor:
             draw_hexagon.is_on_board = True
             
             ##then excute drawing aspects
-            self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type)
+            self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
     
     
@@ -184,7 +185,7 @@ class Interactor:
         
     ###### shall be in painter
     #HAS TO BE ADAPTED, should use painter to draw       
-    def write_text(surface, text, text_color, length, height, x, y):
+    def write_text(self, surface, text, text_color, length, height, x, y):
         font_size = 2*int(length//len(text))
         myFont = pygame.font.SysFont("Calibri", font_size)
         myText = myFont.render(text, 1, text_color)
@@ -192,9 +193,19 @@ class Interactor:
         return surface
     
     #draw side_numbers at corresponding position depending on insect_type
-    def draw_new_stone_number(text, insect_type, text_color = (0,0,0)):
-        pass
-    ######        
+    def draw_new_stone_number(self, text, insect_type, player, text_color = (0,0,0)):
+        stone_size = player.stone_size
+        height_rect = 1.5 * pygame.font.SysFont("Arial", stone_size).render("1", 1, text_color).get_height()
+        width = 1.3 * pygame.font.SysFont("Arial", stone_size).render("1", 1, text_color).get_width()
+        position = (player.side_stones[insect_type].pixel_pos[0] + 1.5 * stone_size + 5,
+                  int(player.side_stones[insect_type].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height_rect))
+        rect_subsurface = self.surface.subsurface(pygame.Rect(position, (width, height_rect)))
+        rect_subsurface.fill(self.surface.get_at_mapped((1,1)))       
+        height_text = pygame.font.SysFont("Arial", stone_size).render("1", 1, (0,0,0)).get_height()
+        self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]), stone_size, (0,0,0), (5, 0.5 * (height_rect - height_text)))
+
+
+######        
      
        
 
@@ -212,3 +223,4 @@ class Interactor:
 
 
 
+# ending
