@@ -1,4 +1,5 @@
 import hexagon_stone as hs
+from math import sqrt
 
 class Player:
     def __init__(self, color, surface):
@@ -46,13 +47,14 @@ class Player:
         surface_height = self.surface.get_height()*0.8
         frame_x_size = surface_width*0.1
         hexa_size = int(frame_x_size*0.3)
-        y_distance = int((surface_height-4*hexa_size*3**(0.5))/5)
+        sqrt_3 = sqrt(3)
+        y_distance = (surface_height - 4 * hexa_size*sqrt_3) // 5
         right_frame_translate = (surface_width*0.9, 0)
         
-        ant_position = (frame_x_size*0.25, y_distance)
-        hopper_position = (frame_x_size/4, 2*y_distance + hexa_size*3**(0.5))
-        spider_position = (frame_x_size/4, 3*y_distance + 2*hexa_size*3**(0.5))
-        bee_position = (frame_x_size/4, 4*y_distance + 3*hexa_size*3**(0.5))
+        ant_position = ((frame_x_size * 21) // 40 , y_distance)
+        hopper_position = ((frame_x_size * 21) // 40, 2*y_distance + hexa_size*sqrt_3)
+        spider_position = ((frame_x_size * 21) // 40, 3*y_distance + 2*hexa_size * sqrt_3)
+        bee_position = ((frame_x_size * 21) // 40, 4*y_distance + 3*hexa_size * sqrt_3)
         
         #translate stones to the right side if they are black
         if self.color == "black":
@@ -78,13 +80,10 @@ class Player:
             self.side_stones_numbers[insect] = counter
             
     def draw_stone_numbers_text(self, surface):
-        
-        
         self.side_stones["ant"].pixel_pos
         self.side_stones["hopper"].pixel_pos
         self.side_stones["spider"].pixel_pos
-        self.side_stones["bee"].pixel_pos
-        pass
+        self.side_stones["bee"].pixel_poss
         
 
 

@@ -7,11 +7,13 @@ pygame.init()
 pygame.display.init()
 
 #Set window and button sizes
-window_x_size =  1020
+window_x_size =  1520
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6
 button_y_size = window_y_size//6
+frame_size = window_x_size // 250
+mark_size = window_x_size // 400
 
 
 #creating showable start_window on display with, set name and set background color
@@ -117,8 +119,8 @@ while True:
                             display_before = display.copy()
                             if clicked_hexagon.color == "white":
                                 src_hexagon = clicked_hexagon
-                                game.painter.draw_hexagon_marking(src_hexagon, display, (255,0,0), mark_mode = 5)
-                                game.painter.draw_hexagon_marking(dir_hexagon, game_surface, (0,255,0), mark_mode = 5)
+                                game.painter.draw_hexagon_marking(src_hexagon, display, (255,0,0), mark_mode = mark_size)
+                                game.painter.draw_hexagon_marking(dir_hexagon, game_surface, (0,255,0), mark_mode = mark_size)
                                 marked_hexagons = [src_hexagon, dir_hexagon]
                         #in this case stone put will be executed and the turn goes one up
                         elif clicked_hexagon == dir_hexagon:
@@ -136,7 +138,7 @@ while True:
                         if not marked_hexagons:
                             display_before = display.copy()
                             if clicked_hexagon.color == "black":
-                                wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons)
+                                wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons, mark_size)
                                 src_hexagon = clicked_hexagon
                                 marked_hexagons = dir_hexagons + [src_hexagon]
                         #in this case stone put will be executed and the turn goes one up
@@ -164,7 +166,7 @@ while True:
                                     dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
                                     dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
                                     
-                                    wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons)
+                                    wm.draw_markings(game, display, game_surface, clicked_hexagon, dir_hexagons, mark_size)
                                     
                                     src_hexagon = clicked_hexagon
                                     marked_hexagons = dir_hexagons + [src_hexagon]
