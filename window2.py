@@ -7,7 +7,7 @@ pygame.init()
 pygame.display.init()
 
 #Set window and button sizes
-window_x_size =  1520
+window_x_size =  2520
 window_y_size = window_x_size*9//16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size//6
