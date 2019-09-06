@@ -14,6 +14,7 @@ button_x_size = window_x_size // 6
 button_y_size = window_y_size // 6
 frame_size = window_x_size // 250
 mark_size = window_x_size // 400
+first_stone_board_pos = (10,4)
 
 
 #creating showable start_window on display with, set name and set background color
@@ -117,7 +118,7 @@ while True:
 
 # (white, 1)                
                     if game.turn == ("white", 1):
-                        dir_hexagon = game.board.board[10][4] #shall be middle hexagon of the empty board
+                        dir_hexagon = game.board.board[first_stone_board_pos[0]][first_stone_board_pos[1]] #shall be middle hexagon of the empty board
                         if not marked_hexagons:
                             display_before = display.copy()
                             if clicked_hexagon.color == "white":
@@ -135,7 +136,7 @@ while True:
                                 wm.unmark_hexagons(display, display_before, marked_hexagons)
 # (black, 1)                         
                     elif game.turn == ("black", 1):
-                        neigh_coords = game.board.get_neighbours((10,4)).values()
+                        neigh_coords = game.board.get_neighbours(first_stone_board_pos).values()
                         dir_hexagons = [game.board.board[i][j] for i,j in neigh_coords] #all empty neighbours of the middle hexagon
                         if not marked_hexagons:
                             display_before = display.copy()
@@ -176,15 +177,23 @@ while True:
                                 game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                 #set new turn
                                 if current_player_color == "white":
-                                    game.turn[0] = "black"
+                                    game.turn = ("black", game.turn[1])
                                 else:
-                                    game.turn[0] = "white"
-                                    game.turn[1] += 1
+                                    game.turn = ("white", game.turn[1] + 1)
                                 dir_hexagons.clear()
                             
                             else:
                                 if marked_hexagons:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         
                 else:
                     if marked_hexagons:
