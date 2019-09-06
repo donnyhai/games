@@ -18,7 +18,6 @@ mark_size = window_x_size // 400
 
 #creating showable start_window on display with, set name and set background color
 display = pygame.display.set_mode(window_size,0,32)
-#showed_display = pygame.display.set_mode((1920, 1080),pygame.RESIZABLE, 32)
 pygame.display.set_caption("Spiel-Menue")
 display.fill((100,100,100))
 
@@ -50,6 +49,9 @@ start_game_button = buttons.Button(display, button_color, start_game_x, start_ga
 #"save" the standard showed image
 pygame.display.update()
 start_window = display.copy()
+
+#write the settings from above to settings.txt
+
 
 start_game_mode = True
 settings_window_shown = False
@@ -222,3 +224,6 @@ while True:
 #        hexagon.is_marked = False
 #        hexagon.is_marked = False
 #    marked_hexagons = []
+#
+# from display initializing    
+##showed_display = pygame.display.set_mode((1920, 1080),pygame.RESIZABLE, 32)
