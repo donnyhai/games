@@ -109,8 +109,7 @@ class Painter:
                         (int(player.side_stones["bee"].pixel_pos[0] - 13 * stone_size / 18 - width),
                          int(player.side_stones["bee"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
     
-
-
+    
 
 
 

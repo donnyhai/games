@@ -19,7 +19,6 @@ first_stone_board_pos = (10,4)
 
 #creating showable start_window on display with, set name and set background color
 display = pygame.display.set_mode(window_size,0,32)
-#showed_display = pygame.display.set_mode((1920, 1080),pygame.RESIZABLE, 32)
 pygame.display.set_caption("Spiel-Menue")
 display.fill((100,100,100))
 
@@ -52,9 +51,13 @@ start_game_button = buttons.Button(display, button_color, start_game_x, start_ga
 pygame.display.update()
 start_window = display.copy()
 
+#write the settings from above to settings.txt
+
+
 start_game_mode = True
 settings_window_shown = False
 marked_hexagons = []
+current_player_color = "white"
 
 #create game object here firstly not encounter problems
 game = game.HvsH_Game(display)
@@ -334,11 +337,10 @@ while True:
 
 
 
-
-
+    #check winning condition (maybe not the right place, as it gets checked very often here)
+    if game.interactor.calculator.winning_condition(current_player_color):
+        print(current_player_color + " has won")
               
     pygame.display.update()
    
-    
-    
     
