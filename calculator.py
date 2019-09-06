@@ -1,3 +1,5 @@
+import hexagon_stone as hs
+
 class Calculator:
     def __init__(self, locator):
         self.locator = locator
@@ -7,6 +9,7 @@ class Calculator:
         #of the set of fields we want to include at the moment (initialized with all fields, therefore all 1). 
         #the matrix will be helpful to get easier structural insides
         self.matrix = self.all_fields()
+        self.empty_help_stone = hs.hexagon_stone(self.board.hexagon_size, "empty", 99)
         
         
     def all_fields(self):
@@ -25,6 +28,63 @@ class Calculator:
             return self.get_bee_fields(coord)
         elif stone_type == "empty":
             return []
+    
+    #input is the color of a stone which wants to be put onto the board from the side.
+    #return is a list of board coords where this stone can be legally put to 
+    def get_possible_put_fields(self, color):
+        sol_fields = []
+        for coord in self.board.nonempty_fields:
+            for neigh in list(self.board.get_neighbours(coord).values()):
+                #neigh must be empty
+                if self.board.board[neigh[0]][neigh[1]].is_empty:
+                    if color == "white":
+                        opp_color = "black"
+                    else:
+                        opp_color = "white"
+                    #neigh shall not have neighbours with different color as color
+                    cond = True
+                    for neigh2 in list(self.board.get_neighbours(neigh).values()):
+                        if self.board.board[neigh2[0]][neigh2[1]].color == opp_color:
+                            cond = False
+                    if cond:
+                        sol_fields.append(neigh)
+        return sol_fields
+    
+    #move_hexagon wants to be moved, where can it move ? return is a list of board coords
+    def get_possible_move_fields(self, move_hexagon):
+        stone_type = move_hexagon.type
+        board_pos = move_hexagon.board_pos
+        if stone_type == "ant":
+            return self.get_ant_fields(board_pos)
+        elif stone_type == "hopper":
+            return self.get_hopper_fields(board_pos)
+        elif stone_type == "spider":
+            return self.get_spider_fields(board_pos)
+        elif stone_type == "bee":
+            return self.get_bee_fields(board_pos)
+        
+    
+    #event click at event_pos. in which hexagon is it ? return is a list containing exactly one hexagon 
+    #iff the clicked was in this hexagon. look for empty or nonempty hexagons on the board, and for side_stones                
+    def get_clicked_hexagon(self, event_pos):
+        #look for both players
+        for player in self.players.values():
+            #look in player.side_stones for a clicked hexagon
+            for hstone in player.side_stones.values():
+                if hstone.point_in_hexagon(event_pos):
+                    return hstone
+            #look in player.stones for a clicked hexagon
+            for hstone1 in player.stones.values():
+                for hstone2 in hstone1.values():
+                    if hstone2.is_drawn:
+                        if hstone2.point_in_hexagon(event_pos):
+                            return hstone2
+        #look on the board
+        for row in self.board.board:
+            for hstone in row:
+                if hstone.point_in_hexagon(event_pos):
+                    return hstone
+        return self.empty_help_stone
     
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
@@ -174,47 +234,7 @@ class Calculator:
         pass
 
     
-    #input is the color of a stone which wants to be put onto the board from the side.
-    #return is a list of board coords where this stone can be legally put to 
-    def get_possible_put_fields(self, color):
-        sol_fields = []
-        for coord in self.board.nonempty_fields:
-            neighbours = self.board.get_neighbours(coord).values()
-            for neigh in neighbours:
-                #neigh must be empty
-                if self.board.board[neigh[0]][neigh[1]].is_empty:
-                    neighbours2 = self.board.get_neighbours(neigh).values()
-                    #neigh shall not have neighbours with different color as color
-                    cond = True
-                    for neigh2 in neighbours2:
-                        if self.board.board[neigh2[0]][neigh2[1]].color != color:
-                            cond = False
-                    if cond:
-                        sol_fields.append(neigh)
-        return sol_fields
     
-    
-    #event click at event_pos. in which hexagon is it ? return is a list containing exactly one hexagon 
-    #iff the clicked was in this hexagon. look for empty or nonempty hexagons on the board, and for side_stones                
-    def get_clicked_hexagon(self, event_pos):
-        #look for both players
-        for player in self.players.values():
-            #look in player.stones for a clicked hexagon
-            for hstone in player.side_stones.values():
-                if hstone.point_in_hexagon(event_pos):
-                    return [hstone]
-            #look in player.side_stones for a clicked hexagon
-            for hstone1 in player.stones.values():
-                for hstone2 in hstone1.values():
-                    if hstone2.is_drawn:
-                        if hstone2.point_in_hexagon(event_pos):
-                            return [hstone]
-        #look on the board
-        for row in self.board.board:
-            for hstone in row:
-                if hstone.point_in_hexagon(event_pos):
-                    return [hstone]
-        return []
             
 
 

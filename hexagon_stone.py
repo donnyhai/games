@@ -8,9 +8,7 @@ class hexagon_stone:
         self.number = number
         
         self.size = size
-        self.empty_color = (255, 255, 255) #save empty color, to color the hexagon "empty" when he moves on 
-        #the board and leaves an "empty" stone
-        self.color = self.empty_color
+        self.color = (255,255,255)
         
         self.is_empty = True
         self.is_on_board = False
@@ -25,7 +23,7 @@ class hexagon_stone:
         self.board_pos = board_pos
         
     def set_color(self, color):
-        self.color = color    
+        self.color = color
     
     #hexagon gets drawn on a surface, save it here in this attribute
     def set_drawn_surface(self, surface):
@@ -41,8 +39,8 @@ class hexagon_stone:
     #simply add the drawn_surface offset to self.pixel_pos
     def calculate_global_pixel_pos(self):
         if self.is_drawn:
-            self.global_pixel_pos = (self.pixel_pos[0] + self.drawn_surface.get_offset()[0],
-                                     self.pixel_pos[1] + self.drawn_surface.get_offset()[1])
+            self.global_pixel_pos = (self.pixel_pos[0] + self.drawn_surface.get_abs_offset()[0],
+                                     self.pixel_pos[1] + self.drawn_surface.get_abs_offset()[1])
             self.global_points = self.getting_hexa(self.size, self.global_pixel_pos)
 ###
     
