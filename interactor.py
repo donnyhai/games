@@ -52,7 +52,7 @@ class Interactor:
             draw_hexagon.is_on_board = True
             
             ##then excute drawing aspects
-            self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
+            self.draw_new_stone_number0(str(player.side_stones_numbers[stone_type]), stone_type, player)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
     
     
@@ -204,13 +204,20 @@ class Interactor:
         height_text = pygame.font.SysFont("Arial", stone_size).render("1", 1, (0,0,0)).get_height()
         self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]), stone_size, (0,0,0), (5, 0.5 * (height_rect - height_text)))
 
-
-######        
-     
-       
-
-
-
+    def draw_new_stone_number0 (self, text, insect_type, player, text_color = (0,0,0)):
+        stone_size = player.stone_size
+        text_size = int (1.2 * stone_size)
+        test_font = pygame.font.SysFont("Arial", text_size)
+        (width, height) = test_font.size("0")
+        
+        position =  (int(player.side_stones[insect_type].pixel_pos[0] - 13 * stone_size / 18 - width),
+                         int(player.side_stones[insect_type].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height))
+        
+        rect_subsurface = self.surface.subsurface(pygame.Rect(position, (width, height)))
+        rect_subsurface.fill(self.surface.get_at_mapped((1,1)))
+        
+        self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]),
+                                text_size, (0,0,0), (0,0) )
 
 
 
