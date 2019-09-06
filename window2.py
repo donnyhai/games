@@ -8,10 +8,10 @@ pygame.display.init()
 
 #Set window and button sizes
 window_x_size =  1020
-window_y_size = window_x_size*9//16
+window_y_size = window_x_size * 9 // 16
 window_size = (window_x_size, window_y_size)
-button_x_size = window_x_size//6
-button_y_size = window_y_size//6
+button_x_size = window_x_size // 6
+button_y_size = window_y_size // 6
 frame_size = window_x_size // 250
 mark_size = window_x_size // 400
 
@@ -31,7 +31,7 @@ background_color2 = (244,164,96)
 background_color3 = (238,197,145)
 button_color = (200,200,200)
 creme_white = (255,255,230)
-creme_black = (60,60,60 )
+creme_black = (60,60,60)
 
 #set a "Einstellungen" Button
 settings_x = window_x_size * 5 // 12
