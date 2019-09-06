@@ -53,6 +53,32 @@ class Interactor:
             self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
     
+    #NOT COMPLETE, 
+    #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
+    #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
+    def execute_stone_move(self, player, fhex, shex):
+        
+        cond1 = self.move_stone_condition(player, fhex, shex)
+        cond2 = shex.board_pos in self.calculator.get_possible_move_fields(fhex)
+        if cond1 and cond2: 
+            
+            old_board_pos = fhex.board_pos
+            old_pixel_pos = fhex.pixel_pos
+            fhex.set_board_pos(shex.board_pos)
+            fhex.set_pixel_pos(shex.pixel_pos)
+            
+            #refill "old" place with empty stone
+            new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
+            self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+            new_empty_stone.set_pixel_pos(old_pixel_pos)
+            
+            #fill "new" place with fhex
+            self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+            
+            self.draw_hexagon(new_empty_stone)
+            self.draw_hexagon(fhex)
+            
+            
     
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):
@@ -99,88 +125,27 @@ class Interactor:
     
     
     
-    #player want to move stone to coord. is that generally possible ? that means independently of 
+    #player wants to move fhex to shex. is that generally possible ? that means independently of 
     #the stone type ? note that this game is yet without the "assel" stone    
-    def move_stone_condition(self, player, stone, coord):
-        #stone.coordinate != coord, tm the board has to change with the move
-        cond00 = stone.coordinate != coord
+    def move_stone_condition(self, player, fhex, shex):
+        #different board_pos
+        cond00 = fhex.board_pos != shex.board_pos
         #bee is on board
-        cond0 = player.stones["bee"].is_on_board
+        cond0 = list(player.stones["bee"].values())[0].is_on_board
         #stone belongs to player
-        cond1 = stone.color == player.color
+        cond1 = fhex.color == player.color
         #stone is on board
-        cond2 = stone.is_on_board
+        cond2 = fhex.is_on_board
         #coord is empty (just for stone.type != "bug")
         cond3 = True
-        if stone.type != "bug":
-            cond3 = self.board.board[coord[0]][coord[1]].is_empty 
+        if fhex.type != "bug":
+            cond3 = shex.is_empty 
         #boardstones are connected after taking away stone
         nonempty_fields = self.board.nonempty_fields.copy()
-        cond4 = self.board.is_connected(nonempty_fields.remove(stone.coordinate))
+        cond4 = self.board.is_connected(nonempty_fields.remove(fhex.board_pos))
         return cond00 and cond0 and cond1 and cond2 and cond3 and cond4
             
-    #HAS TO BE ADAPTED
-    #player puts stone on coord (if possible)
-    def put_stone(self, player, stone, coord):
-        if  not self.put_stone_condition(player, stone, coord):
-            print("stoneput not possible") #ADD surface print etc #######################################
-        else:
-            self.board[coord[0]][coord[1]].put_stone(stone) #first put stone on hexagon
-            self.draw_hexagon(self.board[coord[0]][coord[1]]) #then draw hexagon on surface
-            stone.is_on_board = True
-            self.board.nonempty_fields.append(coord)
     
-    #HAS TO BE ADAPTED
-    #move stone of player to coord (if possible)    
-    #NOTE: this method shall work with board.empty_board. when a stone get moved, put the empty stone
-    #on the position where the moved stone was. this empty stone shall be taken out of empty_board, which consists
-    #of the init matrix of empty stones when board was init
-    def move_stone(self, player, stone, coord):
-        def move(stone, coord):
-            self.board.board[stone.coordinate[0]][stone.coordinate[1]].remove_stone(stone)
-            self.board.board[coord[0]][coord[1]].put_stone(stone)
-        
-        if not self.move_stone_condition(player, stone, coord):
-            print("stone move not possible")
-        else:
-            if stone.type == "bee":
-                if coord in self.board_subset.get_bee_fields(coord): move(stone, coord)
-                else: print("bee move not possible")
-            elif stone.type == "ant":
-                if coord in self.board_subset.get_ant_fields(coord): move(stone, coord)
-                else: print("ant move not possible")
-            elif stone.type == "hopper":
-                if coord in self.board_subset.get_hopper_fields(coord): move(stone, coord)
-                else: print("hopper move not possible")
-            elif stone.type == "spider":
-                if coord in self.board_subset.get_spider_fields(coord): move(stone, coord)
-                else: print("spider move not possible")
-            elif stone.type == "bug":
-                if coord in self.board_subset.get_bug_fields(coord): move(stone, coord)
-                else: print("bug move not possible") 
-                    
-    #NOT COMPLETE, 
-    #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
-    #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
-    def execute_stone_move(self, player, first_clicked_hexagon, second_clicked_hexagon):
-        cond1 = self.move_stone_condition(player, first_clicked_hexagon.stone, second_clicked_hexagon.board_position)
-        cond2 = second_clicked_hexagon in self.get_possible_move_hexagons(first_clicked_hexagon)
-        if cond1 and cond2: #############################################INCOMPLETE
-            first_hexagon = first_clicked_hexagon
-            second_hexagon = second_clicked_hexagon
-            
-            old_position = first_hexagon.pixel_position
-            first_hexagon.pixel_position = second_hexagon.pixel_position
-            #if not bug:
-            self.board.board[first_hexagon.board_position[0]][first_hexagon.board_position[1]].change_stone(hs.Stone("empty",1))
-            self.board.board[second_hexagon.board_position[0]][second_hexagon.board_position[1]].change_stone(first_hexagon.stone)
-            
-            self.draw_insect_image(first_hexagon)
-            #if not bug:
-            self.draw_empty_hexagon(old_position)
-        else:
-            print("not possible") ##############################################print in surface
-        
     ###### shall be in painter
     #HAS TO BE ADAPTED, should use painter to draw       
     def write_text(self, surface, text, text_color, length, height, x, y):
@@ -191,7 +156,7 @@ class Interactor:
         return surface
     
     #draw side_numbers at corresponding position depending on insect_type
-    def draw_new_stone_number(self, text, insect_type, player, text_color = (0,0,0)):
+    def draw_new_stone_number0(self, text, insect_type, player, text_color = (0,0,0)):
         stone_size = player.stone_size
         height_rect = 1.5 * pygame.font.SysFont("Arial", stone_size).render("1", 1, text_color).get_height()
         width = 1.3 * pygame.font.SysFont("Arial", stone_size).render("1", 1, text_color).get_width()
@@ -202,7 +167,7 @@ class Interactor:
         height_text = pygame.font.SysFont("Arial", stone_size).render("1", 1, (0,0,0)).get_height()
         self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]), stone_size, (0,0,0), (5, 0.5 * (height_rect - height_text)))
 
-    def draw_new_stone_number (self, text, insect_type, player, text_color = (0,0,0)):
+    def draw_new_stone_number(self, text, insect_type, player, text_color = (0,0,0)):
         stone_size = player.stone_size
         text_size = int (1.2 * stone_size)
         test_font = pygame.font.SysFont("Arial", text_size)

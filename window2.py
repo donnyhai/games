@@ -159,19 +159,26 @@ while True:
                     elif game.turn[1] in {2,3,4}:
                         current_player_color = game.turn[0]
                         bee_stone = list(game.players[current_player_color].stones["bee"].values())[0]
-                        
+    #bee not put
                         #putting phase: bee is not yet on board
                         if not bee_stone.is_on_board:
                             if not marked_hexagons:
                                 display_before = display.copy()
+                                
+                                #mark put
                                 if clicked_hexagon in game.players[current_player_color].side_stones.values():
-                                    dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
-                                    dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
-
-                                    src_hexagon = clicked_hexagon
-                                    marked_hexagons = dir_hexagons + [src_hexagon]
-                                    wm.mark_hexagons(game, marked_hexagons, mark_size)
-                                    pos1 = event.pos
+                                    if game.players[current_player_color].side_stones_numbers[clicked_hexagon.type] > 0:
+                                        #check whether clicked hexagon is bee in the case that it is turn 4 now
+                                        #note: in this if case (10 lines up) we are in the case that the bee is not yet put
+                                        if game.turn[1] < 4 or clicked_hexagon.type == "bee": 
+                                            dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
+                                            dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+        
+                                            src_hexagon = clicked_hexagon
+                                            marked_hexagons = dir_hexagons + [src_hexagon]
+                                            wm.mark_hexagons(game, marked_hexagons, mark_size)
+                                        
+                            #execute put
                             elif clicked_hexagon in dir_hexagons:
                                 wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
@@ -185,16 +192,129 @@ while True:
                             else:
                                 if marked_hexagons:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
+    #bee already put                          
+                        else:
+                            if not marked_hexagons:
+                                display_before = display.copy()
+                                
+                                #mark put
+                                if clicked_hexagon in game.players[current_player_color].side_stones.values():
+                                    if game.players[current_player_color].side_stones_numbers[clicked_hexagon.type] > 0:
+                                        dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
+                                        dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+    
+                                        src_hexagon = clicked_hexagon
+                                        marked_hexagons = dir_hexagons + [src_hexagon]
+                                        wm.mark_hexagons(game, marked_hexagons, mark_size)
+                                
+                                #mark move
+                                elif clicked_hexagon in game.players[current_player_color].stones_list:
+                                    src_hexagon = clicked_hexagon
+                                    dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
+                                    dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+
+                                    marked_hexagons = dir_hexagons + [src_hexagon]
+                                    wm.mark_hexagons(game, marked_hexagons, mark_size)
+                            
+                            #execute put
+                            elif src_hexagon in game.players[current_player_color].side_stones.values():
+                                if clicked_hexagon in dir_hexagons:
+                                    wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                    game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    #set new turn
+                                    if current_player_color == "white":
+                                        game.turn = ("black", game.turn[1])
+                                    else:
+                                        game.turn = ("white", game.turn[1] + 1)
+                                    dir_hexagons.clear()
+                                else:
+                                    if marked_hexagons:
+                                        wm.unmark_hexagons(display, display_before, marked_hexagons)
+                            
+                            #execute move
+                            elif src_hexagon in game.players[current_player_color].stones_list:
+                                if clicked_hexagon in dir_hexagons:
+                                    wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                    game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    #set new turn
+                                    if current_player_color == "white":
+                                        game.turn = ("black", game.turn[1])
+                                    else:
+                                        game.turn = ("white", game.turn[1] + 1)
+                                    dir_hexagons.clear()
+                                else:
+                                    if marked_hexagons:
+                                        wm.unmark_hexagons(display, display_before, marked_hexagons)
+                            
+                            else:
+                                if marked_hexagons:
+                                    wm.unmark_hexagons(display, display_before, marked_hexagons)
                         
                         
+# turn > 4                        
+                    elif game.turn[1] > 4:           
+                        current_player_color = game.turn[0]
                         
+                        if not marked_hexagons:
+                            display_before = display.copy()
+                            
+                            #mark put
+                            if clicked_hexagon in game.players[current_player_color].side_stones.values():
+                                if game.players[current_player_color].side_stones_numbers[clicked_hexagon.type] > 0:
+                                    dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
+                                    dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+
+                                    src_hexagon = clicked_hexagon
+                                    marked_hexagons = dir_hexagons + [src_hexagon]
+                                    wm.mark_hexagons(game, marked_hexagons, mark_size)
+                                
+                            #mark move
+                            elif clicked_hexagon in game.players[current_player_color].stones_list:
+                                src_hexagon = clicked_hexagon
+                                dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
+                                dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+
+                                marked_hexagons = dir_hexagons + [src_hexagon]
+                                wm.mark_hexagons(game, marked_hexagons, mark_size)
+                            
+                        #execute put
+                        elif src_hexagon in game.players[current_player_color].side_stones.values():
+                            if clicked_hexagon in dir_hexagons:
+                                wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                #set new turn
+                                if current_player_color == "white":
+                                    game.turn = ("black", game.turn[1])
+                                else:
+                                    game.turn = ("white", game.turn[1] + 1)
+                                dir_hexagons.clear()
+                            else:
+                                if marked_hexagons:
+                                    wm.unmark_hexagons(display, display_before, marked_hexagons)
                         
+                        #execute move
+                        elif src_hexagon in game.players[current_player_color].stones_list:
+                            if clicked_hexagon in dir_hexagons:
+                                wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                #set new turn
+                                if current_player_color == "white":
+                                    game.turn = ("black", game.turn[1])
+                                else:
+                                    game.turn = ("white", game.turn[1] + 1)
+                                dir_hexagons.clear()
+                            else:
+                                if marked_hexagons:
+                                    wm.unmark_hexagons(display, display_before, marked_hexagons)
                         
-                        
-                        
-                        
-                        
-                        
+                        else:
+                            if marked_hexagons:
+                                wm.unmark_hexagons(display, display_before, marked_hexagons)                        
+                
+                
+                
+                
+                
                 else:
                     if marked_hexagons:
                         wm.unmark_hexagons(display, display_before, marked_hexagons)

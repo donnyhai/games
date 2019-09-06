@@ -6,7 +6,9 @@ class Player:
         self.color = color
         self.surface = surface
         self.stone_size = int(0.03 * self.surface.get_width())
+        
         self.stones = self.create_stones(self.stone_size)
+        self.stones_list = self.get_stones_list() #all stones in one list
         self.side_stones = self.create_side_stones(self.stone_size)
         self.set_side_stones_positions() #side positions for the side stones
         #side_stone_numbers shall display how many of each insect type are not yet on the board
@@ -85,7 +87,12 @@ class Player:
         self.side_stones["spider"].pixel_pos
         self.side_stones["bee"].pixel_poss
         
-
+    def get_stones_list(self):
+        stones_list = []
+        for stones in self.stones.values():
+            for stone in stones:
+                stones_list.append(stone)
+        return stones_list
 
 class Human_Player(Player):
     pass
