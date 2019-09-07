@@ -1,21 +1,34 @@
 import board
 import player
+import hexagon_stone as hs
 
 class Test_Board(board.Board):
     
+    
+    #aim is to copy the board matrix of an board object, and also make copies of all hexagons inside the matrix
+    #use copy_hexagon. input is an board object
     def copy_board(self, board): 
-        #note: only .copy() is not enough for eg the board, as the hexagons in the board dont get copied
-        #copy board matrix, such that hexagons in the matrix get copied too:
+        
+        #input is a matrix (list of lists)
         def copy_board_matrix(board_matrix):
             copied_board_matrix = [0] * board.size
-            for k in copied_board_matrix:
-                k = []
+            for k in range(board.size):
+                new_row = []
                 for hexagon in board_matrix[k]:
-                    k.append(hexagon.copy())
+                    new_row.append(self.copy_hexagon(hexagon))
+                copied_board_matrix[k] = new_row
         
         self.board = copy_board_matrix(board.board)
         self.empty_board = copy_board_matrix(board.empty_board)
         self.nonempty_fields = board.nonempty_fields.copy()
+    
+    #aim is to copy a hexagon, means here to make a new hexagon with new id but same attributes     
+    def copy_hexagon(self, hexagon):
+        hexagon_copy = hs.hexagon_stone(hexagon.size)
+        for attr, value in hexagon.__dict__.items():
+            hexagon_copy.attr = value
+            print(attr, hexagon_copy.attr)
+        return hexagon_copy
         
     #this function evaluates and executes a stone move on the test board. input are two hexagons.
     #there are no conditions for the move, the testboard can just move a stone (conditions have to be
