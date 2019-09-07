@@ -90,7 +90,7 @@ class Player:
     def get_stones_list(self):
         stones_list = []
         for stones in self.stones.values():
-            for stone in stones:
+            for stone in stones.values():
                 stones_list.append(stone)
         return stones_list
 

@@ -61,7 +61,7 @@ class Locator:
         #coord1 and coord2 are neighbours
         cond1 = coord1 in neighbours2
         #field at coord2 is empty
-        cond2 = which_board.board[coord2[0], coord2[1]].is_empty
+        cond2 = which_board.board[coord2[0]][coord2[1]].is_empty
         #stone can physically "pass" from coord1 to coord2 (consider neighbour stones)
         #and there exists min one neighbour in the intersection -> exactly one neighbour
         #Note that the intersectino of neigh1 and neigh2 contains 0,1 or 2 nonempty stones

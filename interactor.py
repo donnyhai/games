@@ -53,7 +53,6 @@ class Interactor:
             self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
     
-    #NOT COMPLETE, 
     #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
     #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
     def execute_stone_move(self, player, fhex, shex):
