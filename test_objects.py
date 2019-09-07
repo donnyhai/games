@@ -25,9 +25,8 @@ class Test_Board(board.Board):
     #aim is to copy a hexagon, means here to make a new hexagon with new id but same attributes     
     def copy_hexagon(self, hexagon):
         hexagon_copy = hs.hexagon_stone(hexagon.size)
-        for attr, value in hexagon.__dict__.items():
-            hexagon_copy.attr = value
-            print(attr, hexagon_copy.attr)
+        for attr in list(hexagon.__dict__.keys()):
+            hexagon_copy.__dict__[attr] = hexagon.__dict__[attr]
         return hexagon_copy
         
     #this function evaluates and executes a stone move on the test board. input are two hexagons.
