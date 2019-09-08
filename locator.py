@@ -55,18 +55,41 @@ class Locator:
     #yet this function doesnt check connectness of the board stones
     #again note that you have to give the board (board or test_board)
     def can_move_to_neighbour_on_ground(self, coord1, coord2, which_board):
-        neighbours1 = set(which_board.get_neighbours(coord1).values())
-        neighbours2 = set(which_board.get_neighbours(coord2).values())
+        nonempty_fields = self.board.nonempty_fields
+        neighbours1 = list(which_board.get_neighbours(coord1).values())
+        neighbours2 = list(which_board.get_neighbours(coord2).values())
+        nonempty_neigh1 = [neigh for neigh in neighbours1 if neigh in nonempty_fields]
+        nonempty_neigh2 = [neigh for neigh in neighbours2 if neigh in nonempty_fields]
         #conditions to make the move on the ground from coord1 to coord2 possible:
         #coord1 and coord2 are neighbours
         cond1 = coord1 in neighbours2
         #field at coord2 is empty
-        cond2 = which_board.board[coord2[0]][coord2[1]].is_empty
+        cond2 = not coord2 in nonempty_fields
         #stone can physically "pass" from coord1 to coord2 (consider neighbour stones)
         #and there exists min one neighbour in the intersection -> exactly one neighbour
         #Note that the intersectino of neigh1 and neigh2 contains 0,1 or 2 nonempty stones
-        cond3 = len(neighbours1.intersection(neighbours2)) == 1
+        cond3 = len(set(nonempty_neigh1).intersection(nonempty_neigh2)) == 1
         #coord2 is not lying "outside" nonempty fields (that means at least "two" steps away of them)
-        cond4 = len(neighbours2) >= 1 if which_board.board[coord1[0]][coord1[1]].is_empty else len(neighbours2) >= 2
+        cond4 = len(nonempty_neigh2) >= 1 if which_board.board[coord1[0]][coord1[1]].is_empty else len(nonempty_neigh2) >= 2
         return cond1 and cond2 and cond3 and cond4
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

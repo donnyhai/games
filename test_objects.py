@@ -17,6 +17,7 @@ class Test_Board(board.Board):
                 for hexagon in board_matrix[k]:
                     new_row.append(self.copy_hexagon(hexagon))
                 copied_board_matrix[k] = new_row
+            return copied_board_matrix
         
         self.board = copy_board_matrix(board.board)
         self.empty_board = copy_board_matrix(board.empty_board)
@@ -40,12 +41,12 @@ class Test_Board(board.Board):
         fhex.set_pixel_pos(shex.pixel_pos)
         
         #refill "old" place with empty stone
-        new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
-        self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+        new_empty_stone = self.empty_board[old_board_pos[0]][old_board_pos[1]]
+        self.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
         new_empty_stone.set_pixel_pos(old_pixel_pos)
         
         #fill "new" place with fhex
-        self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+        self.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
             
     
     

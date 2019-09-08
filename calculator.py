@@ -99,21 +99,19 @@ class Calculator:
             for neigh in neighbours:
                 cond1 = not self.locator.can_move_to_neighbour_on_ground(coord, neigh, self.locator.test_board)
                 cond2 = neigh in seen_by_locator
-                if cond1 or cond2:
-                    neighbours.remove(neigh)
+                if cond1 or cond2:  neighbours.remove(neigh)
             return neighbours
             
         #this function just gets applied on coordinates which are "right neighbours"
         def add_neigh_to_locator(dir_coord):   
-            actual_stone = self.locator.get_position()
-            self.locator.test_board.move_stone(actual_stone, dir_coord)
+            actual_stone = self.locator.get_position()[0] #possible error source
+            dir_stone = self.locator.test_board.board[dir_coord[0]][dir_coord[1]]
+            self.locator.test_board.move_stone(actual_stone, dir_stone)
             self.locator.move_to_position(dir_coord, self.locator.test_board)
             right_neighbours = get_right_neighbours(dir_coord)
-            if len(right_neighbours) == 0:
-                return
-            else:
-                add_neigh_to_locator(right_neighbours.pop()) #possible error source, 
-                #as just ONE neighbour is considered, but should be enough
+            if len(right_neighbours) == 0:  return
+            else:   add_neigh_to_locator(right_neighbours.pop()) #possible error source, 
+            #as just ONE neighbour is considered, but should be enough
         
         self.locator.test_board.copy_board(self.board)
         self.locator.move_to_position(coord, self.locator.test_board)
@@ -129,7 +127,7 @@ class Calculator:
             #run the recursive function
             add_neigh_to_locator(neigh)
         
-        #all relevant were saved in locator since key start_key
+        #all relevant fields were saved in locator since key start_key
         ground_move_fields = [self.locator.locations[k][1] for k in range(start_key, self.locator.new_key)]    
         
         #set indicator matrix
