@@ -16,7 +16,7 @@ frame_size = window_x_size // 250
 mark_size = window_x_size // 400
 first_stone_board_pos = (10,4)
 
-#while loop timing
+#while-loop timing
 clock = pygame.time.Clock()
 FPS = 30
 
