@@ -20,7 +20,6 @@ class Test_Board(board.Board):
             return copied_board_matrix
         
         self.board = copy_board_matrix(board.board)
-        self.empty_board = copy_board_matrix(board.empty_board)
         self.nonempty_fields = board.nonempty_fields.copy()
     
     #aim is to copy a hexagon, means here to make a new hexagon with new id but same attributes     

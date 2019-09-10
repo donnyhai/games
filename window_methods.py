@@ -18,9 +18,9 @@ def check_winner(color, surr, game_finished):
         print("unentschieden")
         game_finished = True
     elif color_surr:    
-        print(color +  " wins")
+        print(opp_color +  " wins")
         game_finished = True
     elif opp_color_surr:    
-        print(opp_color + " wins")
+        print(color + " wins")
         game_finished = True
     

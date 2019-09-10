@@ -33,7 +33,8 @@ class Locator:
             stone = which_board.board[coord[0]][coord[1]]
             if len(self.locations) == self.look_into_past:
                 self.remove_stone()
-            self.locations[self.new_key] = (stone, stone.board_pos) #add stone with key new_key 
+            new_coord = stone.board_pos
+            self.locations[self.new_key] = (stone, new_coord) #add stone and position with key new_key 
             self.new_key += 1
     
     #get actual position, return stone
@@ -55,7 +56,7 @@ class Locator:
     #yet this function doesnt check connectness of the board stones
     #again note that you have to give the board (board or test_board)
     def can_move_to_neighbour_on_ground(self, coord1, coord2, which_board):
-        nonempty_fields = self.board.nonempty_fields
+        nonempty_fields = which_board.nonempty_fields
         neighbours1 = list(which_board.get_neighbours(coord1).values())
         neighbours2 = list(which_board.get_neighbours(coord2).values())
         nonempty_neigh1 = [neigh for neigh in neighbours1 if neigh in nonempty_fields]

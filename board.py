@@ -7,8 +7,8 @@ class Board:
         self.hexagon_size = int(0.03 * self.surface.get_width())
         self.draw_position = (0, -self.hexagon_size) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
-        self.board = self.calculate_hexagon_board() #quadratic matrix of hexagons
-        self.empty_board = self.board #save matrix with empty hexagons, for later using them to make a field
+        self.board = self.calculate_empty_hexagon_board() #quadratic matrix of hexagons
+        self.empty_board = self.calculate_empty_hexagon_board() #save matrix with empty hexagons, for later using them to make a field
         #empty again, for example when a stone moves from that field away
         self.nonempty_fields = [] #will contain matrix coordinates
         self.drawn_hexagons = [] #will contain hexagon_stone objects (if used)
@@ -24,7 +24,7 @@ class Board:
             return {0: (i-2,j), 1: (i-1,j), 2: (i+1,j), 3: (i+2,j), 4: (i+1,j-1), 5: (i-1,j-1)} 
     
     #create a quadratic board of hexagons as a matrix of hexagon objects with respective correct positions    
-    def calculate_hexagon_board(self):
+    def calculate_empty_hexagon_board(self):
         
         #function to create a horizontal connected chain of hexagons, return is a list
         def create_horizontal_hexagon_chain(start_position):
@@ -61,13 +61,18 @@ class Board:
     def is_inside(self, coord):
         pass
     
+    #NOT CORRECT
     #check, whether indexset is connected
     def is_connected(self, indexset):
-        if len(indexset) in {0,1}:
-            return True
+        if len(indexset) in {0,1}:  return True
         else:
             for coord in indexset:
-                if len(indexset.intersection(self.get_neighbours(coord).values())) == 0:
+                if len(set(indexset).intersection(self.get_neighbours(coord).values())) == 0:
                     return False
             return True
     
+    #are the stones connected after taking away stone on coord ? 
+    def keeps_connected(self, coord):
+        nonempty_fields = self.nonempty_fields.copy()
+        nonempty_fields.remove(coord)
+        return self.is_connected(nonempty_fields)

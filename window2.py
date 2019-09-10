@@ -216,11 +216,12 @@ while True:
                                     #mark move
                                     elif clicked_hexagon in game.players[current_player_color].stones_list:
                                         src_hexagon = clicked_hexagon
-                                        dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
-                                        dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
-    
-                                        marked_hexagons = dir_hexagons + [src_hexagon]
-                                        wm.mark_hexagons(game, marked_hexagons, mark_size)
+                                        if game.board.keeps_connected(src_hexagon.board_pos):
+                                            dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
+                                            dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                            
+                                            marked_hexagons = dir_hexagons + [src_hexagon]
+                                            wm.mark_hexagons(game, marked_hexagons, mark_size)
                                 
                                 #execute put
                                 elif src_hexagon in game.players[current_player_color].side_stones.values():
@@ -279,11 +280,12 @@ while True:
                                 #mark move
                                 elif clicked_hexagon in game.players[current_player_color].stones_list:
                                     src_hexagon = clicked_hexagon
-                                    dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
-                                    dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
-    
-                                    marked_hexagons = dir_hexagons + [src_hexagon]
-                                    wm.mark_hexagons(game, marked_hexagons, mark_size)
+                                    if game.board.keeps_connected(src_hexagon.board_pos):
+                                        dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
+                                        dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+        
+                                        marked_hexagons = dir_hexagons + [src_hexagon]
+                                        wm.mark_hexagons(game, marked_hexagons, mark_size)
                                 
                             #execute put
                             elif src_hexagon in game.players[current_player_color].side_stones.values():

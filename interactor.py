@@ -119,8 +119,12 @@ class Interactor:
             #fill "new" place with fhex
             self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
             
-            self.draw_hexagon(new_empty_stone)
-            self.draw_hexagon(fhex)
+            #actualize board.nonempty_fields
+            self.board.nonempty_fields.append(fhex.board_pos)
+            self.board.nonempty_fields.remove(old_board_pos)
+            
+            self.painter.draw_hexagon(new_empty_stone, self.game_surface)
+            self.painter.draw_hexagon(fhex, self.game_surface)
             
     
     #player wants to move fhex to shex. is that generally possible ? that means independently of 
@@ -140,7 +144,8 @@ class Interactor:
             cond3 = shex.is_empty 
         #boardstones are connected after taking away stone
         nonempty_fields = self.board.nonempty_fields.copy()
-        cond4 = self.board.is_connected(nonempty_fields.remove(fhex.board_pos))
+        nonempty_fields.remove(fhex.board_pos) 
+        cond4 = self.board.is_connected(nonempty_fields)
         return cond00 and cond0 and cond1 and cond2 and cond3 and cond4
             
     
