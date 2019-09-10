@@ -16,6 +16,10 @@ frame_size = window_x_size // 250
 mark_size = window_x_size // 400
 first_stone_board_pos = (10,4)
 
+#while-loop timing
+clock = pygame.time.Clock()
+FPS = 30
+
 
 #creating showable start_window on display with, set name and set background color
 display = pygame.display.set_mode(window_size,0,32)
@@ -64,11 +68,11 @@ game_finished = False
 game = game.HvsH_Game(display)
 
 full_surface = display
-game_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-white_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-black_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-white_text_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-black_text_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
+game_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 , 0, window_x_size * 0.8 , window_y_size))
+white_surface = full_surface.subsurface(pygame.Rect(0, 0, window_x_size // 10, (window_y_size * 4) // 5))
+black_surface = full_surface.subsurface(pygame.Rect((window_x_size * 9) // 10, 0, window_x_size  // 10, (window_y_size * 4) // 5))
+white_text_surface = full_surface.subsurface(pygame.Rect(0, (4 * window_y_size) // 5, window_x_size  // 10, window_y_size // 5))
+black_text_surface = full_surface.subsurface(pygame.Rect((9 * window_x_size) // 10, (4 * window_y_size) // 5, window_x_size  // 10, window_y_size // 5))
 
 #run the window and wait for mouseclicks or quit
 while True:
@@ -325,5 +329,9 @@ while True:
                         if marked_hexagons:
                             wm.unmark_hexagons(display, display_before, marked_hexagons)
 
-        pygame.display.update()
-       
+    pygame.display.update()
+    clock.tick(FPS)
+    
+pygame.quit()
+   
+    
