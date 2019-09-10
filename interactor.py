@@ -53,33 +53,6 @@ class Interactor:
             self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
     
-    #NOT COMPLETE, 
-    #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
-    #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
-    def execute_stone_move(self, player, fhex, shex):
-        
-        cond1 = self.move_stone_condition(player, fhex, shex)
-        cond2 = shex.board_pos in self.calculator.get_possible_move_fields(fhex)
-        if cond1 and cond2: 
-            
-            old_board_pos = fhex.board_pos
-            old_pixel_pos = fhex.pixel_pos
-            fhex.set_board_pos(shex.board_pos)
-            fhex.set_pixel_pos(shex.pixel_pos)
-            
-            #refill "old" place with empty stone
-            new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
-            self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
-            new_empty_stone.set_pixel_pos(old_pixel_pos)
-            
-            #fill "new" place with fhex
-            self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
-            
-            self.draw_hexagon(new_empty_stone)
-            self.draw_hexagon(fhex)
-            
-            
-    
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):
         coord = dir_hstone.board_pos
@@ -125,6 +98,35 @@ class Interactor:
     
     
     
+    #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
+    #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
+    def execute_stone_move(self, player, fhex, shex):
+        
+        cond1 = self.move_stone_condition(player, fhex, shex)
+        cond2 = shex.board_pos in self.calculator.get_possible_move_fields(fhex)
+        if cond1 and cond2: 
+            
+            old_board_pos = fhex.board_pos
+            old_pixel_pos = fhex.pixel_pos
+            fhex.set_board_pos(shex.board_pos)
+            fhex.set_pixel_pos(shex.pixel_pos)
+            
+            #refill "old" place with empty stone
+            new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
+            self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+            new_empty_stone.set_pixel_pos(old_pixel_pos)
+            
+            #fill "new" place with fhex
+            self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+            
+            #actualize board.nonempty_fields
+            self.board.nonempty_fields.append(fhex.board_pos)
+            self.board.nonempty_fields.remove(old_board_pos)
+            
+            self.painter.draw_hexagon(new_empty_stone, self.game_surface)
+            self.painter.draw_hexagon(fhex, self.game_surface)
+            
+    
     #player wants to move fhex to shex. is that generally possible ? that means independently of 
     #the stone type ? note that this game is yet without the "assel" stone    
     def move_stone_condition(self, player, fhex, shex):
@@ -142,7 +144,8 @@ class Interactor:
             cond3 = shex.is_empty 
         #boardstones are connected after taking away stone
         nonempty_fields = self.board.nonempty_fields.copy()
-        cond4 = self.board.is_connected(nonempty_fields.remove(fhex.board_pos))
+        nonempty_fields.remove(fhex.board_pos) 
+        cond4 = self.board.is_connected(nonempty_fields)
         return cond00 and cond0 and cond1 and cond2 and cond3 and cond4
             
     

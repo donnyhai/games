@@ -1,4 +1,5 @@
 import hexagon_stone as hs
+import test_objects as to
 
 class Calculator:
     def __init__(self, locator):
@@ -15,34 +16,23 @@ class Calculator:
     def all_fields(self):
         return [[1] * self.board.size for i in range(self.board.size)]
     
-    def get_possible_fields(self, coord, stone_type):
-        if stone_type == "ant":
-            return self.get_ant_fields(coord)
-        elif stone_type == "spider":
-            return self.get_spider_fields(coord)
-        elif stone_type == "hopper":
-            return self.get_hopper_fields(coord)
-        elif stone_type == "bug":
-            return self.get_bug_fields(coord)
-        elif stone_type == "bee":
-            return self.get_bee_fields(coord)
-        elif stone_type == "empty":
-            return []
-    
     #define winning condition: player wins if opposite bee is surrounded
     def winning_condition(self, color):
-        if color == "white":
-            opp_color = "black"
-        else:
-            opp_color = "white"
-        bee_stone = list(self.players[opp_color].stones["bee"].values())[0]
-        winning_condition = False
-        if bee_stone.is_on_board:
-            winning_condition = True
-            for neigh in self.board.get_neighbours(bee_stone.board_pos).values():
-                if self.board.board[neigh[0]][neigh[1]].is_empty:
-                    winning_condition = False
-        return winning_condition
+        if color == "white":    opp_color = "black"
+        else:   opp_color = "white"
+        color_bee = list(self.players[color].stones["bee"].values())[0]
+        opp_color_bee = list(self.players[opp_color].stones["bee"].values())[0]
+        color_bee_surr = False
+        opp_color_bee_surr = False
+        if color_bee.is_on_board:   
+            color_bee_surr = True
+            for neigh in self.board.get_neighbours(color_bee.board_pos).values():
+                if self.board.board[neigh[0]][neigh[1]].is_empty:   color_bee_surr = False
+        if opp_color_bee.is_on_board:
+            opp_color_bee_surr = True
+            for neigh in self.board.get_neighbours(opp_color_bee.board_pos).values():
+                if self.board.board[neigh[0]][neigh[1]].is_empty:   opp_color_bee_surr = False
+        return [color_bee_surr, opp_color_bee_surr]
     
     #input is the color of a stone which wants to be put onto the board from the side.
     #return is a list of board coords where this stone can be legally put to 
@@ -52,31 +42,23 @@ class Calculator:
             for neigh in list(self.board.get_neighbours(coord).values()):
                 #neigh must be empty
                 if self.board.board[neigh[0]][neigh[1]].is_empty:
-                    if color == "white":
-                        opp_color = "black"
-                    else:
-                        opp_color = "white"
+                    if color == "white":    opp_color = "black"
+                    else:   opp_color = "white"
                     #neigh shall not have neighbours with different color as color
                     cond = True
                     for neigh2 in list(self.board.get_neighbours(neigh).values()):
-                        if self.board.board[neigh2[0]][neigh2[1]].color == opp_color:
-                            cond = False
-                    if cond:
-                        sol_fields.append(neigh)
+                        if self.board.board[neigh2[0]][neigh2[1]].color == opp_color:   cond = False
+                    if cond:    sol_fields.append(neigh)
         return sol_fields
     
     #move_hexagon wants to be moved, where can it move ? return is a list of board coords
     def get_possible_move_fields(self, move_hexagon):
         stone_type = move_hexagon.type
         board_pos = move_hexagon.board_pos
-        if stone_type == "ant":
-            return self.get_ant_fields(board_pos)
-        elif stone_type == "hopper":
-            return self.get_hopper_fields(board_pos)
-        elif stone_type == "spider":
-            return self.get_spider_fields(board_pos)
-        elif stone_type == "bee":
-            return self.get_bee_fields(board_pos)
+        if stone_type == "ant":     return self.get_ant_fields(board_pos)
+        elif stone_type == "hopper":    return self.get_hopper_fields(board_pos)
+        elif stone_type == "spider":    return self.get_spider_fields(board_pos)
+        elif stone_type == "bee":   return self.get_bee_fields(board_pos)
         
     
     #event click at event_pos. in which hexagon is it ? return is a list containing exactly one hexagon 
@@ -101,9 +83,10 @@ class Calculator:
                     return hstone
         return self.empty_help_stone
     
+    
+    
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
-    #for the spider and bee conditions have to be added then at another code location.
     #with the help of the locator, which simulates all moving possibilities in forward, this function
     #checks whether on the way of one empty field to another a stone (ant) has to pass a too small gap 
     #for a stone to pass, which therefore does make the move impossible. As the locator saves his fields 
@@ -112,53 +95,57 @@ class Calculator:
     #of locator is helpful. 
     def get_ground_move_fields(self, coord):
         
-        #return neighbours of coord in test_board which are ground-reachably and which arent in seen_by_locator
-        def get_right_neighbours(coord):
-            seen_by_locator = [self.locator.locations[k][1] for k in range(start_key - 1, self.locator.new_key)]
-            neighbours = list(self.test_board.get_neighbours(coord).values())
-            for neigh in neighbours:
-                cond1 = not self.locator.can_move_to_neighbour_on_ground(coord, neigh, self.locator.test_board)
-                cond2 = neigh in seen_by_locator
-                if cond1 or cond2:
-                    neighbours.remove(neigh)
-            return neighbours
+        if not self.board.board[coord[0]][coord[1]].is_empty:
+        
+            #return neighbours of coord in test_board which are ground-reachably and which arent in seen_by_locator
+            def get_right_neighbours(coord):
+                seen_by_locator = [self.locator.locations[k][1] for k in range(start_key - 1, self.locator.new_key)]
+                neighbours3 = list(self.locator.test_board.get_neighbours(coord).values())
+                right_neighbours = []
+                for neigh in neighbours3:
+                    cond1 = self.locator.can_move_to_neighbour_on_ground(coord, neigh, self.locator.test_board)
+                    cond2 = neigh in seen_by_locator
+                    if cond1 and not cond2:  right_neighbours.append(neigh)
+                return right_neighbours
             
-        #this function just gets applied on coordinates which are "right neighbours"
-        def add_neigh_to_locator(dir_coord):   
-            actual_stone = self.locator.get_position()
-            self.locator.test_board.move_stone(actual_stone, dir_coord)
-            self.locator.move_to_position(dir_coord, self.locator.test_board)
-            right_neighbours = get_right_neighbours(dir_coord)
-            if len(right_neighbours) == 0:
-                return
-            else:
-                add_neigh_to_locator(right_neighbours.pop()) #possible error source, 
+            #this function just gets applied on coordinates which are "right neighbours"
+            def add_neigh_to_locator(dir_coord):
+                actual_stone = self.locator.get_position()[0] #possible error source
+                dir_stone = self.locator.test_board.board[dir_coord[0]][dir_coord[1]]
+                self.locator.test_board.move_stone(actual_stone, dir_stone) #first move stone
+                self.locator.move_to_position(dir_coord, self.locator.test_board) #then put locator there,
+                #so he doesnt sit on an empty stone
+                right_neighbours2 = get_right_neighbours(dir_coord)
+                if len(right_neighbours2) == 0: return
+                else:   add_neigh_to_locator(right_neighbours2[0]) #possible error source, 
                 #as just ONE neighbour is considered, but should be enough
-        
-        self.locator.move_to_position(coord)
-        self.locator.test_board.copy_board(self.board)
-        start_key = self.locator.new_key
-        
-        right_neighbours = get_right_neighbours(coord)
-        
-        for neigh in right_neighbours:
-            #copy the actual board constellation into test_board
+            
             self.locator.test_board.copy_board(self.board)
-            #move locator back to the "starting" coordinate
             self.locator.move_to_position(coord, self.locator.test_board)
-            #run the recursive function
-            add_neigh_to_locator(neigh)
-        
-        #all relevant were saved in locator since key start_key
-        ground_move_fields = [self.locator.locations[k][1] for k in range(start_key, self.locator.new_key)]    
-        
-        #set indicator matrix
-        for i in range(self.board.size):
-            for j in range(self.board.size):
-                if (i,j) in ground_move_fields: self.matrix[i][j] = 1 
-                else: self.matrix[i][j] = 0
-        
-        return ground_move_fields
+            start_key = self.locator.new_key
+            
+            right_neighbours = get_right_neighbours(coord)
+            
+            add_neigh_to_locator(right_neighbours[0])
+            
+#            for neigh in right_neighbours:
+#                #copy the actual board constellation into test_board
+#                self.locator.test_board.copy_board(self.board)
+#                #move locator back to the "starting" coordinate
+#                self.locator.move_to_position(coord, self.locator.test_board)
+#                #run the recursive function
+#                add_neigh_to_locator(neigh)
+            
+            #all relevant fields were saved in locator since key start_key
+            ground_move_fields = [self.locator.locations[k][1] for k in range(start_key, self.locator.new_key)]    
+            
+            #set indicator matrix
+            for i in range(self.board.size):
+                for j in range(self.board.size):
+                    if (i,j) in ground_move_fields: self.matrix[i][j] = 1 
+                    else: self.matrix[i][j] = 0
+            
+            return ground_move_fields
     
     
     #bee is on coord. where can it move ?

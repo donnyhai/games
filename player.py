@@ -50,7 +50,7 @@ class Player:
         frame_x_size = surface_width*0.1
         hexa_size = int(frame_x_size*0.3)
         sqrt_3 = sqrt(3)
-        y_distance = (surface_height - 4 * hexa_size*sqrt_3) // 5
+        y_distance = (surface_height - 5 * hexa_size*sqrt_3) // 6
         right_frame_translate = (surface_width*0.9, 0)
         
         ant_position = ((frame_x_size * 21) // 40 , y_distance)
@@ -90,7 +90,7 @@ class Player:
     def get_stones_list(self):
         stones_list = []
         for stones in self.stones.values():
-            for stone in stones:
+            for stone in stones.values():
                 stones_list.append(stone)
         return stones_list
 

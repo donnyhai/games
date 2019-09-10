@@ -19,15 +19,18 @@ class Painter:
     
     #draw full hexagon (shall a frame with mark_mode = 0 also be drawn ?)
     def draw_hexagon(self, hexagon, surface):
-        #draw the frame aswell:
-        #self.draw_hexagon_marking(hexagon, surface, mark_mode = 2) #note that if mark_mode > 0, stone gets marked
         hexagon.is_drawn = True
         hexagon.set_drawn_surface(surface)
         #as the hexagon gets drawn, we can calculate the global pixel pos
         hexagon.calculate_global_pixel_pos()
         
+        #draw the frame aswell:
+        self.draw_hexagon_marking(hexagon, mark_mode = 2) #note that if mark_mode > 0, stone gets marked
+        hexagon.is_marked = False #delete marking
+        
+        
         if hexagon.type == "empty":
-            empty_color = (100,50,3)
+            empty_color = (5,90,3)
             pygame.draw.polygon(surface, empty_color, hexagon.points)
         else:
             if hexagon.color == "white":
@@ -51,7 +54,7 @@ class Painter:
         for row in board.board:
             for hexagon in row:
                 self.draw_hexagon(hexagon, surface)
-
+    
     #draw the frame of an hexagon in color with respect to mark_mode (mark_mode = 0 is normal thin line) 
     def draw_hexagon_marking(self, hexagon, color = (0,0,0), mark_mode = 0):
         #if just a marking with mark_mode = 0 is drawn, hexagon shall not be considered as marked, 

@@ -1,33 +1,54 @@
 import board
 import player
+import hexagon_stone as hs
 
 class Test_Board(board.Board):
     
-    def copy_board(self, board):
-        self.board = board.board.copy()
-        self.nonempty_fields = board.nonempty_fields.copy()
-        
-    #Note, the move_stone_condition and move_stone is different as in Board (less restrictive, 
-    #to allow easier test moves)
-    def move_stone_condition(self, stone, coord):
-        #stone is on board
-        cond2 = stone.is_on_board
-        #i,j is empty
-        cond3 = self.board[coord[0]][coord[1]].is_empty 
-        #boardstones are connected after taking away stone
-        nonempty_fields = self.nonempty_fields.copy()
-        cond4 = self.is_connected(nonempty_fields.remove(stone.coordinate))
-        return cond2 and cond3 and cond4
     
-    #NOTE: this method is old. it shall work with board.empty_board. when a stone get moved, put the empty stone
-    #on the position where the moved stone was. this empty stone shall be taken out of empty_board, which consists
-    #of the init matrix of empty stones when board was init
-    def move_stone(self, stone, coord):
-        if self.move_stone_condition(stone, coord):
-            self.board[stone.coordinate[0]][stone.coordinate[1]].make_empty()
-            self.board[coord[0]][coord[1]] = stone
-
-
+    #aim is to copy the board matrix of an board object, and also make copies of all hexagons inside the matrix
+    #use copy_hexagon. input is an board object
+    def copy_board(self, board): 
+        
+        #input is a matrix (list of lists)
+        def copy_board_matrix(board_matrix):
+            copied_board_matrix = [0] * board.size
+            for k in range(board.size):
+                new_row = []
+                for hexagon in board_matrix[k]:
+                    new_row.append(self.copy_hexagon(hexagon))
+                copied_board_matrix[k] = new_row
+            return copied_board_matrix
+        
+        self.board = copy_board_matrix(board.board)
+        self.nonempty_fields = board.nonempty_fields.copy()
+    
+    #aim is to copy a hexagon, means here to make a new hexagon with new id but same attributes     
+    def copy_hexagon(self, hexagon):
+        hexagon_copy = hs.hexagon_stone(hexagon.size)
+        for attr in list(hexagon.__dict__.keys()):
+            hexagon_copy.__dict__[attr] = hexagon.__dict__[attr]
+        return hexagon_copy
+        
+    #this function evaluates and executes a stone move on the test board. input are two hexagons.
+    #there are no conditions for the move, the testboard can just move a stone (conditions have to be
+    #applied elsewhere)
+    def move_stone(self, fhex, shex):
+        
+        old_board_pos = fhex.board_pos
+        old_pixel_pos = fhex.pixel_pos
+        fhex.set_board_pos(shex.board_pos)
+        fhex.set_pixel_pos(shex.pixel_pos)
+        
+        #refill "old" place with empty stone
+        new_empty_stone = self.empty_board[old_board_pos[0]][old_board_pos[1]]
+        self.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+        new_empty_stone.set_pixel_pos(old_pixel_pos)
+        
+        #fill "new" place with fhex
+        self.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+            
+    
+    
 class Test_Player(player.Player):
     pass
 
