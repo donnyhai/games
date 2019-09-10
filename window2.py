@@ -7,7 +7,7 @@ pygame.init()
 pygame.display.init()
 
 #Set window and button sizes
-window_x_size =  2500
+window_x_size =  1520
 window_y_size = window_x_size * 9 // 16
 window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size // 6
@@ -63,11 +63,11 @@ current_player_color = "white"
 game = game.HvsH_Game(display)
 
 full_surface = display
-game_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-white_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-black_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-white_text_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-black_text_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
+game_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 , 0, window_x_size * 0.8 , window_y_size))
+white_surface = full_surface.subsurface(pygame.Rect(0, 0, window_x_size // 10, (window_y_size * 4) // 5))
+black_surface = full_surface.subsurface(pygame.Rect((window_x_size * 9) // 10, 0, window_x_size  // 10, (window_y_size * 4) // 5))
+white_text_surface = full_surface.subsurface(pygame.Rect(0, (4 * window_y_size) // 5, window_x_size  // 10, window_y_size // 5))
+black_text_surface = full_surface.subsurface(pygame.Rect((9 * window_x_size) // 10, (4 * window_y_size) // 5, window_x_size  // 10, window_y_size // 5))
 
 #run the window and wait for mouseclicks or quit
 while True:

@@ -51,6 +51,11 @@ class Painter:
         for row in board.board:
             for hexagon in row:
                 self.draw_hexagon(hexagon, surface)
+                
+    def draw_hexagon_frame(self, hexagon, color = (0,0,0), width = 1):
+        #scaling_ratio = hexagon.size + 2 * width / sqrt(3) - (width // 2)
+        points = hexagon.getting_hexa(hexagon.size, hexagon.pixel_pos)
+        pygame.draw.lines(hexagon.drawn_surface, color, True, points, int(width))
 
     #draw the frame of an hexagon in color with respect to mark_mode (mark_mode = 0 is normal thin line) 
     def draw_hexagon_marking(self, hexagon, color = (0,0,0), mark_mode = 0):
@@ -63,13 +68,14 @@ class Painter:
             start_vector = (int(hexagon.pixel_pos[0] - mark_mode / sqrt(3)) + (mark_mode // 2), 
                             int(hexagon.pixel_pos[1] - mark_mode) + (mark_mode // 2) ) 
             points = hexagon.getting_hexa(scaling_ratio, start_vector)
-            points[2][0] -= scaling_ratio // 15
+            #points[2][0] -= scaling_ratio // 10
             points[3][1] -= scaling_ratio // 20
             points[4][1] -= scaling_ratio // 20
+            points[4][0] += scaling_ratio // 30
             points[5][0] += scaling_ratio // 25
             pygame.draw.lines(hexagon.drawn_surface, color, True, points, int(mark_mode) + 1)
             hexagon.is_marked = True
-            
+                   
     #draw set of hexagons with respective color and mark_mode, for example when drawing all possible 
     #hexagons a stone can move to 
     def draw_set_of_hexagon_markings(self, hexagon_list, color, mark_mode = 0):
@@ -81,7 +87,7 @@ class Painter:
         surface_width = surface.get_width()
         surface_height = surface.get_height()
         line_width = surface_width // 250
-        pygame.draw.line(surface, (0,0,0), (int(surface_width*0.1),0),(int(surface_width*0.1), surface_height), line_width)
+        pygame.draw.line(surface, (0,0,0), (int(surface_width*0.1 + 0.5 * line_width),0),(int(surface_width*0.1 + 0.5 * line_width), surface_height), line_width)
         pygame.draw.line(surface, (0,0,0), (int(surface_width*0.9),0),(int(surface_width*0.9), surface_height), line_width)
         pygame.draw.line(surface, (0,0,0), (0, int(surface_height*0.8)), (int(surface_width*0.1), int(surface_height*0.8)), line_width)
         pygame.draw.line(surface, (0,0,0), (int(surface_width*0.9), int(surface_height*0.8)), (int(surface_width), int(surface_height*0.8)), line_width)

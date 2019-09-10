@@ -1,5 +1,5 @@
 import pygame
-import hexagon_stone as hs
+#import hexagon_stone as hs
 from math import sqrt
 pygame.init()
 
@@ -52,6 +52,8 @@ class Interactor:
             ##then excute drawing aspects
             self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
+            #self.painter.draw_hexagon_marking(shex, (50,50,50), max((player.stone_size//20),1))
+            self.painter.draw_hexagon_frame(shex, (50,50,50), player.stone_size // 15)
     
     #NOT COMPLETE, 
     #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
