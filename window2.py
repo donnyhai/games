@@ -15,6 +15,10 @@ button_y_size = window_y_size//6
 frame_size = window_x_size // 250
 mark_size = window_x_size // 400
 
+#while loop timing
+clock = pygame.time.Clock()
+FPS = 30
+
 
 #creating showable start_window on display with, set name and set background color
 display = pygame.display.set_mode(window_size,0,32)
@@ -210,6 +214,9 @@ while True:
 
               
     pygame.display.update()
+    clock.tick(FPS)
+    
+pygame.quit()
    
     
     
