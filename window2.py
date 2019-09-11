@@ -245,7 +245,7 @@ while True:
                                 
                                 #execute move
                                 elif src_hexagon in game.players[current_player_color].stones_list:
-                                    if clicked_hexagon in dir_hexagons:
+                                    if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos: 
                                         wm.unmark_hexagons(display, display_before, marked_hexagons)
                                         game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         #set new turn
@@ -309,7 +309,7 @@ while True:
                             
                             #execute move
                             elif src_hexagon in game.players[current_player_color].stones_list:
-                                if clicked_hexagon in dir_hexagons:
+                                if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
                                     game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     #set new turn
