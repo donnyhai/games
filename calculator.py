@@ -94,12 +94,6 @@ class Calculator:
                     return hstone
         return self.empty_help_stone
     
-    
-    def get_ground_move_fields(self, coord):
-        self.graph.set_points(self.graph.calculate_all_empty_neighbours())
-        self.graph.set_edges(self.graph.calculate_ground_moving_edges())
-        return self.graph.calculate_connected_component(coord)
-    
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
     #with the help of the locator, which simulates all moving possibilities in forward, this function
@@ -108,6 +102,14 @@ class Calculator:
     #on the way, it is like a spion which goes first and checks the situation, then returns all fields 
     #which are ok, that means physically reachable on the ground. function can_move_to_neighbour_on_ground
     #of locator is helpful. 
+    def get_ground_move_fields(self, coord):
+        self.graph.set_points(self.graph.calculate_all_empty_neighbours())
+        self.graph.set_edges(self.graph.calculate_ground_moving_edges())
+        return self.graph.calculate_connected_component(coord)
+    
+    
+    #NOT YET WORKING
+    #alternative way with locator. advantage: locator movements may be useful for interpretations
     def get_ground_move_fields2(self, coord):
         
         if not self.board.board[coord[0]][coord[1]].is_empty:
@@ -177,7 +179,7 @@ class Calculator:
         hopper_fields = []
         #loop all the neighbours of coord and look for nonempty neighbours, 
         #and get the first empty field in every "direction"
-        for i in range(5):
+        for i in range(6):
             neigh = neighbours[i]
             if not self.board.board[neigh[0]][neigh[1]].is_empty:
                 while not self.board.board[neigh[0]][neigh[1]].is_empty:
