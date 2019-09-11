@@ -23,13 +23,17 @@ class Hexagon_Graph:
                     edges.append((point, point2))
         return edges
     
-    #return is the set of coords of all empty neighbours of nonempty fields
-    def calculate_all_empty_neighbours(self):
+    #intention is to move a stone from coord. return of this function is the set
+    #of all empty neighbours of nonempty fields, where coord was removed
+    def calculate_all_empty_neighbours(self, coord):
         points = []
-        for coords in self.board.nonempty_fields:
+        adapt_nonempty_neighbours = self.board.nonempty_fields.copy()
+        adapt_nonempty_neighbours.remove(coord) #remove coord 
+        for coords in adapt_nonempty_neighbours: #just iterate over this adapted nonempty_fields list
             for neigh in self.board.get_neighbours(coords).values():
                 if self.board.board[neigh[0]][neigh[1]].is_empty:
                     points.append(neigh)
+        points.append(coord) #as board is not empty on coord, append this to the list 
         return points
     
     #here points should be all empty neighbours of nonempty_fields. edges: edge from 
@@ -68,7 +72,7 @@ class Hexagon_Graph:
     def calculate_connected_component(self, point):
         points = []
         self.markings = [0] * len(self.points) #reset markings
-        self.depth_first_search(self.points[0]) #run algo
+        self.depth_first_search(point) #run algo
         for k in range(len(self.points)):
             if self.markings[k] == 1:
                 points.append(self.points[k])

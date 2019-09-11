@@ -103,9 +103,11 @@ class Calculator:
     #which are ok, that means physically reachable on the ground. function can_move_to_neighbour_on_ground
     #of locator is helpful. 
     def get_ground_move_fields(self, coord):
-        self.graph.set_points(self.graph.calculate_all_empty_neighbours())
+        self.graph.set_points(self.graph.calculate_all_empty_neighbours(coord))
         self.graph.set_edges(self.graph.calculate_ground_moving_edges())
-        return self.graph.calculate_connected_component(coord)
+        ground_move_fields = self.graph.calculate_connected_component(coord)
+        ground_move_fields.remove(coord) #remove this coord, as stone should not be able to move there
+        return ground_move_fields
     
     
     #NOT YET WORKING

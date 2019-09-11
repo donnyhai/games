@@ -24,9 +24,9 @@ class Painter:
         #as the hexagon gets drawn, we can calculate the global pixel pos
         hexagon.calculate_global_pixel_pos()
         
-        #draw the frame aswell:
-        self.draw_hexagon_marking(hexagon, mark_mode = 2) #note that if mark_mode > 0, stone gets marked
-        hexagon.is_marked = False #delete marking
+#        #draw the frame aswell:
+#        self.draw_hexagon_marking(hexagon, mark_mode = 2) #note that if mark_mode > 0, stone gets marked
+#        hexagon.is_marked = False #delete marking
         
         
         if hexagon.type == "empty":
