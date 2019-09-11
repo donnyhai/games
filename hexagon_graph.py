@@ -2,9 +2,9 @@
 #note that this graph objects gets the board matrix as input, and depending on the situation get set
 #his points and edges
 class Hexagon_Graph:
-    def __init__(self, board):
+    def __init__(self, board, locator):
         self.board = board #board object
-
+        self.locator = locator
     
     def set_points(self, points):
         self.points = points
@@ -23,6 +23,26 @@ class Hexagon_Graph:
                     edges.append((point, point2))
         return edges
     
+    #return is the set of coords of all empty neighbours of nonempty fields
+    def calculate_all_empty_neighbours(self):
+        points = []
+        for coords in self.board.nonempty_fields:
+            for neigh in self.board.get_neighbours(coords).values():
+                if self.board.board[neigh[0]][neigh[1]].is_empty:
+                    points.append(neigh)
+        return points
+    
+    #here points should be all empty neighbours of nonempty_fields. edges: edge from 
+    #point to point2 iff a stone can move on the ground from point to point2
+    def calculate_ground_moving_edges(self):
+        edges = []
+        for point in self.points:
+            for point2 in self.points:
+                if self.locator.can_move_to_neighbour_on_ground(point, point2, self.board):
+                    edges.append((point, point2))
+        return edges
+            
+    
     #for a point in the graph calculate all connected neighbours                
     def get_graph_neighbours(self, point):
         graph_neighbours = []
@@ -31,7 +51,7 @@ class Hexagon_Graph:
                 graph_neighbours.append(point2)
         return graph_neighbours
     
-    #algorithm depth-first search to check connectedness of the graph (see internet)
+    #algorithm depth-first search to check connectedness of the graph (source: internet)
     def depth_first_search(self, point):
         self.markings[self.points.index(point)] = 1
         relevant_points = [point2 for point2 in self.get_graph_neighbours(point) if self.markings[self.points.index(point2)] == 0]
@@ -40,18 +60,19 @@ class Hexagon_Graph:
     
     #check whether the graph is connected        
     def is_connected(self):
+        if len(self.calculate_connected_component(self.points[0])) == len(self.points):
+            return True
+        else: return False
+        
+    #return all points of the connected component of point
+    def calculate_connected_component(self, point):
+        points = []
         self.markings = [0] * len(self.points) #reset markings
         self.depth_first_search(self.points[0]) #run algo
-#        if self.markings.count(1) == len(self.points):
-#            return True
-#        else: return False
-        
-        #check markings. all points are marked iff graph is connected
-        try:
-            self.markings.index(0)
-            return False
-        except ValueError:
-            return True
+        for k in range(len(self.points)):
+            if self.markings[k] == 1:
+                points.append(self.points[k])
+        return points
         
                 
         

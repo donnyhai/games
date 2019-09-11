@@ -12,7 +12,7 @@ class Calculator:
         self.matrix = self.all_fields()
         self.empty_help_stone = hs.hexagon_stone(self.board.hexagon_size, "empty", 99)
         
-        self.graph = hg.Hexagon_Graph(self.board) #doesnt contain points or edges yet
+        self.graph = hg.Hexagon_Graph(self.board, self.locator) #doesnt contain points or edges yet
         
         
     def all_fields(self):
@@ -43,6 +43,7 @@ class Calculator:
             for neigh in self.board.get_neighbours(opp_color_bee.board_pos).values():
                 if self.board.board[neigh[0]][neigh[1]].is_empty:   opp_color_bee_surr = False
         return [color_bee_surr, opp_color_bee_surr]
+    
     
     #input is the color of a stone which wants to be put onto the board from the side.
     #return is a list of board coords where this stone can be legally put to 
@@ -94,6 +95,10 @@ class Calculator:
         return self.empty_help_stone
     
     
+    def get_ground_move_fields(self, coord):
+        self.graph.set_points(self.graph.calculate_all_empty_neighbours())
+        self.graph.set_edges(self.graph.calculate_ground_moving_edges())
+        return self.graph.calculate_connected_component(coord)
     
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
@@ -103,7 +108,7 @@ class Calculator:
     #on the way, it is like a spion which goes first and checks the situation, then returns all fields 
     #which are ok, that means physically reachable on the ground. function can_move_to_neighbour_on_ground
     #of locator is helpful. 
-    def get_ground_move_fields(self, coord):
+    def get_ground_move_fields2(self, coord):
         
         if not self.board.board[coord[0]][coord[1]].is_empty:
         
