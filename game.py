@@ -5,6 +5,7 @@ import calculator
 import interactor
 import painter
 
+
 class Game:
     
     board_size = 30

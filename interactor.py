@@ -147,8 +147,7 @@ class Interactor:
         #boardstones are connected after taking away stone
         nonempty_fields = self.board.nonempty_fields.copy()
         nonempty_fields.remove(fhex.board_pos) 
-        cond4 = self.board.is_connected(nonempty_fields)
-        return cond00 and cond0 and cond1 and cond2 and cond3 and cond4
+        return cond00 and cond0 and cond1 and cond2 and cond3
             
     
     ###### shall be in painter

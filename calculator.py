@@ -1,5 +1,5 @@
 import hexagon_stone as hs
-import test_objects as to
+import hexagon_graph as hg
 
 class Calculator:
     def __init__(self, locator):
@@ -12,9 +12,19 @@ class Calculator:
         self.matrix = self.all_fields()
         self.empty_help_stone = hs.hexagon_stone(self.board.hexagon_size, "empty", 99)
         
+        self.graph = hg.Hexagon_Graph(self.board) #doesnt contain points or edges yet
+        
         
     def all_fields(self):
         return [[1] * self.board.size for i in range(self.board.size)]
+    
+    #are the stones connected after taking away stone on coord ? use hexagon_graph object
+    def board_keeps_connected(self, coord):
+        nonempty_fields = self.board.nonempty_fields.copy()
+        nonempty_fields.remove(coord)
+        self.graph.set_points(nonempty_fields)
+        self.graph.set_edges(self.graph.calculate_standard_edges())
+        return self.graph.is_connected()
     
     #define winning condition: player wins if opposite bee is surrounded
     def winning_condition(self, color):
@@ -126,15 +136,13 @@ class Calculator:
             
             right_neighbours = get_right_neighbours(coord)
             
-            add_neigh_to_locator(right_neighbours[0])
-            
-#            for neigh in right_neighbours:
-#                #copy the actual board constellation into test_board
-#                self.locator.test_board.copy_board(self.board)
-#                #move locator back to the "starting" coordinate
-#                self.locator.move_to_position(coord, self.locator.test_board)
-#                #run the recursive function
-#                add_neigh_to_locator(neigh)
+            for neigh in right_neighbours:
+                #copy the actual board constellation into test_board
+                self.locator.test_board.copy_board(self.board)
+                #move locator back to the "starting" coordinate
+                self.locator.move_to_position(coord, self.locator.test_board)
+                #run the recursive function
+                add_neigh_to_locator(neigh)
             
             #all relevant fields were saved in locator since key start_key
             ground_move_fields = [self.locator.locations[k][1] for k in range(start_key, self.locator.new_key)]    
@@ -236,7 +244,7 @@ class Calculator:
         pass
 
     
-    
+
             
 
 

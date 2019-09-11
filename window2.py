@@ -220,7 +220,7 @@ while True:
                                     #mark move
                                     elif clicked_hexagon in game.players[current_player_color].stones_list:
                                         src_hexagon = clicked_hexagon
-                                        if game.board.keeps_connected(src_hexagon.board_pos):
+                                        if game.interactor.calculator.board_keeps_connected(src_hexagon.board_pos):
                                             dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
                                             dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
                                             
@@ -284,7 +284,7 @@ while True:
                                 #mark move
                                 elif clicked_hexagon in game.players[current_player_color].stones_list:
                                     src_hexagon = clicked_hexagon
-                                    if game.board.keeps_connected(src_hexagon.board_pos):
+                                    if game.interactor.calculator.board_keeps_connected(src_hexagon.board_pos):
                                         dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
                                         dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
         
