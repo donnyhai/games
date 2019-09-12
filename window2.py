@@ -112,6 +112,8 @@ while True:
                         
                         game.interactor.set_game_surface(game_surface) #add game_surface as a attribute in interactor
                         
+                        
+                        
                         start_game_mode = False 
                         
                         #print a text claiming that white begins

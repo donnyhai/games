@@ -64,15 +64,13 @@ class Locator:
         #conditions to make the move on the ground from coord1 to coord2 possible:
         #coord1 and coord2 are neighbours
         cond1 = coord1 in neighbours2
-        #field at coord2 is empty
-        cond2 = not coord2 in nonempty_fields
         #stone can physically "pass" from coord1 to coord2 (consider neighbour stones)
         #and there exists min one neighbour in the intersection -> exactly one neighbour
-        #Note that the intersectino of neigh1 and neigh2 contains 0,1 or 2 nonempty stones
+        #Note that the intersection of neigh1 and neigh2 contains 0,1 or 2 nonempty stones
         cond3 = len(set(nonempty_neigh1).intersection(nonempty_neigh2)) == 1
         #coord2 is not lying "outside" nonempty fields (that means at least "two" steps away of them)
         cond4 = len(nonempty_neigh2) >= 1 if which_board.board[coord1[0]][coord1[1]].is_empty else len(nonempty_neigh2) >= 2
-        return cond1 and cond2 and cond3 and cond4
+        return cond1 and cond3 and cond4
     
 
 
