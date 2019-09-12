@@ -12,7 +12,7 @@ class Calculator:
         self.matrix = self.all_fields()
         self.empty_help_stone = hs.hexagon_stone(self.board.hexagon_size, "empty", 99)
         
-        self.graph = hg.Hexagon_Graph(self.board, self.locator) #doesnt contain points or edges yet
+        self.graph = hg.Hexagon_Graph(self.board) #doesnt contain points or edges yet
         
         
     def all_fields(self):
@@ -96,12 +96,7 @@ class Calculator:
     
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
-    #with the help of the locator, which simulates all moving possibilities in forward, this function
-    #checks whether on the way of one empty field to another a stone (ant) has to pass a too small gap 
-    #for a stone to pass, which therefore does make the move impossible. As the locator saves his fields 
-    #on the way, it is like a spion which goes first and checks the situation, then returns all fields 
-    #which are ok, that means physically reachable on the ground. function can_move_to_neighbour_on_ground
-    #of locator is helpful. 
+    #use graph object
     def get_ground_move_fields(self, coord):
         self.graph.set_points(self.graph.calculate_all_empty_neighbours(coord))
         self.graph.set_edges(self.graph.calculate_ground_moving_edges())
@@ -111,7 +106,7 @@ class Calculator:
     
     #bee is on coord. where can it move ?
     def get_bee_fields(self, coord):
-        return [coord1 for coord1 in self.get_ground_move_fields(coord) if self.locator.can_move_to_neighbour_on_ground(coord, coord1, self.board)]
+        return [coord1 for coord1 in self.get_ground_move_fields(coord) if self.graph.can_move_to_neighbour_on_ground(coord, coord1, self.board)]
     
     
     #ant is on coord. where can it move ?
@@ -139,8 +134,6 @@ class Calculator:
         self.graph.set_edges(self.graph.calculate_ground_moving_edges())
         self.graph.set_edges(self.graph.calculate_spider_move_edges())
         spider_fields = self.graph.get_graph_neighbours(coord)
-        if coord in spider_fields:
-            spider_fields.remove(coord)
         return spider_fields
     
     #NOT CORRECT  
@@ -154,7 +147,7 @@ class Calculator:
         pass
 
     
-
+    
             
 
 

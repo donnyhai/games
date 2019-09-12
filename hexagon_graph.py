@@ -2,9 +2,8 @@
 #note that this graph objects gets the board matrix as input, and depending on the situation get set
 #his points and edges
 class Hexagon_Graph:
-    def __init__(self, board, locator):
+    def __init__(self, board):
         self.board = board #board object
-        self.locator = locator
     
     def set_points(self, points):
         self.points = points
@@ -67,7 +66,7 @@ class Hexagon_Graph:
         edges = []
         for point in self.points:
             for point2 in self.points:
-                if self.locator.can_move_to_neighbour_on_ground(point, point2, self.board):
+                if self.can_move_to_neighbour_on_ground(point, point2, self.board):
                     edges.append((point, point2))
         return list(set(edges))
     
@@ -82,8 +81,7 @@ class Hexagon_Graph:
                 for neigh2 in neighbours2:
                     neighbours3 = self.get_graph_neighbours(neigh2)
                     neighbours3.remove(neigh1)
-                    for neigh3 in neighbours3:
-                        edges.append((src_point, neigh3))
+                    for neigh3 in neighbours3:  if neigh3 != src_point: edges.append((src_point, neigh3))
         return list(set(edges))
     #####
     
@@ -91,16 +89,34 @@ class Hexagon_Graph:
     def depth_first_search(self, point):
         self.markings[self.points.index(point)] = 1
         relevant_points = [point2 for point2 in self.get_graph_neighbours(point) if self.markings[self.points.index(point2)] == 0]
-        for point2 in relevant_points:
-            self.depth_first_search(point2)
+        for point2 in relevant_points:  self.depth_first_search(point2)
     
     #check whether the graph is connected        
     def is_connected(self):
-        if len(self.calculate_connected_component(self.points[0])) == len(self.points):
-            return True
+        if len(self.calculate_connected_component(self.points[0])) == len(self.points): return True
         else: return False
         
-    
+    #is it possible to move from coord1 to coord2 on the ground?
+    #coord1 and coord2 have to be neighbour coordinates
+    #helpful for all stones moving on the ground. 
+    #yet this function doesnt check connectness of the board stones
+    #again note that you have to give the board (board or test_board)
+    def can_move_to_neighbour_on_ground(self, coord1, coord2, which_board):
+        nonempty_fields = which_board.nonempty_fields
+        neighbours1 = list(which_board.get_neighbours(coord1).values())
+        neighbours2 = list(which_board.get_neighbours(coord2).values())
+        nonempty_neigh1 = [neigh for neigh in neighbours1 if neigh in nonempty_fields]
+        nonempty_neigh2 = [neigh for neigh in neighbours2 if neigh in nonempty_fields]
+        #conditions to make the move on the ground from coord1 to coord2 possible:
+        #coord1 and coord2 are neighbours
+        cond1 = coord1 in neighbours2
+        #stone can physically "pass" from coord1 to coord2 (consider neighbour stones)
+        #and there exists min one neighbour in the intersection -> exactly one neighbour
+        #Note that the intersection of neigh1 and neigh2 contains 0,1 or 2 nonempty stones
+        cond3 = len(set(nonempty_neigh1).intersection(nonempty_neigh2)) == 1
+        #coord2 is not lying "outside" nonempty fields (that means at least "two" steps away of them)
+        cond4 = len(nonempty_neigh2) >= 1 if which_board.board[coord1[0]][coord1[1]].is_empty else len(nonempty_neigh2) >= 2
+        return cond1 and cond3 and cond4
         
     
     
