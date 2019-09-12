@@ -35,7 +35,7 @@ class Hexagon_Graph:
             for neigh in self.board.get_neighbours(coords).values():
                 if self.board.board[neigh[0]][neigh[1]].is_empty:
                     points.append(neigh)
-        points.append(coord) #as board is not empty on coord, append this to the list 
+        points.append(coord) #as board is not empty on coord, append coord to the list here
         return list(set(points))
     
     #return all points of the connected component of point
@@ -48,6 +48,7 @@ class Hexagon_Graph:
                 points.append(self.points[k])
         return list(set(points))
     #####
+    
     
     ##### edges calculations
     

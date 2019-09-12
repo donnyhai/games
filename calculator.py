@@ -142,7 +142,8 @@ class Calculator:
         if coord in spider_fields:
             spider_fields.remove(coord)
         return spider_fields
-        
+    
+    #NOT CORRECT  
     #bug is on coord. where can it move ?
     def get_bug_fields(self, coord):
         return self.board.get_neighbours(coord).values()
