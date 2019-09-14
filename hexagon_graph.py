@@ -82,8 +82,7 @@ class Hexagon_Graph:
                     neighbours3 = self.get_graph_neighbours(neigh2)
                     neighbours3.remove(neigh1)
                     for neigh3 in neighbours3:  
-                        if neigh3 != src_point: 
-                            edges.append((src_point, neigh3))
+                        if neigh3 != src_point: edges.append((src_point, neigh3))
         return list(set(edges))
     #####
     
