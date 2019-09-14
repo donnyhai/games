@@ -249,7 +249,10 @@ while True:
                                 elif src_hexagon in game.players[current_player_color].stones_list:
                                     if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos: 
                                         wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                        game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                        if src_hexagon.type == "bug" and not clicked_hexagon.is_empty:
+                                            game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                        else:
+                                            game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         #set new turn
                                         if current_player_color == "white":
                                             game.turn = ("black", game.turn[1])
@@ -313,7 +316,10 @@ while True:
                             elif src_hexagon in game.players[current_player_color].stones_list:
                                 if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                    game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    if src_hexagon.type == "bug" and not clicked_hexagon.is_empty:
+                                        game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    else:
+                                        game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     #set new turn
                                     if current_player_color == "white":
                                         game.turn = ("black", game.turn[1])

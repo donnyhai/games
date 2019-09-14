@@ -70,6 +70,7 @@ class Calculator:
         elif stone_type == "hopper":    return self.get_hopper_fields(board_pos)
         elif stone_type == "spider":    return self.get_spider_fields(board_pos)
         elif stone_type == "bee":   return self.get_bee_fields(board_pos)
+        elif stone_type == "bug": return self.get_bug_fields(board_pos)
         
     
     #event click at event_pos. in which hexagon is it ? return is a list containing exactly one hexagon 
@@ -136,10 +137,10 @@ class Calculator:
         spider_fields = self.graph.get_graph_neighbours(coord)
         return spider_fields
     
-    #NOT CORRECT  
     #bug is on coord. where can it move ?
     def get_bug_fields(self, coord):
-        return self.board.get_neighbours(coord).values()
+        nonempty_neighbours = set(self.board.nonempty_fields).intersection(self.board.get_neighbours(coord).values())
+        return self.get_bee_fields(coord) + list(nonempty_neighbours)
         
         
     #marienbug is on coord. where can it move ?
