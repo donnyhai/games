@@ -85,7 +85,7 @@ class Calculator:
             #look in player.stones for a clicked hexagon
             for hstone1 in player.stones.values():
                 for hstone2 in hstone1.values():
-                    if hstone2.is_drawn:
+                    if hstone2.is_drawn and not hstone2.has_bug_on:
                         if hstone2.point_in_hexagon(event_pos):
                             return hstone2
         #look on the board

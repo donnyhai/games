@@ -143,8 +143,7 @@ while True:
                                 game.turn = ("black", 1)
                             #unmark marked hexagons
                             else:
-                                if marked_hexagons:
-                                    wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
 # (black, 1)                         
                         elif game.turn == ("black", 1):
                             neigh_coords = game.board.get_neighbours(first_stone_board_pos).values()
@@ -163,8 +162,7 @@ while True:
                                 dir_hexagons.clear() #reset dir_hexagons so it wont cause problems in the following turns
                             #unmark marked hexagons
                             else:
-                                if marked_hexagons:
-                                    wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
 # turn 2 - 4                    
                         #at least one white and one black stone are put now. now be has to be put until 4. turn
                         elif game.turn[1] in {2,3,4}:
@@ -202,8 +200,7 @@ while True:
                                     wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                 
                                 else:
-                                    if marked_hexagons:
-                                        wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                    if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
     #bee already put                          
                             else:
                                 if not marked_hexagons:
@@ -222,7 +219,10 @@ while True:
                                     #mark move
                                     elif clicked_hexagon in game.players[current_player_color].stones_list:
                                         src_hexagon = clicked_hexagon
-                                        if game.interactor.calculator.board_keeps_connected(src_hexagon.board_pos):
+                                        bug_cond = src_hexagon.type == "bug"
+                                        if bug_cond:
+                                            bug_cond = len(src_hexagon.underlaying_stones) > 0
+                                        if game.interactor.calculator.board_keeps_connected(src_hexagon.board_pos) or bug_cond:
                                             dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
                                             dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
                                             
@@ -242,15 +242,15 @@ while True:
                                         dir_hexagons.clear()
                                         wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                     else:
-                                        if marked_hexagons:
-                                            wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                        if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
                                 #execute move
                                 elif src_hexagon in game.players[current_player_color].stones_list:
                                     if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos: 
                                         wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                        if src_hexagon.type == "bug" and not clicked_hexagon.is_empty:
-                                            game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                        if src_hexagon.type == "bug":
+                                            if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
+                                                game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         else:
                                             game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         #set new turn
@@ -261,12 +261,10 @@ while True:
                                         dir_hexagons.clear()
                                         wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                     else:
-                                        if marked_hexagons:
-                                            wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                        if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
                                 else:
-                                    if marked_hexagons:
-                                        wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                    if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             
                             
 # turn > 4                        
@@ -289,7 +287,10 @@ while True:
                                 #mark move
                                 elif clicked_hexagon in game.players[current_player_color].stones_list:
                                     src_hexagon = clicked_hexagon
-                                    if game.interactor.calculator.board_keeps_connected(src_hexagon.board_pos):
+                                    bug_cond = src_hexagon.type == "bug"
+                                    if bug_cond:
+                                        bug_cond = len(src_hexagon.underlaying_stones) > 0
+                                    if game.interactor.calculator.board_keeps_connected(src_hexagon.board_pos) or bug_cond:
                                         dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
                                         dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
         
@@ -309,15 +310,15 @@ while True:
                                     dir_hexagons.clear()
                                     wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                 else:
-                                    if marked_hexagons:
-                                        wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                    if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             
                             #execute move
                             elif src_hexagon in game.players[current_player_color].stones_list:
                                 if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                    if src_hexagon.type == "bug" and not clicked_hexagon.is_empty:
-                                        game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    if src_hexagon.type == "bug":
+                                        if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
+                                            game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     else:
                                         game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     #set new turn
@@ -328,14 +329,11 @@ while True:
                                     dir_hexagons.clear()
                                     wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                 else:
-                                    if marked_hexagons:
-                                        wm.unmark_hexagons(display, display_before, marked_hexagons)
+                                    if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             else:
-                                if marked_hexagons:
-                                    wm.unmark_hexagons(display, display_before, marked_hexagons)                        
+                                if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                     else:
-                        if marked_hexagons:
-                            wm.unmark_hexagons(display, display_before, marked_hexagons)
+                        if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
 
     pygame.display.update()
     clock.tick(FPS)
@@ -343,3 +341,9 @@ while True:
 pygame.quit()
    
     
+
+
+
+
+
+

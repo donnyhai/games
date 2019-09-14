@@ -186,7 +186,8 @@ class Interactor:
         self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]),
                                 text_size, (0,0,0), (0,0) )
 
-    #player wants to move the bug fhex onto a nonempty stone shex
+    #player wants to move the bug fhex onto a nonempty stone shex, or bug is already on a nonempty stone
+    #and wants to fall down onto a empty field
     def move_bug_on_nonempty_stone(self, player, fhex, shex):
         
         cond1 = self.move_stone_condition(player, fhex, shex)
@@ -198,15 +199,19 @@ class Interactor:
             fhex.set_board_pos(shex.board_pos)
             fhex.set_pixel_pos(shex.pixel_pos)
             
-            if len(fhex.underlaying_stones) != 0: 
-                #get stone directly under the bug
+            if len(fhex.underlaying_stones) > 0: 
+                #get stone which lies directly under the bug
                 last_stone = fhex.underlaying_stones[-1]
                 fhex.underlaying_stones.clear()
                 #define new stones under the bug
                 if shex.type == "bug":
-                    fhex.underlaying_stones = shex.under_laying_stones
-                fhex.underlaying_stones.append(shex)
-                
+                    fhex.underlaying_stones = shex.underlaying_stones
+                if not shex.is_empty:
+                    fhex.underlaying_stones.append(shex)
+                    shex.has_bug_on = True
+                if shex.is_empty:
+                    self.board.nonempty_fields.append(fhex.board_pos)
+                last_stone.has_bug_on = False
                 #refill old place with last_stone and new place with fhex
                 self.board.board[old_board_pos[0]][old_board_pos[1]] = last_stone
                 self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
@@ -214,7 +219,10 @@ class Interactor:
                 #draw last_stone and fhex 
                 self.painter.draw_hexagon(last_stone, self.game_surface)
                 self.painter.draw_hexagon(fhex, self.game_surface)
-            else:
+            else: #in this case bug will certainly move from an empty field onto a nonempty field
+                fhex.underlaying_stones.append(shex)
+                shex.has_bug_on = True
+                
                 #refill "old" place with empty stone
                 new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
                 self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
@@ -224,7 +232,6 @@ class Interactor:
                 self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
                 
                 #actualize board.nonempty_fields
-                self.board.nonempty_fields.append(fhex.board_pos)
                 self.board.nonempty_fields.remove(old_board_pos)
                 
                 self.painter.draw_hexagon(new_empty_stone, self.game_surface)
