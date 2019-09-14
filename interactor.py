@@ -1,5 +1,5 @@
 import pygame
-import hexagon_stone as hs
+#import hexagon_stone as hs
 from math import sqrt
 pygame.init()
 
@@ -52,6 +52,8 @@ class Interactor:
             ##then excute drawing aspects
             self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
             self.painter.draw_hexagon(draw_hexagon, self.game_surface)
+            #self.painter.draw_hexagon_marking(shex, (50,50,50), max((player.stone_size//20),1))
+            self.painter.draw_hexagon_frame(shex, (50,50,50), player.stone_size // 15)
     
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):
@@ -145,8 +147,7 @@ class Interactor:
         #boardstones are connected after taking away stone
         nonempty_fields = self.board.nonempty_fields.copy()
         nonempty_fields.remove(fhex.board_pos) 
-        cond4 = self.board.is_connected(nonempty_fields)
-        return cond00 and cond0 and cond1 and cond2 and cond3 and cond4
+        return cond00 and cond0 and cond1 and cond2 and cond3
             
     
     ###### shall be in painter
@@ -185,7 +186,49 @@ class Interactor:
         self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]),
                                 text_size, (0,0,0), (0,0) )
 
-
+    #player wants to move the bug fhex onto a nonempty stone shex
+    def move_bug_on_nonempty_stone(self, player, fhex, shex):
+        
+        cond1 = self.move_stone_condition(player, fhex, shex)
+        cond2 = shex.board_pos in self.calculator.get_possible_move_fields(fhex)
+        if cond1 and cond2: 
+            
+            old_board_pos = fhex.board_pos
+            old_pixel_pos = fhex.pixel_pos
+            fhex.set_board_pos(shex.board_pos)
+            fhex.set_pixel_pos(shex.pixel_pos)
+            
+            if len(fhex.underlaying_stones) != 0: 
+                #get stone directly under the bug
+                last_stone = fhex.underlaying_stones[-1]
+                fhex.underlaying_stones.clear()
+                #define new stones under the bug
+                if shex.type == "bug":
+                    fhex.underlaying_stones = shex.under_laying_stones
+                fhex.underlaying_stones.append(shex)
+                
+                #refill old place with last_stone and new place with fhex
+                self.board.board[old_board_pos[0]][old_board_pos[1]] = last_stone
+                self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+                #no adaptation for nonempty_fields needed
+                #draw last_stone and fhex 
+                self.painter.draw_hexagon(last_stone, self.game_surface)
+                self.painter.draw_hexagon(fhex, self.game_surface)
+            else:
+                #refill "old" place with empty stone
+                new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
+                self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+                new_empty_stone.set_pixel_pos(old_pixel_pos)
+                
+                #fill "new" place with fhex
+                self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+                
+                #actualize board.nonempty_fields
+                self.board.nonempty_fields.append(fhex.board_pos)
+                self.board.nonempty_fields.remove(old_board_pos)
+                
+                self.painter.draw_hexagon(new_empty_stone, self.game_surface)
+                self.painter.draw_hexagon(fhex, self.game_surface)
 
 
 

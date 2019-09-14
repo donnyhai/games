@@ -61,18 +61,5 @@ class Board:
     def is_inside(self, coord):
         pass
     
-    #NOT CORRECT
-    #check, whether indexset is connected
-    def is_connected(self, indexset):
-        if len(indexset) in {0,1}:  return True
-        else:
-            for coord in indexset:
-                if len(set(indexset).intersection(self.get_neighbours(coord).values())) == 0:
-                    return False
-            return True
     
-    #are the stones connected after taking away stone on coord ? 
-    def keeps_connected(self, coord):
-        nonempty_fields = self.nonempty_fields.copy()
-        nonempty_fields.remove(coord)
-        return self.is_connected(nonempty_fields)
+

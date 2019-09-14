@@ -12,7 +12,7 @@ class Player:
         self.side_stones = self.create_side_stones(self.stone_size)
         self.set_side_stones_positions() #side positions for the side stones
         #side_stone_numbers shall display how many of each insect type are not yet on the board
-        self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2}
+        self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2, "bug": 2}
         
 
     def create_stones(self, stone_size):
@@ -24,18 +24,23 @@ class Player:
                               2: hs.hexagon_stone(stone_size, "hopper", 2),
                               3: hs.hexagon_stone(stone_size, "hopper", 3)},
                    "spider": {1: hs.hexagon_stone(stone_size, "spider", 1),
-                              2: hs.hexagon_stone(stone_size, "spider", 2)}}
+                              2: hs.hexagon_stone(stone_size, "spider", 2)},
+                   "bug": {1: hs.hexagon_stone(stone_size, "bug", 1),
+                           2: hs.hexagon_stone(stone_size, "bug", 2)}}
         for hstones1 in hstones.values():
             for hstone in hstones1.values():
                 hstone.set_color(self.color)
                 hstone.is_empty = False
+        for hstone in hstones["bug"].values():
+            hstone.init_underlaying_stones() #initialize underlying stones with empty list
         return hstones
     
     def create_side_stones(self, stone_size):
         hstones = {"bee": hs.hexagon_stone(stone_size, "bee"),
                 "ant": hs.hexagon_stone(stone_size, "ant"),
                 "hopper": hs.hexagon_stone(stone_size, "hopper"),
-                "spider": hs.hexagon_stone(stone_size, "spider")}
+                "spider": hs.hexagon_stone(stone_size, "spider"),
+                "bug": hs.hexagon_stone(stone_size, "bug")} #bug stone here does not need init underlaying stones
         for hstone in hstones.values():
             hstone.set_color(self.color)
             hstone.is_empty = False
@@ -54,9 +59,10 @@ class Player:
         right_frame_translate = (surface_width*0.9, 0)
         
         ant_position = ((frame_x_size * 21) // 40 , y_distance)
-        hopper_position = ((frame_x_size * 21) // 40, 2*y_distance + hexa_size*sqrt_3)
+        hopper_position = ((frame_x_size * 21) // 40, 2*y_distance + hexa_size * sqrt_3)
         spider_position = ((frame_x_size * 21) // 40, 3*y_distance + 2*hexa_size * sqrt_3)
         bee_position = ((frame_x_size * 21) // 40, 4*y_distance + 3*hexa_size * sqrt_3)
+        bug_position = ((frame_x_size * 21) // 40, 5*y_distance + 4*hexa_size * sqrt_3)
         
         #translate stones to the right side if they are black
         if self.color == "black":
@@ -64,12 +70,14 @@ class Player:
             hopper_position = (hopper_position[0] + right_frame_translate[0], hopper_position[1] + right_frame_translate[1])
             spider_position = (spider_position[0] + right_frame_translate[0], spider_position[1] + right_frame_translate[1])
             bee_position = (bee_position[0] + right_frame_translate[0], bee_position[1] + right_frame_translate[1])
+            bug_position = (bug_position[0] + right_frame_translate[0], bug_position[1] + right_frame_translate[1])
             
         #set positions of self.stones
         self.side_stones["bee"].set_pixel_pos(bee_position)
         self.side_stones["ant"].set_pixel_pos(ant_position)
         self.side_stones["hopper"].set_pixel_pos(hopper_position)
         self.side_stones["spider"].set_pixel_pos(spider_position)
+        self.side_stones["bug"].set_pixel_pos(bug_position)
     
     #set the number attribute of side_stones to display how many of each insect type are not on the board
     #for example after each stone put this function has to be called
@@ -85,7 +93,8 @@ class Player:
         self.side_stones["ant"].pixel_pos
         self.side_stones["hopper"].pixel_pos
         self.side_stones["spider"].pixel_pos
-        self.side_stones["bee"].pixel_poss
+        self.side_stones["bee"].pixel_pos
+        self.side_stones["bug"].pixel_pos
         
     def get_stones_list(self):
         stones_list = []

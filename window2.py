@@ -16,6 +16,10 @@ frame_size = window_x_size // 250
 mark_size = window_x_size // 400
 first_stone_board_pos = (10,4)
 
+#while-loop timing
+clock = pygame.time.Clock()
+FPS = 30
+
 
 #creating showable start_window on display with, set name and set background color
 display = pygame.display.set_mode(window_size,0,32)
@@ -64,11 +68,11 @@ game_finished = False
 game = game.HvsH_Game(display)
 
 full_surface = display
-game_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-white_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-black_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-white_text_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
-black_text_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 + 5, 0, window_x_size * 0.8 - 9, window_y_size))
+game_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 , 0, window_x_size * 0.8 , window_y_size))
+white_surface = full_surface.subsurface(pygame.Rect(0, 0, window_x_size // 10, (window_y_size * 4) // 5))
+black_surface = full_surface.subsurface(pygame.Rect((window_x_size * 9) // 10, 0, window_x_size  // 10, (window_y_size * 4) // 5))
+white_text_surface = full_surface.subsurface(pygame.Rect(0, (4 * window_y_size) // 5, window_x_size  // 10, window_y_size // 5))
+black_text_surface = full_surface.subsurface(pygame.Rect((9 * window_x_size) // 10, (4 * window_y_size) // 5, window_x_size  // 10, window_y_size // 5))
 
 #run the window and wait for mouseclicks or quit
 while True:
@@ -107,6 +111,8 @@ while True:
                         game.painter.draw_ingame_frame(display)
                         
                         game.interactor.set_game_surface(game_surface) #add game_surface as a attribute in interactor
+                        
+                        
                         
                         start_game_mode = False 
                         
@@ -216,7 +222,7 @@ while True:
                                     #mark move
                                     elif clicked_hexagon in game.players[current_player_color].stones_list:
                                         src_hexagon = clicked_hexagon
-                                        if game.board.keeps_connected(src_hexagon.board_pos):
+                                        if game.interactor.calculator.board_keeps_connected(src_hexagon.board_pos):
                                             dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
                                             dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
                                             
@@ -241,9 +247,12 @@ while True:
                                 
                                 #execute move
                                 elif src_hexagon in game.players[current_player_color].stones_list:
-                                    if clicked_hexagon in dir_hexagons:
+                                    if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos: 
                                         wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                        game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                        if src_hexagon.type == "bug" and not clicked_hexagon.is_empty:
+                                            game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                        else:
+                                            game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         #set new turn
                                         if current_player_color == "white":
                                             game.turn = ("black", game.turn[1])
@@ -280,7 +289,7 @@ while True:
                                 #mark move
                                 elif clicked_hexagon in game.players[current_player_color].stones_list:
                                     src_hexagon = clicked_hexagon
-                                    if game.board.keeps_connected(src_hexagon.board_pos):
+                                    if game.interactor.calculator.board_keeps_connected(src_hexagon.board_pos):
                                         dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
                                         dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
         
@@ -305,9 +314,12 @@ while True:
                             
                             #execute move
                             elif src_hexagon in game.players[current_player_color].stones_list:
-                                if clicked_hexagon in dir_hexagons:
+                                if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                    game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    if src_hexagon.type == "bug" and not clicked_hexagon.is_empty:
+                                        game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    else:
+                                        game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     #set new turn
                                     if current_player_color == "white":
                                         game.turn = ("black", game.turn[1])
@@ -325,5 +337,9 @@ while True:
                         if marked_hexagons:
                             wm.unmark_hexagons(display, display_before, marked_hexagons)
 
-        pygame.display.update()
-       
+    pygame.display.update()
+    clock.tick(FPS)
+    
+pygame.quit()
+   
+    

@@ -42,6 +42,10 @@ class hexagon_stone:
             self.global_pixel_pos = (self.pixel_pos[0] + self.drawn_surface.get_abs_offset()[0],
                                      self.pixel_pos[1] + self.drawn_surface.get_abs_offset()[1])
             self.global_points = self.getting_hexa(self.size, self.global_pixel_pos)
+    
+    #just for bug, shall contain all stones under the bug        
+    def init_underlaying_stones(self):
+        self.underlaying_stones = []
 ###
     
         
