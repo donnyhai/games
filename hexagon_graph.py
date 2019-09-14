@@ -1,9 +1,11 @@
+import test_objects as to
 
 #note that this graph objects gets the board matrix as input, and depending on the situation get set
 #his points and edges
 class Hexagon_Graph:
     def __init__(self, board):
         self.board = board #board object
+        self.test_board = to.Test_Board(self.board.size, self.board.surface)
     
     def set_points(self, points):
         self.points = points
@@ -60,13 +62,20 @@ class Hexagon_Graph:
                     edges.append((point, point2))
         return list(set(edges))
     
-    #here points should be all empty neighbours of nonempty_fields. edges: edge from 
-    #point to point2 iff a stone can move on the ground from point to point2
-    def calculate_ground_moving_edges(self):
+    #for spider
+    #here points should be all empty neighbours of nonempty_fields, where coord was removed. 
+    #edges: edge from point to point2 iff a stone can move on the ground from point to point2
+    def calculate_ground_moving_edges(self, coord):
         edges = []
+        #copy board into test_board
+        self.test_board.copy_board(self.board)
+        #remove stone at coord on test_board to calculate all moving fields correctly
+        self.test_board.nonempty_fields.remove(coord)
+        self.test_board.board[coord[0]][coord[1]].type = "empty"
+        self.test_board.board[coord[0]][coord[1]].is_empty = True
         for point in self.points:
             for point2 in self.points:
-                if self.can_move_to_neighbour_on_ground(point, point2, self.board):
+                if self.can_move_to_neighbour_on_ground(point, point2, self.test_board):
                     edges.append((point, point2))
         return list(set(edges))
     

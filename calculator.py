@@ -100,7 +100,7 @@ class Calculator:
     #use graph object
     def get_ground_move_fields(self, coord):
         self.graph.set_points(self.graph.calculate_all_empty_neighbours(coord))
-        self.graph.set_edges(self.graph.calculate_ground_moving_edges())
+        self.graph.set_edges(self.graph.calculate_ground_moving_edges(coord))
         ground_move_fields = self.graph.calculate_connected_component(coord)
         ground_move_fields.remove(coord) #remove this coord, as stone should not be able to move there
         return ground_move_fields
@@ -132,7 +132,7 @@ class Calculator:
     #spider is on coord. where can she move ?
     def get_spider_fields(self, coord):
         self.graph.set_points(self.graph.calculate_all_empty_neighbours(coord))
-        self.graph.set_edges(self.graph.calculate_ground_moving_edges())
+        self.graph.set_edges(self.graph.calculate_ground_moving_edges(coord))
         self.graph.set_edges(self.graph.calculate_spider_move_edges())
         spider_fields = self.graph.get_graph_neighbours(coord)
         return spider_fields
