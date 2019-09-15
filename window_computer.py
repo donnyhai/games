@@ -152,10 +152,7 @@ while True:
                                 dir_hexagon = com_player.random_put_field(dir_hexagons)
                                 game.interactor.execute_stone_put(com_player, first_put_stone, dir_hexagon)
                                 
-                                
-                                
-                                
-                                
+                                #set new turn for white
                                 game.turn = ("white", 2)
                             #unmark marked hexagons
                             else:

@@ -37,8 +37,7 @@ class HvsC_Game(Game):
                         "black": cpl.Computer_Player("black", self.surface)}
         self.locator = locator.Locator(self.board, self.players, 100)
         self.interactor = interactor.Interactor(self.painter, calculator.Calculator(self.locator), self.turn)
-    
-
+        
 
 
 

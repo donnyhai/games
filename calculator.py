@@ -139,9 +139,10 @@ class Calculator:
     
     #bug is on coord. where can it move ?
     def get_bug_fields(self, coord):
+        if self.board.board[coord[0]][coord[1]].underlaying_stones:
+            return self.board.get_neighbours(coord).values()
         nonempty_neighbours = set(self.board.nonempty_fields).intersection(self.board.get_neighbours(coord).values())
         return self.get_bee_fields(coord) + list(nonempty_neighbours)
-        
         
     #marienbug is on coord. where can it move ?
     def get_marienbug_fields(self, coord):
