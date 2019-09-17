@@ -251,6 +251,8 @@ while True:
                                         if src_hexagon.type == "bug":
                                             if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
                                                 game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                            else:
+                                                game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         else:
                                             game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         #set new turn
@@ -319,6 +321,8 @@ while True:
                                     if src_hexagon.type == "bug":
                                         if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
                                             game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                        else:
+                                            game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     else:
                                         game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     #set new turn

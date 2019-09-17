@@ -144,9 +144,6 @@ class Interactor:
         cond3 = True
         if fhex.type != "bug":
             cond3 = shex.is_empty 
-        #boardstones are connected after taking away stone
-        nonempty_fields = self.board.nonempty_fields.copy()
-        nonempty_fields.remove(fhex.board_pos) 
         return cond00 and cond0 and cond1 and cond2 and cond3
             
     
@@ -187,7 +184,7 @@ class Interactor:
                                 text_size, (0,0,0), (0,0) )
 
     #player wants to move the bug fhex onto a nonempty stone shex, or bug is already on a nonempty stone
-    #and wants to fall down onto a empty field
+    #and wants to fall down onto an empty field
     def move_bug_on_nonempty_stone(self, player, fhex, shex):
         
         cond1 = self.move_stone_condition(player, fhex, shex)
@@ -199,13 +196,13 @@ class Interactor:
             fhex.set_board_pos(shex.board_pos)
             fhex.set_pixel_pos(shex.pixel_pos)
             
-            if len(fhex.underlaying_stones) > 0: 
+            if fhex.underlaying_stones: 
                 #get stone which lies directly under the bug
                 last_stone = fhex.underlaying_stones[-1]
                 fhex.underlaying_stones.clear()
                 #define new stones under the bug
                 if shex.type == "bug":
-                    fhex.underlaying_stones = shex.underlaying_stones
+                    fhex.underlaying_stones = shex.underlaying_stones.copy()
                 if not shex.is_empty:
                     fhex.underlaying_stones.append(shex)
                     shex.has_bug_on = True
