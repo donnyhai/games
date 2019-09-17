@@ -65,19 +65,16 @@ class Painter:
     def draw_hexagon_marking(self, hexagon, color = (0,0,0), mark_mode = 0):
         #if just a marking with mark_mode = 0 is drawn, hexagon shall not be considered as marked, 
         #therefore is_marked = False
-        if mark_mode == 0:
+        frame_width = 3 * mark_mode // 5
+        if frame_width == 0:
             pygame.draw.lines(hexagon.drawn_surface, color , True, hexagon.points, 2)
-        elif mark_mode > 0:
-            scaling_ratio = hexagon.size + 2 * mark_mode / sqrt(3) - mark_mode // 2 - 2
-            start_vector = (int(hexagon.pixel_pos[0] - mark_mode / sqrt(3)) + (mark_mode // 2), 
-                            int(hexagon.pixel_pos[1] - mark_mode) + (mark_mode // 2) ) 
+        elif frame_width > 0:
+            scaling_ratio = hexagon.size + frame_width / sqrt(3)
+            start_vector = (int(hexagon.pixel_pos[0] - frame_width / (2*sqrt(3))), 
+                            int(hexagon.pixel_pos[1] - frame_width) + (frame_width // 2) ) 
             points = hexagon.getting_hexa(scaling_ratio, start_vector)
-            #points[2][0] -= scaling_ratio // 10
-            #points[3][1] -= scaling_ratio // 20
-            #points[4][1] -= scaling_ratio // 20
-            #points[4][0] += scaling_ratio // 30
-            #points[5][0] += scaling_ratio // 25
-            pygame.draw.lines(hexagon.drawn_surface, color, True, points, int(mark_mode) + 1)
+            #points = hexagon.getting_hexa(scaling_ratio, hexagon.pixel_pos)
+            pygame.draw.lines(hexagon.drawn_surface, color, True, points, int(1.5* mark_mode))
             hexagon.is_marked = True
                    
     #draw set of hexagons with respective color and mark_mode, for example when drawing all possible 
