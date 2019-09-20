@@ -6,36 +6,36 @@ import random
 
 class Computer_Player(player.Player):
     
-    def __init__(self, color, surface, locator, interactor):
+    def __init__(self, color, surface, calculator):
         super().__init__(color, surface)
-        self.locator = locator
-        self.interactor = interactor
-        self.calculator = self.interactor.calculator
+        self.calculator = calculator
+        self.locator = self.calculator.locator
         
     
     random.seed()
     
-    #this method will get called in window_computer. here the evaluation goes on, whether stone 
-    #shall be put or moved, and which strategy of action is chosen
-    def computer_reaction(self):
-        pass
+    #for now: random 
+    def get_action_decision(self):
+        action_type = random.choice(["put", "move"])
+        if action_type == "put":
+            src_hexagon = self.random_put_hexagon()
+            dir_hexagons = self.calculator.get_possible_put_fields(self.color)
+        elif action_type == "move":
+            src_hexagon = self.random_move_hexagon()
+            dir_hexagons = self.calculator.get_possible_move_fields(src_hexagon)
+        field = self.random_field(dir_hexagons)
+        dir_hexagon = self.calculator.board.board[field[0]][field[1]]
+        return (src_hexagon, dir_hexagon, action_type)
+        
+    def random_move_hexagon(self):
+        return random.choice(self.calculator.get_movable_hexagons(self.color))
     
-
-    def random_put_insect(self):
+    def random_put_hexagon(self):
         insects = [insect for insect in self.side_stones.keys() if self.side_stones_numbers[insect] > 0]
-        index = random.choice(insects)
-        return self.side_stones[index]
+        return self.side_stones[random.choice(insects)]
     
-    def random_put_field(self, fields):
-        index = random.choice(fields)
-        return index
-    
-    def random_move_stone_selection(self, fields):
-        pass
-    
-    def random_move_fields_selection(self, fields):
-        pass
-    
+    def random_field(self, fields):
+        return random.choice(fields)
     
     #move_hexagon wants to be moved to dir_coord. what is the evaluation of this turn ?
     def evaluate_turn(self, move_hexagon, dir_coord):

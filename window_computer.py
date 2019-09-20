@@ -145,13 +145,13 @@ while True:
                                 wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 game.interactor.execute_stone_put(game.players["white"], src_hexagon, dir_hexagon)
                                 
-                                #computer reaction
-                                first_put_stone = com_player.random_put_insect()
+# computer reaction
+                                first_put_stone = com_player.random_put_hexagon()
                                 neigh_coords = game.board.get_neighbours(first_stone_board_pos).values()
                                 dir_hexagons = [game.board.board[i][j] for i,j in neigh_coords] #all empty neighbours of the middle hexagon
-                                dir_hexagon = com_player.random_put_field(dir_hexagons)
+                                dir_hexagon = com_player.random_field(dir_hexagons)
                                 game.interactor.execute_stone_put(com_player, first_put_stone, dir_hexagon)
-                                
+##                                
                                 #set new turn for white
                                 game.turn = ("white", 2)
                             #unmark marked hexagons
@@ -159,8 +159,7 @@ while True:
                                 if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
 # turn 2 - 4                    
                         #at least one white and one black stone are put now. now be has to be put until 4. turn
-                        elif game.turn[1] in {2,3,4}:
-                            current_player_color = game.turn[0]
+                        elif game.turn in {("white", 2), ("white", 3), ("white", 4)}:
                             bee_stone = list(game.players[current_player_color].stones["bee"].values())[0]
     #bee not put
                             #putting phase: bee is not yet on board
@@ -185,11 +184,34 @@ while True:
                                 elif clicked_hexagon in dir_hexagons:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
                                     game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                    #set new turn
-                                    if current_player_color == "white":
-                                        game.turn = ("black", game.turn[1])
+# computer reaction
+                                    black_bee_stone = list(game.players["black"].stones["bee"].values())[0]
+                                    if not black_bee_stone.is_on_board:
+                                        dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields("black")
+                                        dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                        if game.turn[1] < 4: 
+                                            put_stone = com_player.random_put_hexagon()
+                                        if game.turn[1] == 4: #in this case bee has to be put by computer
+                                            put_stone = black_bee_stone
+                                        dir_hexagon = com_player.random_field(dir_hexagons)
+                                        game.interactor.execute_stone_put(com_player, put_stone, dir_hexagon)
                                     else:
-                                        game.turn = ("white", game.turn[1] + 1)
+                                        hexagons = com_player.get_action_decision()
+                                        src_hexagon = hexagons[0]
+                                        dir_hexagon = hexagons[1]
+                                        action_type = hexagons[2]
+                                        if action_type == "put":
+                                            game.interactor.execute_stone_put(com_player, src_hexagon, dir_hexagon)
+                                        elif action_type == "move":
+                                            if src_hexagon.type == "bug":
+                                                if not dir_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
+                                                    game.interactor.move_bug_on_nonempty_stone(com_player, src_hexagon, dir_hexagon)
+                                            else:
+                                                game.interactor.execute_stone_move(com_player, src_hexagon, dir_hexagon)
+
+##                                    
+                                    #set new turn
+                                    game.turn = ("white", game.turn[1] + 1)
                                     dir_hexagons.clear()
                                     wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                 
@@ -228,11 +250,35 @@ while True:
                                     if clicked_hexagon in dir_hexagons:
                                         wm.unmark_hexagons(display, display_before, marked_hexagons)
                                         game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                        #set new turn
-                                        if current_player_color == "white":
-                                            game.turn = ("black", game.turn[1])
+                                        
+# computer reaction
+                                        black_bee_stone = list(game.players["black"].stones["bee"].values())[0]
+                                        if not black_bee_stone.is_on_board:
+                                            dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields("black")
+                                            dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                            if game.turn[1] < 4: 
+                                                put_stone = com_player.random_put_hexagon()
+                                            elif game.turn[1] == 4: #in this case bee has to be put by computer
+                                                put_stone = black_bee_stone
+                                            dir_hexagon = com_player.random_field(dir_hexagons)
+                                            game.interactor.execute_stone_put(com_player, put_stone, dir_hexagon)
                                         else:
-                                            game.turn = ("white", game.turn[1] + 1)
+                                            hexagons = com_player.get_action_decision()
+                                            src_hexagon = hexagons[0]
+                                            dir_hexagon = hexagons[1]
+                                            action_type = hexagons[2]
+                                            if action_type == "put":
+                                                game.interactor.execute_stone_put(com_player, src_hexagon, dir_hexagon)
+                                            elif action_type == "move":
+                                                if src_hexagon.type == "bug":
+                                                    if not dir_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
+                                                        game.interactor.move_bug_on_nonempty_stone(com_player, src_hexagon, dir_hexagon)
+                                                else:
+                                                    game.interactor.execute_stone_move(com_player, src_hexagon, dir_hexagon)
+                                        
+##                                        
+                                        #set new turn
+                                        game.turn = ("white", game.turn[1] + 1)
                                         dir_hexagons.clear()
                                         wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                     else:
@@ -247,11 +293,35 @@ while True:
                                                 game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         else:
                                             game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                        #set new turn
-                                        if current_player_color == "white":
-                                            game.turn = ("black", game.turn[1])
+                                        
+# computer reaction
+                                        black_bee_stone = list(game.players["black"].stones["bee"].values())[0]
+                                        if not black_bee_stone.is_on_board:
+                                            dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields("black")
+                                            dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                            if game.turn[1] < 4: 
+                                                put_stone = com_player.random_put_hexagon()
+                                            if game.turn[1] == 4: #in this case bee has to be put by computer
+                                                put_stone = black_bee_stone
+                                            dir_hexagon = com_player.random_field(dir_hexagons)
+                                            game.interactor.execute_stone_put(com_player, put_stone, dir_hexagon)
                                         else:
-                                            game.turn = ("white", game.turn[1] + 1)
+                                            hexagons = com_player.get_action_decision()
+                                            src_hexagon = hexagons[0]
+                                            dir_hexagon = hexagons[1]
+                                            action_type = hexagons[2]
+                                            if action_type == "put":
+                                                game.interactor.execute_stone_put(com_player, src_hexagon, dir_hexagon)
+                                            elif action_type == "move":
+                                                if src_hexagon.type == "bug":
+                                                    if not dir_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
+                                                        game.interactor.move_bug_on_nonempty_stone(com_player, src_hexagon, dir_hexagon)
+                                                else:
+                                                    game.interactor.execute_stone_move(com_player, src_hexagon, dir_hexagon)
+                                        
+##                                        
+                                        #set new turn
+                                        game.turn = ("white", game.turn[1] + 1)
                                         dir_hexagons.clear()
                                         wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                     else:
@@ -296,11 +366,25 @@ while True:
                                 if clicked_hexagon in dir_hexagons:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
                                     game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    
+# computer reaction
+                                    
+                                    hexagons = com_player.get_action_decision()
+                                    src_hexagon = hexagons[0]
+                                    dir_hexagon = hexagons[1]
+                                    action_type = hexagons[2]
+                                    if action_type == "put":
+                                        game.interactor.execute_stone_put(com_player, src_hexagon, dir_hexagon)
+                                    elif action_type == "move":
+                                        if src_hexagon.type == "bug":
+                                            if not dir_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
+                                                game.interactor.move_bug_on_nonempty_stone(com_player, src_hexagon, dir_hexagon)
+                                        else:
+                                            game.interactor.execute_stone_move(com_player, src_hexagon, dir_hexagon)
+                                    
+##                                    
                                     #set new turn
-                                    if current_player_color == "white":
-                                        game.turn = ("black", game.turn[1])
-                                    else:
-                                        game.turn = ("white", game.turn[1] + 1)
+                                    game.turn = ("white", game.turn[1] + 1)
                                     dir_hexagons.clear()
                                     wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                 else:
@@ -315,11 +399,24 @@ while True:
                                             game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     else:
                                         game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+# computer reaction
+                                    
+                                    hexagons = com_player.get_action_decision()
+                                    src_hexagon = hexagons[0]
+                                    dir_hexagon = hexagons[1]
+                                    action_type = hexagons[2]
+                                    if action_type == "put":
+                                        game.interactor.execute_stone_put(com_player, src_hexagon, dir_hexagon)
+                                    elif action_type == "move":
+                                        if src_hexagon.type == "bug":
+                                            if not dir_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
+                                                game.interactor.move_bug_on_nonempty_stone(com_player, src_hexagon, dir_hexagon)
+                                        else:
+                                            game.interactor.execute_stone_move(com_player, src_hexagon, dir_hexagon)
+                                    
+##                                    
                                     #set new turn
-                                    if current_player_color == "white":
-                                        game.turn = ("black", game.turn[1])
-                                    else:
-                                        game.turn = ("white", game.turn[1] + 1)
+                                    game.turn = ("white", game.turn[1] + 1)
                                     dir_hexagons.clear()
                                     wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
                                 else:

@@ -1,5 +1,4 @@
 import pygame
-#import hexagon_stone as hs
 from math import sqrt
 pygame.init()
 
@@ -8,7 +7,7 @@ class Interactor:
     def __init__(self, painter, calculator, turn):
         self.painter = painter
         self.calculator = calculator
-        self.players = self.calculator.locator.players
+        self.players = self.calculator.players
         self.board = self.calculator.board
         self.surface = self.board.surface
         self.turn = turn

@@ -1,10 +1,11 @@
 import hexagon_stone as hs
 import hexagon_graph as hg
 
+
+#NOTE: calculator is not depending on players. for that see calculator_extended
 class Calculator:
     def __init__(self, locator):
         self.locator = locator
-        self.players = self.locator.players
         self.board = self.locator.board #note that the locator always contains the board object of the actual game
         #matrix has the sime size as board, is 1 in i,j iff we consider this field to be part 
         #of the set of fields we want to include at the moment (initialized with all fields, therefore all 1). 
@@ -26,23 +27,19 @@ class Calculator:
         self.graph.set_edges(self.graph.calculate_standard_edges())
         return self.graph.is_connected()
     
-    #define winning condition: player wins if opposite bee is surrounded
-    def winning_condition(self, color):
-        if color == "white":    opp_color = "black"
-        else:   opp_color = "white"
-        color_bee = list(self.players[color].stones["bee"].values())[0]
-        opp_color_bee = list(self.players[opp_color].stones["bee"].values())[0]
-        color_bee_surr = False
-        opp_color_bee_surr = False
-        if color_bee.is_on_board:   
-            color_bee_surr = True
-            for neigh in self.board.get_neighbours(color_bee.board_pos).values():
-                if self.board.board[neigh[0]][neigh[1]].is_empty:   color_bee_surr = False
-        if opp_color_bee.is_on_board:
-            opp_color_bee_surr = True
-            for neigh in self.board.get_neighbours(opp_color_bee.board_pos).values():
-                if self.board.board[neigh[0]][neigh[1]].is_empty:   opp_color_bee_surr = False
-        return [color_bee_surr, opp_color_bee_surr]
+    #which hexagons are moveable ? return is list of movable nonempty hexagons
+    def get_movable_hexagons(self, color):
+        nonempty_fields = self.board.nonempty_fields
+        movable_hexagons = []
+        for coord in nonempty_fields:
+            hexagon  = self.board.board[coord[0]][coord[1]]
+            cond0 = self.board_keeps_connected(coord)
+            cond1 = not hexagon.has_bug_on
+            cond2 = hexagon.color == color
+            if cond0 and cond1 and cond2:
+                movable_hexagons.append(hexagon)
+        return movable_hexagons
+    
     
     
     #input is the color of a stone which wants to be put onto the board from the side.
@@ -73,27 +70,7 @@ class Calculator:
         elif stone_type == "bug": return self.get_bug_fields(board_pos)
         
     
-    #event click at event_pos. in which hexagon is it ? return is a list containing exactly one hexagon 
-    #iff the clicked was in this hexagon. look for empty or nonempty hexagons on the board, and for side_stones                
-    def get_clicked_hexagon(self, event_pos):
-        #look for both players
-        for player in self.players.values():
-            #look in player.side_stones for a clicked hexagon
-            for hstone in player.side_stones.values():
-                if hstone.point_in_hexagon(event_pos):
-                    return hstone
-            #look in player.stones for a clicked hexagon
-            for hstone1 in player.stones.values():
-                for hstone2 in hstone1.values():
-                    if hstone2.is_drawn and not hstone2.has_bug_on:
-                        if hstone2.point_in_hexagon(event_pos):
-                            return hstone2
-        #look on the board
-        for row in self.board.board:
-            for hstone in row:
-                if hstone.point_in_hexagon(event_pos):
-                    return hstone
-        return self.empty_help_stone
+    
     
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
