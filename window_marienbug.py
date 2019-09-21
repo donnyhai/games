@@ -239,9 +239,10 @@ while True:
                                         game.turn_up() #set new turn
                                         dir_hexagons.clear()
                                         #check whether opponent has any possible put or move, if not put turn up 
-                                        if not wm.check_opponent_options(game.players[game.turn[0]], game.interactor.calculator): game.turn_up()
+                                        if not wm.check_opponent_options(game.players[game.turn[0]], game.interactor.calculator):
+                                            game.turn_up()
                                         game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
-                                    else: 
+                                    else:
                                         if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
                                 #execute move
@@ -251,17 +252,20 @@ while True:
                                         if src_hexagon.type == "bug":
                                             if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
                                                 game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                            else: game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                        else: game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                            else:
+                                                game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                        else:
+                                            game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         game.turn_up() #set new turn 
                                         dir_hexagons.clear()
                                         #check whether opponent has any possible put or move, if not put turn up 
-                                        if not wm.check_opponent_options(game.players[game.turn[0]], game.interactor.calculator): game.turn_up()
+                                        if not wm.check_opponent_options(game.players[game.turn[0]], game.interactor.calculator):
+                                            game.turn_up()
                                         game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
-                                    else: 
+                                    else:
                                         if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
-                                else: 
+                                else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             
                             
@@ -306,7 +310,7 @@ while True:
                                     if not wm.check_opponent_options(game.players[game.turn[0]], game.interactor.calculator):
                                         game.turn_up()
                                     game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
-                                else: 
+                                else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             
                             #execute move
@@ -316,12 +320,15 @@ while True:
                                     if src_hexagon.type == "bug":
                                         if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
                                             game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                        else: game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                    else: game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                        else:
+                                            game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
+                                    else:
+                                        game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     game.turn_up() #set new turn
                                     dir_hexagons.clear()
                                     #check whether opponent has any possible put or move, if not put turn up 
-                                    if not wm.check_opponent_options(game.players[game.turn[0]], game.interactor.calculator): game.turn_up()
+                                    if not wm.check_opponent_options(game.players[game.turn[0]], game.interactor.calculator):
+                                        game.turn_up()
                                     game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                 else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
