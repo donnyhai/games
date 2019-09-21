@@ -25,7 +25,13 @@ class HvsH_Game(Game):
         self.locator = locator.Locator(self.board, 100)
         self.interactor = interactor.Interactor(self.painter, cal_ex.Calculator_Extended(self.locator, self.players), self.turn)
         
-        
+    def turn_up(self):
+        if self.turn[0] == "white":
+            self.turn = ("black", self.turn[1])
+        else:
+            self.turn = ("white", self.turn[1] + 1)
+
+#In this game against the computer, the human player is white and begins the game        
 class HvsC_Game(Game):
     def __init__(self, surface):
         self.surface = surface
@@ -42,7 +48,6 @@ class HvsC_Game(Game):
         
         self.calculator = cal_ex.Calculator_Extended(self.locator, self.players)
         self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn)
-        
         
         
 

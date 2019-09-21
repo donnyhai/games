@@ -62,7 +62,7 @@ start_game_mode = True
 settings_window_shown = False
 marked_hexagons = []
 current_player_color = "white"
-game_finished = False
+game_over = False
 
 #create game object here firstly not encounter problems
 game = game.HvsH_Game(display)
@@ -76,7 +76,7 @@ black_text_surface = full_surface.subsurface(pygame.Rect((9 * window_x_size) // 
 
 #run the window and wait for mouseclicks or quit
 while True:
-    if not game_finished:
+    if not game_over:
         for event in pygame.event.get():
             
             if event.type == pygame.QUIT:
@@ -119,11 +119,20 @@ while True:
                         #print a text claiming that white begins
 # start game            
             elif not start_game_mode:
+                
                 #game.painter.write_start_side_numbers(game.players["white"], display)
                 #game.painter.write_start_side_numbers(game.players["black"], display)
                 if event.type== pygame.MOUSEBUTTONDOWN:
+                    
                     #note, this is a list it shall contain exactly one nonempty hexagon iff the click was on this hexagon
                     clicked_hexagon = game.interactor.calculator.get_clicked_hexagon(event.pos)
+                    
+                    if game.turn[1] > 1:
+                        #calculate movable and putable hexagons to check whether a player is able to do anything
+                        movable_hexagons = game.interactor.calculator.get_movable_hexagons(game.turn[0])
+                        putable_hexagons = game.players[game.turn[0]].get_putable_hexagons()
+                        if not movable_hexagons and not putable_hexagons:
+                            game.turn_up()
                     
                     if clicked_hexagon.number != 99: #special condition, see calculator.get_clicked_hexagon and calculator.empty_help_stone
     
@@ -191,13 +200,10 @@ while True:
                                 elif clicked_hexagon in dir_hexagons:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
                                     game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                    #set new turn
-                                    if current_player_color == "white":
-                                        game.turn = ("black", game.turn[1])
-                                    else:
-                                        game.turn = ("white", game.turn[1] + 1)
+                                    game.turn_up() #set new turn
                                     dir_hexagons.clear()
-                                    wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                    
+                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                 
                                 else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
@@ -234,13 +240,9 @@ while True:
                                     if clicked_hexagon in dir_hexagons:
                                         wm.unmark_hexagons(display, display_before, marked_hexagons)
                                         game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                        #set new turn
-                                        if current_player_color == "white":
-                                            game.turn = ("black", game.turn[1])
-                                        else:
-                                            game.turn = ("white", game.turn[1] + 1)
+                                        game.turn_up() #set new turn
                                         dir_hexagons.clear()
-                                        wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                        game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                     else:
                                         if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
@@ -255,13 +257,9 @@ while True:
                                                 game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         else:
                                             game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                        #set new turn
-                                        if current_player_color == "white":
-                                            game.turn = ("black", game.turn[1])
-                                        else:
-                                            game.turn = ("white", game.turn[1] + 1)
+                                        game.turn_up() #set new turn 
                                         dir_hexagons.clear()
-                                        wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                        game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                     else:
                                         if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
@@ -304,13 +302,10 @@ while True:
                                 if clicked_hexagon in dir_hexagons:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
                                     game.interactor.execute_stone_put(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                    #set new turn
-                                    if current_player_color == "white":
-                                        game.turn = ("black", game.turn[1])
-                                    else:
-                                        game.turn = ("white", game.turn[1] + 1)
+                                    game.turn_up() #set new turn
                                     dir_hexagons.clear()
-                                    wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                    wm.check_opponent_options(game.players[game.turn[0]])
+                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                 else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             
@@ -325,13 +320,9 @@ while True:
                                             game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                     else:
                                         game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
-                                    #set new turn
-                                    if current_player_color == "white":
-                                        game.turn = ("black", game.turn[1])
-                                    else:
-                                        game.turn = ("white", game.turn[1] + 1)
+                                    game.turn_up() #set new turn
                                     dir_hexagons.clear()
-                                    wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                 else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             else:

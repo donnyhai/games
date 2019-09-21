@@ -102,7 +102,21 @@ class Player:
             for stone in stones.values():
                 stones_list.append(stone)
         return stones_list
-
+    
+    #which hexagons are putable ? check with side_stone_numbers and return a list of hexagons
+    def get_putable_hexagons(self):
+        putable_hexagons = []
+        for stone_type in self.side_stones:
+            if self.side_stones_numbers[stone_type] > 0:
+                putable_hexagons.append(self.side_stones[stone_type])
+        return putable_hexagons
+    
+    #at some points we need to know the set of movable and putable hexagons of a player. here we actualize them
+    def set_action_hexagons(self, calculator):
+        self.movable_hexagons = calculator.get_movable_hexagons(self.color)
+        self.putable_hexagons = self.get_putable_hexagons()
+        
+    
 class Human_Player(Player):
     pass
 

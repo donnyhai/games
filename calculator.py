@@ -40,8 +40,6 @@ class Calculator:
                 movable_hexagons.append(hexagon)
         return movable_hexagons
     
-    
-    
     #input is the color of a stone which wants to be put onto the board from the side.
     #return is a list of board coords where this stone can be legally put to 
     def get_possible_put_fields(self, color):
