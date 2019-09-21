@@ -113,7 +113,7 @@ class Player:
     
     #at some points we need to know the set of movable and putable hexagons of a player. here we actualize them
     def set_action_hexagons(self, calculator):
-        self.movable_hexagons = calculator.get_movable_hexagons(self.color)
+        self.moveable_hexagons = calculator.get_moveable_hexagons(self.color)
         self.putable_hexagons = self.get_putable_hexagons()
         
     

@@ -62,7 +62,7 @@ start_game_mode = True
 settings_window_shown = False
 marked_hexagons = []
 current_player_color = "white"
-game_finished = False
+game_over = False
 
 #create game object here and define players (note that yet human is white and comp is black in HvsC)
 game = game.HvsC_Game(display)
@@ -80,7 +80,7 @@ black_text_surface = full_surface.subsurface(pygame.Rect((9 * window_x_size) // 
 
 #run the window and wait for mouseclicks or quit
 while True:
-    if not game_finished:
+    if not game_over:
         for event in pygame.event.get():
             
             if event.type == pygame.QUIT:
@@ -213,7 +213,7 @@ while True:
                                     #set new turn
                                     game.turn = ("white", game.turn[1] + 1)
                                     dir_hexagons.clear()
-                                    wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                 
                                 else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
@@ -280,7 +280,7 @@ while True:
                                         #set new turn
                                         game.turn = ("white", game.turn[1] + 1)
                                         dir_hexagons.clear()
-                                        wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                        game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                     else:
                                         if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
@@ -323,7 +323,7 @@ while True:
                                         #set new turn
                                         game.turn = ("white", game.turn[1] + 1)
                                         dir_hexagons.clear()
-                                        wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                        game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                     else:
                                         if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
@@ -386,7 +386,7 @@ while True:
                                     #set new turn
                                     game.turn = ("white", game.turn[1] + 1)
                                     dir_hexagons.clear()
-                                    wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                 else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             
@@ -418,7 +418,7 @@ while True:
                                     #set new turn
                                     game.turn = ("white", game.turn[1] + 1)
                                     dir_hexagons.clear()
-                                    wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_finished)
+                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                 else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                             else:

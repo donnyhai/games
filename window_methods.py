@@ -25,9 +25,6 @@ def check_winner(color, surr, game_over):
         game_over = True
     return game_over
 
-def check_opponent_options(self, player, calculator):
+def check_opponent_options(player, calculator):
     player.set_action_hexagons(calculator)
-    #
-    #
-    #
-    pass
+    return player.moveable_hexagons or player.putable_hexagons

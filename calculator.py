@@ -28,17 +28,28 @@ class Calculator:
         return self.graph.is_connected()
     
     #which hexagons are moveable ? return is list of movable nonempty hexagons
-    def get_movable_hexagons(self, color):
+    def get_moveable_hexagons(self, color):
         nonempty_fields = self.board.nonempty_fields
-        movable_hexagons = []
+        moveable_hexagons = []
         for coord in nonempty_fields:
             hexagon  = self.board.board[coord[0]][coord[1]]
             cond0 = self.board_keeps_connected(coord)
             cond1 = not hexagon.has_bug_on
             cond2 = hexagon.color == color
-            if cond0 and cond1 and cond2:
-                movable_hexagons.append(hexagon)
-        return movable_hexagons
+            cond3 = self.can_move_on_ground(coord)
+            if cond0 and cond1 and cond2 and cond3:
+                moveable_hexagons.append(hexagon)
+        return moveable_hexagons
+    
+    #stone is on coord. can he move on ground, or is he blocked by surrounding stones ? return True or False
+    #NOTE: connectedness of the stones graph is not considered here
+    def can_move_on_ground(self, coord):
+        neighbours = self.board.get_neighbours(coord).values()
+        empty_neigh = [neigh for neigh in neighbours if self.board.board[neigh[0]][neigh[1]].is_empty]
+        for neigh in empty_neigh:
+            if self.graph.can_move_to_neighbour_on_ground(coord, neigh, self.board):
+                return True
+        return False
     
     #input is the color of a stone which wants to be put onto the board from the side.
     #return is a list of board coords where this stone can be legally put to 

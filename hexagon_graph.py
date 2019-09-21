@@ -111,6 +111,7 @@ class Hexagon_Graph:
     #helpful for all stones moving on the ground. 
     #yet this function doesnt check connectness of the board stones
     #again note that you have to give the board (board or test_board)
+    #note, that coord2 does not to be empty in this function, this has to be checked elsewhere then if needed
     def can_move_to_neighbour_on_ground(self, coord1, coord2, which_board):
         nonempty_fields = which_board.nonempty_fields
         neighbours1 = list(which_board.get_neighbours(coord1).values())
