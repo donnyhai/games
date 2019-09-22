@@ -13,6 +13,10 @@ class Player:
         self.set_side_stones_positions() #side positions for the side stones
         #side_stone_numbers shall display how many of each insect type are not yet on the board
         self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2, "bug": 2}
+        #init action hexagons (move and put)
+        self.moveable_hexagons = []
+        self.putable_hexagons = list(self.side_stones.values()).copy()
+        
         
 
     def create_stones(self, stone_size):
@@ -103,18 +107,11 @@ class Player:
                 stones_list.append(stone)
         return stones_list
     
-    #which hexagons are putable ? check with side_stone_numbers and return a list of hexagons
-    def get_putable_hexagons(self):
-        putable_hexagons = []
-        for stone_type in self.side_stones:
-            if self.side_stones_numbers[stone_type] > 0:
-                putable_hexagons.append(self.side_stones[stone_type])
-        return putable_hexagons
     
     #at some points we need to know the set of movable and putable hexagons of a player. here we actualize them
     def set_action_hexagons(self, calculator):
         self.moveable_hexagons = calculator.get_moveable_hexagons(self.color)
-        self.putable_hexagons = self.get_putable_hexagons()
+        self.putable_hexagons = calculator.get_putable_hexagons(self.color, self.side_stones, self.side_stones_numbers)
         
     
 class Human_Player(Player):

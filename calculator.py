@@ -34,12 +34,24 @@ class Calculator:
         for coord in nonempty_fields:
             hexagon  = self.board.board[coord[0]][coord[1]]
             cond0 = self.board_keeps_connected(coord)
+            if hexagon.type == "bug":
+                if hexagon.underlaying_stones: cond0 = True
             cond1 = not hexagon.has_bug_on
             cond2 = hexagon.color == color
-            cond3 = self.can_move_on_ground(coord)
+            cond3 = True
+            if hexagon.type in {"ant", "bee", "spider"}:
+                cond3 = self.can_move_on_ground(coord)
             if cond0 and cond1 and cond2 and cond3:
                 moveable_hexagons.append(hexagon)
         return moveable_hexagons
+    
+    #which hexagons are putable ? check with side_stone_numbers and return a list of hexagons
+    def get_putable_hexagons(self, color, side_stones, side_stones_numbers):
+        if not self.get_possible_put_fields(color): return []
+        putable_hexagons = []
+        for stone_type in side_stones:
+            if side_stones_numbers[stone_type] > 0: putable_hexagons.append(side_stones[stone_type])
+        return putable_hexagons
     
     #stone is on coord. can he move on ground, or is he blocked by surrounding stones ? return True or False
     #NOTE: connectedness of the stones graph is not considered here
