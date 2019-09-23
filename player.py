@@ -83,6 +83,10 @@ class Player:
         self.side_stones["spider"].set_pixel_pos(spider_position)
         self.side_stones["bug"].set_pixel_pos(bug_position)
     
+    #set side stones positions with the extended stones mosquito and ladybug
+    def set_extended_side_stones_positions(self):
+        pass
+    
     #set the number attribute of side_stones to display how many of each insect type are not on the board
     #for example after each stone put this function has to be called
     def set_side_stones_numbers(self):
@@ -112,7 +116,33 @@ class Player:
     def set_action_hexagons(self, calculator):
         self.moveable_hexagons = calculator.get_moveable_hexagons(self.color)
         self.putable_hexagons = calculator.get_putable_hexagons(self.color, self.side_stones, self.side_stones_numbers)
-        
+    
+    def add_extension_stones(self):
+        #new stones mosquito and ladybug
+        new_mosquito = hs.hexagon_stone(self.stone_size, "mosquito")
+        new_ladybug = hs.hexagon_stone(self.stone_size, "ladybug")
+        #adaptions in stones
+        self.stones["mosquito"] = {"mosquito": new_mosquito}
+        self.stones["ladybug"] = {"ladybug": new_ladybug}
+        self.stones["mosquito"].values().pop().is_mosquito = True
+        new_mosquito.set_color(self.color)
+        new_mosquito.is_empty = False
+        new_ladybug.set_color(self.color)
+        new_ladybug.is_empty = False
+        self.stones_list = self.get_stones_list()
+        #adaptions in side_stones
+        self.side_stones["mosquito"] = hs.hexagon_stone(self.stone_size, "mosquito")
+        self.side_stones["ladybug"] = hs.hexagon_stone(self.stone_size, "ladybug")
+        self.side_stones["mosquito"].set_color(self.color)
+        self.side_stones["mosquito"].is_empty = False
+        self.side_stones["ladybug"].set_color(self.color)
+        self.side_stones["ladybug"].is_empty = False
+        self.set_extended_side_stones_positions() #side positions for the side stones
+        #side_stone_numbers shall display how many of each insect type are not yet on the board
+        self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2, "bug": 2, "mosquito": 1, "ladybug": 1}
+        #init action hexagons (move and put)
+        self.moveable_hexagons = []
+        self.putable_hexagons = list(self.side_stones.values()).copy()
     
 class Human_Player(Player):
     pass
