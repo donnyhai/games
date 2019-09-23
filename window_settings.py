@@ -95,7 +95,7 @@ while True:
                         settings_window_shown = True
                     ####
                     elif start_game_button.pressed(event.pos):
-                        
+                        pygame.transform.scale(display, (300,100))
                         pygame.display.set_caption("Spielbrett")
                         
                         game.painter.draw_background(display, background_color2, 128)
@@ -105,12 +105,10 @@ while True:
                         game.painter.write_start_side_numbers(game.players["white"], display)
                         game.painter.write_start_side_numbers(game.players["black"], display)
                         
-                        game.painter.draw_board(game.board, game_surface)
                         
                         game.painter.draw_ingame_frame(display)
                         
                         game.interactor.set_game_surface(game_surface) #add game_surface as a attribute in interactor
-                        
                         
                         
                         start_game_mode = False 
