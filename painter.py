@@ -3,7 +3,8 @@ from math import sqrt
 
 hive_paths = {"ant": os.path.join("pictures", "ant.png"), "hopper": os.path.join("pictures", "hopper.png"),
               "spider": os.path.join("pictures", "spider.png"), "bee": os.path.join("pictures", "bee.png"),
-              "bug": os.path.join("pictures", "beetle.png")}
+              "bug": os.path.join("pictures", "beetle.png"), "mosquito": os.path.join("pictures", "mosquito.png"),
+              "ladybug": os.path.join("pictures", "ladybug.png")}
 
 class Painter:
     
@@ -118,6 +119,12 @@ class Painter:
         self.write_text(surface, str(player.side_stones_numbers["bug"]), text_size, (0,0,0),
                         (int(player.side_stones["bug"].pixel_pos[0] - 13 * stone_size / 18 - width),
                          int(player.side_stones["bug"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+        self.write_text(surface, str(player.side_stones_numbers["mosquito"]), text_size, (0,0,0),
+                        (int(player.side_stones["mosquito"].pixel_pos[0] - 13 * stone_size / 18 - width),
+                         int(player.side_stones["mosquito"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+        self.write_text(surface, str(player.side_stones_numbers["ladybug"]), text_size, (0,0,0),
+                        (int(player.side_stones["ladybug"].pixel_pos[0] - 13 * stone_size / 18 - width),
+                         int(player.side_stones["ladybug"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
     
     
 

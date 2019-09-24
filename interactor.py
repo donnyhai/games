@@ -99,7 +99,7 @@ class Interactor:
     
     
     
-    #this function evaluates and executes a potential stone move. input is the player and both clicked hexagons, 
+    #this function evaluates and executes a potential stone move on ground. input is the player and both clicked hexagons, 
     #first the hexagon where a stone wants to be moved, second the hexagon the stone wants to be moved to
     def execute_stone_move(self, player, fhex, shex):
         
@@ -195,7 +195,7 @@ class Interactor:
             fhex.set_board_pos(shex.board_pos)
             fhex.set_pixel_pos(shex.pixel_pos)
             
-            if fhex.underlaying_stones: 
+            if fhex.underlaying_stones: #case: fhex sits on at least one stone
                 #get stone which lies directly under the bug
                 last_stone = fhex.underlaying_stones[-1]
                 fhex.underlaying_stones.clear()
@@ -208,6 +208,8 @@ class Interactor:
                 if shex.is_empty:
                     self.board.nonempty_fields.append(fhex.board_pos)
                 last_stone.has_bug_on = False
+                #check whether fhex is mosquito. if it is and shex.is_empty then reput "mosquito" type
+                if fhex.is_mosquito and shex.is_empty: fhex.type = "mosquito"
                 #refill old place with last_stone and new place with fhex
                 self.board.board[old_board_pos[0]][old_board_pos[1]] = last_stone
                 self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
@@ -215,10 +217,11 @@ class Interactor:
                 #draw last_stone and fhex 
                 self.painter.draw_hexagon(last_stone, self.game_surface)
                 self.painter.draw_hexagon(fhex, self.game_surface)
-            else: #in this case bug will certainly move from an empty field onto a nonempty field
+            else: #case: bug will certainly move from an empty field onto a nonempty field
                 fhex.underlaying_stones.append(shex)
                 shex.has_bug_on = True
-                
+                #check mosquito.
+                if fhex.is_mosquito: fhex.type = "bug"
                 #refill "old" place with empty stone
                 new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
                 self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone

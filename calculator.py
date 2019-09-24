@@ -7,18 +7,9 @@ class Calculator:
     def __init__(self, locator):
         self.locator = locator
         self.board = self.locator.board #note that the locator always contains the board object of the actual game
-        #matrix has the sime size as board, is 1 in i,j iff we consider this field to be part 
-        #of the set of fields we want to include at the moment (initialized with all fields, therefore all 1). 
-        #the matrix will be helpful to get easier structural insides
-        self.matrix = self.all_fields()
         self.empty_help_stone = hs.hexagon_stone(self.board.hexagon_size, "empty", 99)
-        
         self.graph = hg.Hexagon_Graph(self.board) #doesnt contain points or edges yet
         
-        
-    def all_fields(self):
-        return [[1] * self.board.size for i in range(self.board.size)]
-    
     #are the stones connected after taking away stone on coord ? use hexagon_graph object
     def board_keeps_connected(self, coord):
         nonempty_fields = self.board.nonempty_fields.copy()
@@ -89,9 +80,9 @@ class Calculator:
         elif stone_type == "spider":    return self.get_spider_fields(board_pos)
         elif stone_type == "bee":   return self.get_bee_fields(board_pos)
         elif stone_type == "bug": return self.get_bug_fields(board_pos)
-        
-    
-    
+        elif stone_type == "mosquito": return self.get_mosquito_fields(board_pos)
+        elif stone_type == "ladybug": return self.get_ladybug_fields(board_pos)
+        elif stone_type == "empty": return []
     
     #a ground walking stone is on coord. where can it physically move ?
     #this function returns all possible ground fields, especially for the ant.
@@ -107,11 +98,9 @@ class Calculator:
     def get_bee_fields(self, coord):
         return [coord1 for coord1 in self.get_ground_move_fields(coord) if self.graph.can_move_to_neighbour_on_ground(coord, coord1, self.board)]
     
-    
     #ant is on coord. where can it move ?
     def get_ant_fields(self, coord):
         return self.get_ground_move_fields(coord)
-    
     
     #hopper is on coord. where can it move ?
     def get_hopper_fields(self, coord):
@@ -142,12 +131,20 @@ class Calculator:
         nonempty_neighbours = set(self.board.nonempty_fields).intersection(self.board.get_neighbours(coord).values())
         return self.get_bee_fields(coord) + list(nonempty_neighbours)
         
-    #marienbug is on coord. where can it move ?
-    def get_marienbug_fields(self, coord):
+    #ladybug is on coord. where can it move ?
+    def get_ladybug_fields(self, coord):
         pass
-
     
-    
+    #NOT YET CORRECT
+    #mosquito is on coord. where can it move ? 
+    def get_mosquito_fields(self, coord):
+        mosquito_fields = []
+        for neigh in self.board.get_neighbours(coord).values():
+            neigh_stone = self.board.board[neigh[0]][neigh[1]]
+            move_fields = self.get_possible_move_fields(neigh_stone)
+            mosquito_fields += move_fields
+        return mosquito_fields
+         
             
 
 

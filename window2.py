@@ -65,7 +65,7 @@ current_player_color = "white"
 game_over = False
 
 #create game object here firstly not encounter problems
-game = game.HvsH_Game(display)
+game = game.HvsH_Game_Extended(display)
 
 full_surface = display
 game_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 , 0, window_x_size * 0.8 , window_y_size))
@@ -246,7 +246,7 @@ while True:
                                 elif src_hexagon in game.players[current_player_color].stones_list:
                                     if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos: 
                                         wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                        if src_hexagon.type == "bug":
+                                        if src_hexagon.type in {"bug", "mosquito"}:
                                             if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
                                                 game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                             else: game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
@@ -311,7 +311,7 @@ while True:
                             elif src_hexagon in game.players[current_player_color].stones_list:
                                 if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                    if src_hexagon.type == "bug":
+                                    if src_hexagon.type in {"bug", "mosquito"}:
                                         if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
                                             game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         else: game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)

@@ -1,7 +1,9 @@
 import hexagon_stone as hs
 from math import sqrt
 
-class Player:
+#this player has all stones, tm basic stones and mosquito, ladybug
+class Player_Extended:
+
     def __init__(self, color, surface):
         self.color = color
         self.surface = surface
@@ -10,9 +12,9 @@ class Player:
         self.stones = self.create_stones(self.stone_size)
         self.stones_list = self.get_stones_list() #all stones in one list
         self.side_stones = self.create_side_stones(self.stone_size)
-        self.set_side_stones_positions(5) #side positions for the side stones
+        self.set_side_stones_positions(7) #side positions for the side stones
         #side_stone_numbers shall display how many of each insect type are not yet on the board
-        self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2, "bug": 2}
+        self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2, "bug": 2, "mosquito": 1, "ladybug": 1}
         #init action hexagons (move and put)
         self.moveable_hexagons = []
         self.putable_hexagons = list(self.side_stones.values()).copy()
@@ -30,13 +32,16 @@ class Player:
                    "spider": {1: hs.hexagon_stone(stone_size, "spider", 1),
                               2: hs.hexagon_stone(stone_size, "spider", 2)},
                    "bug": {1: hs.hexagon_stone(stone_size, "bug", 1),
-                           2: hs.hexagon_stone(stone_size, "bug", 2)}}
+                           2: hs.hexagon_stone(stone_size, "bug", 2)},
+                   "mosquito": {1: hs.hexagon_stone(stone_size, "mosquito", 1)},
+                   "ladybug": {1: hs.hexagon_stone(stone_size, "ladybug", 1)}}
         for hstones1 in hstones.values():
             for hstone in hstones1.values():
                 hstone.set_color(self.color)
                 hstone.is_empty = False
         for hstone in hstones["bug"].values():
             hstone.init_underlaying_stones() #initialize underlying stones with empty list
+        hstones["mosquito"][1].is_mosquito = True
         return hstones
     
     def create_side_stones(self, stone_size):
@@ -44,10 +49,13 @@ class Player:
                 "ant": hs.hexagon_stone(stone_size, "ant"),
                 "hopper": hs.hexagon_stone(stone_size, "hopper"),
                 "spider": hs.hexagon_stone(stone_size, "spider"),
-                "bug": hs.hexagon_stone(stone_size, "bug")} #bug stone here does not need init underlaying stones
+                "bug": hs.hexagon_stone(stone_size, "bug"),
+                "mosquito": hs.hexagon_stone(stone_size, "mosquito"),
+                "ladybug": hs.hexagon_stone(stone_size, "ladybug")} #bug stone here does not need init underlaying stones
         for hstone in hstones.values():
             hstone.set_color(self.color)
             hstone.is_empty = False
+        hstones["mosquito"].is_mosquito = True
         return hstones
     
     #calculate positions of hexagons laying at the side depending on player white or black and set them 
@@ -71,7 +79,7 @@ class Player:
         #assign positions to side_stones
         for k in range(number):
             list(self.side_stones.values())[k].set_pixel_pos(insect_positions[k])
-
+    
     #set the number attribute of side_stones to display how many of each insect type are not on the board
     #for example after each stone put this function has to be called
     def set_side_stones_numbers(self):
@@ -82,13 +90,6 @@ class Player:
                     counter += 1
             self.side_stones_numbers[insect] = counter
             
-    def draw_stone_numbers_text(self, surface):
-        self.side_stones["ant"].pixel_pos
-        self.side_stones["hopper"].pixel_pos
-        self.side_stones["spider"].pixel_pos
-        self.side_stones["bee"].pixel_pos
-        self.side_stones["bug"].pixel_pos
-        
     def get_stones_list(self):
         stones_list = []
         for stones in self.stones.values():
@@ -102,7 +103,7 @@ class Player:
         self.moveable_hexagons = calculator.get_moveable_hexagons(self.color)
         self.putable_hexagons = calculator.get_putable_hexagons(self.color, self.side_stones, self.side_stones_numbers)
     
-class Human_Player(Player):
+class Human_Player_Extended(Player_Extended):
     pass
 
 
