@@ -41,6 +41,8 @@ class Player_Extended:
                 hstone.is_empty = False
         for hstone in hstones["bug"].values():
             hstone.init_underlaying_stones() #initialize underlying stones with empty list
+        #care about mosquito attributes
+        hstones["mosquito"][1].init_underlaying_stones() 
         hstones["mosquito"][1].is_mosquito = True
         return hstones
     

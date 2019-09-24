@@ -137,11 +137,17 @@ class Calculator:
     
     #NOT YET CORRECT
     #mosquito is on coord. where can it move ? 
+    #NOTE: this function (shoud) only gets called, when the mosquito has type mosquito, 
+    #tm when it sits on the ground. (note: when a mosquito copies the bug, and moves onto a nonempty stone,
+    #it gets type bug as long as it is up.)
     def get_mosquito_fields(self, coord):
+        #copy board into test_board and simulate situations on it 
+        #(eg mosquito copies ant: change mosquito type to ant type and calc move fields)
+        self.graph.test_board.copy_board(self.board)
         mosquito_fields = []
         for neigh in self.board.get_neighbours(coord).values():
-            neigh_stone = self.board.board[neigh[0]][neigh[1]]
-            move_fields = self.get_possible_move_fields(neigh_stone)
+            self.graph.test_board.board[coord[0]][coord[1]].type = self.board.board[neigh[0]][neigh[1]].type
+            move_fields = self.get_possible_move_fields(self.graph.test_board.board[coord[0]][coord[1]])
             mosquito_fields += move_fields
         return mosquito_fields
          

@@ -141,7 +141,7 @@ class Interactor:
         cond2 = fhex.is_on_board
         #coord is empty (just for stone.type != "bug")
         cond3 = True
-        if fhex.type != "bug":
+        if not fhex.type in {"bug", "mosquito"}:
             cond3 = shex.is_empty 
         return cond00 and cond0 and cond1 and cond2 and cond3
             
