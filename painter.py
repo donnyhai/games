@@ -40,7 +40,8 @@ class Painter:
             elif hexagon.color == "black":
                 pygame.draw.polygon(surface, (60,60,60), hexagon.points) #creme black
             #blit insect on the polygon
-            insect = hexagon.type
+            if hexagon.is_mosquito:  insect = "mosquito"
+            else:   insect = hexagon.type
             insect_image = pygame.image.load(hive_paths[insect])
             insect_image = pygame.transform.scale(insect_image, (hexagon.size, int(hexagon.size * 3**(0.5))))
             surface.blit(insect_image, hexagon.pixel_pos)
@@ -104,31 +105,11 @@ class Painter:
         test_font = pygame.font.SysFont("Arial", text_size)
         (width, height) = test_font.size("0")
         
-        self.write_text(surface, str(player.side_stones_numbers["ant"]), text_size, (0,0,0),
-                        (int(player.side_stones["ant"].pixel_pos[0] - 13 * stone_size / 18 - width),
-                         int(player.side_stones["ant"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["hopper"]), text_size, (0,0,0),
-                        (int(player.side_stones["hopper"].pixel_pos[0] - 13 * stone_size / 18 - width),
-                         int(player.side_stones["hopper"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["spider"]), text_size, (0,0,0),
-                        (int(player.side_stones["spider"].pixel_pos[0] - 13 * stone_size / 18 - width),
-                         int(player.side_stones["spider"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["bee"]), text_size, (0,0,0),
-                        (int(player.side_stones["bee"].pixel_pos[0] - 13 * stone_size / 18 - width),
-                         int(player.side_stones["bee"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["bug"]), text_size, (0,0,0),
-                        (int(player.side_stones["bug"].pixel_pos[0] - 13 * stone_size / 18 - width),
-                         int(player.side_stones["bug"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["mosquito"]), text_size, (0,0,0),
-                        (int(player.side_stones["mosquito"].pixel_pos[0] - 13 * stone_size / 18 - width),
-                         int(player.side_stones["mosquito"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-        self.write_text(surface, str(player.side_stones_numbers["ladybug"]), text_size, (0,0,0),
-                        (int(player.side_stones["ladybug"].pixel_pos[0] - 13 * stone_size / 18 - width),
-                         int(player.side_stones["ladybug"].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
-    
-    
-
-
+        for insect in player.side_stones.keys():
+            self.write_text(surface, str(player.side_stones_numbers[insect]), text_size, (0,0,0),
+                        (int(player.side_stones[insect].pixel_pos[0] - 13 * stone_size / 18 - width),
+                         int(player.side_stones[insect].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)))
+        
 
 
 #nothing    
