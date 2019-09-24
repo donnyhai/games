@@ -133,9 +133,13 @@ class Calculator:
         
     #ladybug is on coord. where can it move ?
     def get_ladybug_fields(self, coord):
-        pass
-    
-    #NOT YET CORRECT
+        ladybug_fields = []
+        for neigh in self.board.get_nonempty_neighbours(coord):
+            nonempty_neigh2 = self.board.get_nonempty_neighbours(neigh)
+            nonempty_neigh2.remove(coord)
+            for neigh2 in nonempty_neigh2:  ladybug_fields += self.board.get_empty_neighbours(neigh2)
+        return ladybug_fields
+        
     #mosquito is on coord. where can it move ? 
     #NOTE: this function (shoud) only gets called, when the mosquito has type mosquito, 
     #tm when it sits on the ground. (note: when a mosquito copies the bug, and moves onto a nonempty stone,

@@ -23,6 +23,15 @@ class Board:
         else:
             return {0: (i-2,j), 1: (i-1,j), 2: (i+1,j), 3: (i+2,j), 4: (i+1,j-1), 5: (i-1,j-1)} 
     
+    def get_nonempty_neighbours (self, coord):
+        nonempty_neigh = []
+        for neigh in self.get_neighbours(coord).values():
+            if not self.board[neigh[0]][neigh[1]].is_empty: nonempty_neigh.append(neigh)
+        return nonempty_neigh
+    
+    def get_empty_neighbours(self, coord):
+        return [neigh for neigh in self.get_neighbours(coord).values() if neigh not in self.get_nonempty_neighbours(coord)]
+    
     #create a quadratic board of hexagons as a matrix of hexagon objects with respective correct positions    
     def calculate_empty_hexagon_board(self):
         
