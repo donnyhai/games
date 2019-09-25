@@ -1,5 +1,5 @@
 import pygame
-from math import sqrt
+import texts
 pygame.init()
 
 
@@ -9,11 +9,8 @@ class Interactor:
         self.calculator = calculator
         self.players = self.calculator.players
         self.board = self.calculator.board
-        self.surface = self.board.surface
+        self.surfaces = self.board.surfaces
         self.turn = turn
-    
-    def set_game_surface(self, game_surface):
-        self.game_surface = game_surface
     
     #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
     #first the hexagon at the side, second a hexagon on the board   
@@ -49,8 +46,8 @@ class Interactor:
             draw_hexagon.is_on_board = True
             
             ##then excute drawing aspects
-            self.draw_new_stone_number(str(player.side_stones_numbers[stone_type]), stone_type, player)
-            self.painter.draw_hexagon(draw_hexagon, self.game_surface)
+            self.painter.draw_new_stone_number(self.surfaces, str(player.side_stones_numbers[stone_type]), stone_type, player)
+            self.painter.draw_hexagon(draw_hexagon, self.surfaces["surface_board"])
             #self.painter.draw_hexagon_marking(shex, (50,50,50), max((player.stone_size//20),1))
             self.painter.draw_hexagon_frame(shex, (50,50,50), player.stone_size // 15)
     
@@ -124,8 +121,11 @@ class Interactor:
             self.board.nonempty_fields.append(fhex.board_pos)
             self.board.nonempty_fields.remove(old_board_pos)
             
-            self.painter.draw_hexagon(new_empty_stone, self.game_surface)
-            self.painter.draw_hexagon(fhex, self.game_surface)
+            self.painter.draw_hexagon(new_empty_stone, self.surfaces["surface_board"])
+            self.painter.draw_hexagon(fhex, self.surfaces["surface_board"])
+            
+            #write texts
+            self.painter.write_box_text(self.surfaces, texts.insect_texts[fhex.type], fhex.color)
             
     
     #player wants to move fhex to shex. is that generally possible ? that means independently of 
@@ -144,43 +144,8 @@ class Interactor:
         if not fhex.type in {"bug", "mosquito"}:
             cond3 = shex.is_empty 
         return cond00 and cond0 and cond1 and cond2 and cond3
-            
     
-    ###### shall be in painter
-    #HAS TO BE ADAPTED, should use painter to draw       
-    def write_text(self, surface, text, text_color, length, height, x, y):
-        font_size = 2*int(length//len(text))
-        myFont = pygame.font.SysFont("Calibri", font_size)
-        myText = myFont.render(text, 1, text_color)
-        surface.blit(myText, ((x+length/2) - myText.get_width()/2, (y+height/2) - myText.get_height()/2))
-        return surface
     
-    #draw side_numbers at corresponding position depending on insect_type
-    def draw_new_stone_number0(self, text, insect_type, player, text_color = (0,0,0)):
-        stone_size = player.stone_size
-        height_rect = 1.5 * pygame.font.SysFont("Arial", stone_size).render("1", 1, text_color).get_height()
-        width = 1.3 * pygame.font.SysFont("Arial", stone_size).render("1", 1, text_color).get_width()
-        position = (player.side_stones[insect_type].pixel_pos[0] + 1.5 * stone_size + 5,
-                  int(player.side_stones[insect_type].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height_rect))
-        rect_subsurface = self.surface.subsurface(pygame.Rect(position, (width, height_rect)))
-        rect_subsurface.fill(self.surface.get_at_mapped((1,1)))       
-        height_text = pygame.font.SysFont("Arial", stone_size).render("1", 1, (0,0,0)).get_height()
-        self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]), stone_size, (0,0,0), (5, 0.5 * (height_rect - height_text)))
-
-    def draw_new_stone_number(self, text, insect_type, player, text_color = (0,0,0)):
-        stone_size = player.stone_size
-        text_size = int (1.2 * stone_size)
-        test_font = pygame.font.SysFont("Arial", text_size)
-        (width, height) = test_font.size("0")
-        
-        position =  (int(player.side_stones[insect_type].pixel_pos[0] - 13 * stone_size / 18 - width),
-                         int(player.side_stones[insect_type].pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height))
-        
-        rect_subsurface = self.surface.subsurface(pygame.Rect(position, (width, height)))
-        rect_subsurface.fill(self.surface.get_at_mapped((1,1)))
-        
-        self.painter.write_text(rect_subsurface, str(player.side_stones_numbers[insect_type]),
-                                text_size, (0,0,0), (0,0) )
 
     #player wants to move the bug fhex onto a nonempty stone shex, or bug is already on a nonempty stone
     #and wants to fall down onto an empty field
@@ -215,8 +180,8 @@ class Interactor:
                 self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
                 #no adaptation for nonempty_fields needed
                 #draw last_stone and fhex 
-                self.painter.draw_hexagon(last_stone, self.game_surface)
-                self.painter.draw_hexagon(fhex, self.game_surface)
+                self.painter.draw_hexagon(last_stone, self.surfaces["surface_board"])
+                self.painter.draw_hexagon(fhex, self.surfaces["surface_board"])
             else: #case: bug will certainly move from an empty field onto a nonempty field
                 fhex.underlaying_stones.append(shex)
                 shex.has_bug_on = True
@@ -233,8 +198,8 @@ class Interactor:
                 #actualize board.nonempty_fields
                 self.board.nonempty_fields.remove(old_board_pos)
                 
-                self.painter.draw_hexagon(new_empty_stone, self.game_surface)
-                self.painter.draw_hexagon(fhex, self.game_surface)
+                self.painter.draw_hexagon(new_empty_stone, self.surfaces["surface_board"])
+                self.painter.draw_hexagon(fhex, self.surfaces["surface_board"])
 
 
 

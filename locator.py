@@ -14,7 +14,7 @@ class Locator:
     def __init__(self, board, look_into_past):
         #board, test_board and players
         self.board = board #this is a Board object
-        self.test_board = test.Test_Board(self.board.size, self.board.surface) 
+        self.test_board = test.Test_Board(self.board.size, self.board.surfaces) 
         
         self.look_into_past = look_into_past
         

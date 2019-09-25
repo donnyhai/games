@@ -5,7 +5,7 @@ import test_objects as to
 class Hexagon_Graph:
     def __init__(self, board):
         self.board = board #board object
-        self.test_board = to.Test_Board(self.board.size, self.board.surface)
+        self.test_board = to.Test_Board(self.board.size, self.board.surfaces)
     
     def set_points(self, points):
         self.points = points

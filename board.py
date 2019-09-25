@@ -1,10 +1,10 @@
 import hexagon_stone as hs
 
 class Board:
-    def __init__(self, board_size, surface):
+    def __init__(self, board_size, surfaces):
         self.size = board_size
-        self.surface = surface
-        self.hexagon_size = int(0.03 * self.surface.get_width())
+        self.surfaces = surfaces
+        self.hexagon_size = int(0.03 * self.surfaces["surface_full"].get_width())
         self.draw_position = (0, -self.hexagon_size) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
         self.board = self.calculate_empty_hexagon_board() #quadratic matrix of hexagons

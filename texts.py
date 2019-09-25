@@ -9,10 +9,10 @@ win_text_black = "Black wins. Nice game!"
 win_text_equal = "Tied! Interesting game!"
 
 #insect texts
-ant_text = "I´m an ant and walk ´till I can´t!"
-bee_text = "SssSSssss... Let me fly to the next place... SssSSssss..."
-hopper_text = "HOPPER and HOP and I jump over the TOP!"
-spider_text = "... walk silently... maybe my attack stays unnoticed..."
-bug_text = "Who dares to stop me ?"
-mosquito_text = "I´m thursty... Who´s around ?"
-marienbug_text = "You all bore me... I fly over that hive!"
+insect_texts = {"ant": "I´m an ant and walk ´till I can´t!", 
+                "bee": "SssSSssss... Let me fly to the next place... SssSSssss...",
+                "hopper": "HOPPER and HOP and I jump over the TOP!",
+                "spider": "... walk silently... maybe my attack stays unnoticed...",
+                "bug": "Who dares to stop me ?",
+                "mosquito": "I´m thursty... Who´s around ?",
+                "marienbug": "You all bore me... I fly over that hive!"}
