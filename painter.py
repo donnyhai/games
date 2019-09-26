@@ -81,10 +81,6 @@ class Painter:
         width = surface.get_width()
         height = surface.get_height()
         line_width = width // 350
-#        pygame.draw.line(surface, (0,0,0), (0.1 * width + 0.5 * line_width, 0), (0.1 * width + 0.5 * line_width, height), line_width)
-#        pygame.draw.line(surface, (0,0,0), (0.9 * width, 0),(0.9 * width, height), line_width)
-#        pygame.draw.line(surface, (0,0,0), (0, 0.8 * height), (0.1 * width, 0.8 * height), line_width)
-#        pygame.draw.line(surface, (0,0,0), (0.9 * width, 0.8 * height), (width, 0.8 * height), line_width)
         pygame.draw.line(surface, (0,0,0), (0.1 * width, 0), (0.1 * width, height), line_width)
         pygame.draw.line(surface, (0,0,0), (0.9 * width, 0),(0.9 * width, height), line_width)
         pygame.draw.line(surface, (0,0,0), (0, 0.8 * height), (0.1 * width, 0.8 * height), line_width)
@@ -95,14 +91,13 @@ class Painter:
         surface.blit(myText, position)
         
     def write_box_text(self, surfaces, text, player_color):
-        font_size = 0.1 * surfaces["surface_white_text"].get_height()
+        surface = surfaces["surface_text"][player_color]
+        surface.fill(surface.get_at_mapped((4,4)))
+        font_size = int(0.2 * surface.get_height())
         color = (0,0,0)
-        position = (0.1 * surfaces["surface_white_text"].get_width(), 0.1 * surfaces["surface_white_text"].get_height())
-        if player_color == "white":
-            surface = surfaces["surface_white_text"]
-        else:
-            surface = surfaces["surface_black_text"]
+        position = (0.1 * surface.get_width(), 0.1 * surface.get_height())
         self.write_text(surface, text, font_size, color, position)
+        self.draw_ingame_frame(surfaces["surface_full"])
     
     def draw_stone_number(self, player, hexagon, surfaces, text_color = (0,0,0)):
         stone_size = player.stone_size
@@ -112,7 +107,6 @@ class Painter:
         position =  (hexagon.pixel_pos[0] - 13 * stone_size / 18 - width,
                      hexagon.pixel_pos[1] + sqrt(3) * 0.5 * stone_size - 0.5 * height)
         rect_subsurface = surfaces["surface_stones"][player.color].subsurface(pygame.Rect(position, (width, height)))
-#        rect_subsurface.fill(surfaces["surface_stones"][player.color].get_at_mapped((1,1)))
         rect_subsurface.fill(surfaces["surface_stones"][player.color].get_at_mapped((7,7)))
         self.write_text(rect_subsurface, str(player.side_stones_numbers[hexagon.type]), 
                                 text_size, (0,0,0), (0,0))

@@ -1,5 +1,6 @@
 import pygame, sys, buttons
 import game
+import texts as t
 import start_menu
 import window_methods as wm
 
@@ -87,7 +88,7 @@ while True:
                     ####
                     elif start_game_button.pressed(event.pos):
                         
-                        game = game.HvsH_Game(display) #create game
+                        game = game.HvsH_Game_Extended(display) #create game
                         
                         pygame.display.set_caption("Spielbrett")
                         
@@ -102,9 +103,11 @@ while True:
                         
                         game.painter.draw_ingame_frame(game.surfaces["surface_full"])
                         
-                        start_game_mode = False 
+                        start_game_mode = False  
                         
                         #print a text claiming that white begins
+                        game.painter.write_box_text(game.surfaces, t.welcome_text, "white")
+                        game.painter.write_box_text(game.surfaces, t.welcome_text, "black")
 # start game            
             elif not start_game_mode:
                 
@@ -186,8 +189,16 @@ while True:
                                     opponent_player.set_action_hexagons(game.interactor.calculator)
                                     if not opponent_player.moveable_hexagons and not opponent_player.putable_hexagons: game.turn_up()
                                     #check winning condition
-                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
+                                    game_over = wm.check_winner(game.painter, game.surfaces, current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                     dir_hexagons.clear()
+                                    
+                                    #put bee reminder:
+                                    if current_player_color == "white":
+                                        if not game.players["black"].stones["bee"][1].is_on_board:
+                                            game.painter.write_box_text(game.surfaces, t.bee_reminder, "black")
+                                    else:
+                                        if not game.players["white"].stones["bee"][1].is_on_board:
+                                            game.painter.write_box_text(game.surfaces, t.bee_reminder, "white")
                                 
                                 else:
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
@@ -225,8 +236,16 @@ while True:
                                         opponent_player.set_action_hexagons(game.interactor.calculator)
                                         if not opponent_player.moveable_hexagons and not opponent_player.putable_hexagons: game.turn_up()
                                         #check winning condition
-                                        game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
+                                        game_over = wm.check_winner(game.painter, game.surfaces, current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                         dir_hexagons.clear()
+                                        
+                                        #put bee reminder:
+                                        if current_player_color == "white":
+                                            if not game.players["black"].stones["bee"][1].is_on_board:
+                                                game.painter.write_box_text(game.surfaces, t.bee_reminder, "black")
+                                        else:
+                                            if not game.players["white"].stones["bee"][1].is_on_board:
+                                                game.painter.write_box_text(game.surfaces, t.bee_reminder, "white")
                                     else: 
                                         if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
@@ -234,7 +253,7 @@ while True:
                                 elif src_hexagon in game.players[current_player_color].stones_list:
                                     if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos: 
                                         wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                        if src_hexagon.type == "bug":
+                                        if src_hexagon.type in {"bug", "mosquito"}:
                                             if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
                                                 game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                             else: game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
@@ -245,8 +264,16 @@ while True:
                                         opponent_player.set_action_hexagons(game.interactor.calculator)
                                         if not opponent_player.moveable_hexagons and not opponent_player.putable_hexagons: game.turn_up()
                                         #check winning condition
-                                        game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
+                                        game_over = wm.check_winner(game.painter, game.surfaces, current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                         dir_hexagons.clear()
+                                        
+                                        #put bee reminder:
+                                        if current_player_color == "white":
+                                            if not game.players["black"].stones["bee"][1].is_on_board:
+                                                game.painter.write_box_text(game.surfaces, t.bee_reminder, "black")
+                                        else:
+                                            if not game.players["white"].stones["bee"][1].is_on_board:
+                                                game.painter.write_box_text(game.surfaces, t.bee_reminder, "white")
                                     else: 
                                         if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
                                 
@@ -290,7 +317,7 @@ while True:
                                     opponent_player.set_action_hexagons(game.interactor.calculator)
                                     if not opponent_player.moveable_hexagons and not opponent_player.putable_hexagons: game.turn_up()
                                     #check winning condition
-                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
+                                    game_over = wm.check_winner(game.painter, game.surfaces, current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                     dir_hexagons.clear()
                                 else: 
                                     if marked_hexagons: wm.unmark_hexagons(display, display_before, marked_hexagons)
@@ -299,7 +326,7 @@ while True:
                             elif src_hexagon in game.players[current_player_color].stones_list:
                                 if clicked_hexagon in dir_hexagons and clicked_hexagon.board_pos != src_hexagon.board_pos:
                                     wm.unmark_hexagons(display, display_before, marked_hexagons)
-                                    if src_hexagon.type == "bug":
+                                    if src_hexagon.type in {"bug", "mosquito"}:
                                         if not clicked_hexagon.is_empty or len(src_hexagon.underlaying_stones) > 0:
                                             game.interactor.move_bug_on_nonempty_stone(game.players[current_player_color], src_hexagon, clicked_hexagon)
                                         else: game.interactor.execute_stone_move(game.players[current_player_color], src_hexagon, clicked_hexagon)
@@ -310,7 +337,7 @@ while True:
                                     opponent_player.set_action_hexagons(game.interactor.calculator)
                                     if not opponent_player.moveable_hexagons and not opponent_player.putable_hexagons: game.turn_up()
                                     #check winning condition
-                                    game_over = wm.check_winner(current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
+                                    game_over = wm.check_winner(game.painter, game.surfaces, current_player_color, game.interactor.calculator.winning_condition(current_player_color), game_over)
                                     dir_hexagons.clear()
                                 
                                 else:

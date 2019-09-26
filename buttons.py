@@ -19,6 +19,8 @@ class Button:
         myText = myFont.render(text, 1, text_color)
         surface.blit(myText, ((x+length/2) - myText.get_width()/2, (y+height/2) - myText.get_height()/2))
         return surface
+    
+    
 
     def draw_button(self, surface, color, length, height, x, y, width = 0):           
         for i in range(1,10):
