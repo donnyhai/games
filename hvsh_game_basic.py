@@ -64,16 +64,6 @@ marked_hexagons = []
 current_player_color = "white"
 game_over = False
 
-#create game object here firstly not encounter problems
-game = game.HvsH_Game(display)
-
-full_surface = display
-game_surface = full_surface.subsurface(pygame.Rect(window_x_size * 0.1 , 0, window_x_size * 0.8 , window_y_size))
-white_surface = full_surface.subsurface(pygame.Rect(0, 0, window_x_size // 10, (window_y_size * 4) // 5))
-black_surface = full_surface.subsurface(pygame.Rect((window_x_size * 9) // 10, 0, window_x_size  // 10, (window_y_size * 4) // 5))
-white_text_surface = full_surface.subsurface(pygame.Rect(0, (4 * window_y_size) // 5, window_x_size  // 10, window_y_size // 5))
-black_text_surface = full_surface.subsurface(pygame.Rect((9 * window_x_size) // 10, (4 * window_y_size) // 5, window_x_size  // 10, window_y_size // 5))
-
 #run the window and wait for mouseclicks or quit
 while True:
     if not game_over:
@@ -97,22 +87,20 @@ while True:
                     ####
                     elif start_game_button.pressed(event.pos):
                         
+                        game = game.HvsH_Game(display) #create game
+                        
                         pygame.display.set_caption("Spielbrett")
                         
-                        game.painter.draw_background(display, background_color2, 128)
+                        game.painter.draw_background(game.surfaces["surface_full"], background_color2, 128)
     
-                        game.painter.draw_set_of_hexagons(game.players["white"].side_stones.values(), display)
-                        game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), display)
-                        game.painter.write_start_side_numbers(game.players["white"], display)
-                        game.painter.write_start_side_numbers(game.players["black"], display)
+                        game.painter.draw_set_of_hexagons(game.players["white"].side_stones.values(), game.surfaces["surface_stones"]["white"])
+                        game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), game.surfaces["surface_stones"]["black"])
+                        game.painter.draw_all_stone_numbers(game.players["white"], game.surfaces)
+                        game.painter.draw_all_stone_numbers(game.players["black"], game.surfaces)
                         
-                        game.painter.draw_board(game.board, game_surface)
+                        game.painter.draw_board(game.board, game.surfaces["surface_board"])
                         
-                        game.painter.draw_ingame_frame(display)
-                        
-                        game.interactor.set_game_surface(game_surface) #add game_surface as a attribute in interactor
-                        
-                        
+                        game.painter.draw_ingame_frame(game.surfaces["surface_full"])
                         
                         start_game_mode = False 
                         

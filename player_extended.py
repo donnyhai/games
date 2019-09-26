@@ -4,10 +4,10 @@ from math import sqrt
 #this player has all stones, tm basic stones and mosquito, ladybug
 class Player_Extended:
 
-    def __init__(self, color, surface):
+    def __init__(self, color, surfaces):
         self.color = color
-        self.surface = surface
-        self.stone_size = int(0.03 * self.surface.get_width())
+        self.surfaces = surfaces
+        self.stone_size = int(0.03 * self.surfaces["surface_full"].get_width())
         
         self.stones = self.create_stones(self.stone_size)
         self.stones_list = self.get_stones_list() #all stones in one list
@@ -65,19 +65,14 @@ class Player_Extended:
     def set_side_stones_positions(self, number):
         #set constants
         sqrt_3 = sqrt(3)
-        surface_width = self.surface.get_width()
-        surface_height = self.surface.get_height()
-        x_distance = (0.1 * surface_width * 21) // 40
-        y_distance = (0.8 * surface_height - number * sqrt_3 * self.stone_size) // (number + 1)
-        right_frame_translate = (0.9 * surface_width, 0)
+        surface_width = self.surfaces["surface_stones"]["white"].get_width()
+        surface_height = self.surfaces["surface_stones"]["white"].get_height()
+        x_distance = (surface_width * 21) // 40
+        y_distance = (surface_height - number * sqrt_3 * self.stone_size) // (number + 1)
         #calculate side stones positions
         insect_positions = []
         for k in range(number):
             insect_positions.append((x_distance, (k+1) * y_distance + k * sqrt_3 * self.stone_size))
-        #translate stones to the right side if they are black
-        if self.color == "black":
-            for k in range(number):
-                insect_positions[k] = (insect_positions[k][0] + right_frame_translate[0], insect_positions[k][1] + right_frame_translate[1])
         #assign positions to side_stones
         for k in range(number):
             list(self.side_stones.values())[k].set_pixel_pos(insect_positions[k])

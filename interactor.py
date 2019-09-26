@@ -14,12 +14,8 @@ class Interactor:
     
     #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
     #first the hexagon at the side, second a hexagon on the board   
-    def execute_stone_put(self, player, first_clicked_hex, second_clicked_hex):
-        fhex = first_clicked_hex
-        shex = second_clicked_hex
-        cond1 = True
-        cond2 = True
-        
+    def execute_stone_put(self, player, fhex, shex):
+        cond1, cond2 = True, True
         if self.turn[1] >= 2:
             possible_put_fields = self.calculator.get_possible_put_fields(fhex.color)
             cond1 = self.put_stone_condition(player, fhex, shex)
@@ -45,8 +41,8 @@ class Interactor:
             #set is_on_board
             draw_hexagon.is_on_board = True
             
-            ##then excute drawing aspects
-            self.painter.draw_new_stone_number(self.surfaces, str(player.side_stones_numbers[stone_type]), stone_type, player)
+            ##then execute drawing aspects
+            self.painter.draw_stone_number(player, fhex, self.surfaces)
             self.painter.draw_hexagon(draw_hexagon, self.surfaces["surface_board"])
             #self.painter.draw_hexagon_marking(shex, (50,50,50), max((player.stone_size//20),1))
             self.painter.draw_hexagon_frame(shex, (50,50,50), player.stone_size // 15)

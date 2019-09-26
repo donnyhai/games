@@ -57,8 +57,8 @@ class Player:
         sqrt_3 = sqrt(3)
         surface_width = self.surfaces["surface_stones"]["white"].get_width()
         surface_height = self.surfaces["surface_stones"]["white"].get_height()
-        x_distance = (0.1 * surface_width * 21) // 40
-        y_distance = (0.8 * surface_height - number * sqrt_3 * self.stone_size) // (number + 1)
+        x_distance = (surface_width * 21) // 40
+        y_distance = (surface_height - number * sqrt_3 * self.stone_size) // (number + 1)
         #calculate side stones positions
         insect_positions = []
         for k in range(number):

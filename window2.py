@@ -64,9 +64,6 @@ marked_hexagons = []
 current_player_color = "white"
 game_over = False
 
-#create game object here firstly not encounter problems
-game = game.HvsH_Game(display)
-
 #run the window and wait for mouseclicks or quit
 while True:
     if not game_over:
@@ -90,14 +87,16 @@ while True:
                     ####
                     elif start_game_button.pressed(event.pos):
                         
+                        game = game.HvsH_Game(display) #create game
+                        
                         pygame.display.set_caption("Spielbrett")
                         
                         game.painter.draw_background(game.surfaces["surface_full"], background_color2, 128)
     
                         game.painter.draw_set_of_hexagons(game.players["white"].side_stones.values(), game.surfaces["surface_stones"]["white"])
-                        game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), game.surfaces["surface_stones"]["white"])
-                        game.painter.write_start_side_numbers(game.players["white"], game.surfaces["surface_stones"]["white"])
-                        game.painter.write_start_side_numbers(game.players["black"], game.surfaces["surface_stones"]["white"])
+                        game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), game.surfaces["surface_stones"]["black"])
+                        game.painter.draw_all_stone_numbers(game.players["white"], game.surfaces)
+                        game.painter.draw_all_stone_numbers(game.players["black"], game.surfaces)
                         
                         game.painter.draw_board(game.board, game.surfaces["surface_board"])
                         
