@@ -20,12 +20,11 @@ class Painter:
     
     
     #draw full hexagon (shall a frame with mark_mode = 0 also be drawn ?)
-    def draw_hexagon(self, hexagon, surface):
+    def draw_hexagon(self, hexagon, surface, mark_mode = 0):
         hexagon.is_drawn = True
         hexagon.set_drawn_surface(surface)
         #as the hexagon gets drawn, we can calculate the global pixel pos
         hexagon.calculate_global_pixel_pos()
-        
         if hexagon.type == "empty": pygame.draw.polygon(surface, (5,90,3), hexagon.points)
         else:
             if hexagon.color == "white": pygame.draw.polygon(surface, (255,255,230), hexagon.points) #creme white
@@ -36,6 +35,9 @@ class Painter:
             insect_image = pygame.image.load(hive_paths[insect])
             insect_image = pygame.transform.scale(insect_image, (hexagon.size, int(hexagon.size * 3**(0.5))))
             surface.blit(insect_image, hexagon.pixel_pos)
+            
+        if hexagon.is_marked:
+            self.draw_hexagon_marking(hexagon, mark_mode = mark_mode)
     
     
     #draw a list of full hexagons 
@@ -44,10 +46,11 @@ class Painter:
             self.draw_hexagon(hstone, surface)
     
     #draw the whole board of hexagons on surface
-    def draw_board(self, board, surface):
+    def draw_board(self, board, surfaces, mark_mode = 0):
         for row in board.board:
             for hexagon in row:
-                self.draw_hexagon(hexagon, surface)
+                self.draw_hexagon(hexagon, surfaces["surface_board"], mark_mode)
+        self.draw_ingame_frame(surfaces["surface_full"])
                 
     def draw_hexagon_frame(self, hexagon, color = (0,0,0), width = 1):
         #scaling_ratio = hexagon.size + 2 * width / sqrt(3) - (width // 2)
@@ -56,11 +59,10 @@ class Painter:
 
     #draw the frame of an hexagon in color with respect to mark_mode (mark_mode = 0 is normal thin line) 
     def draw_hexagon_marking(self, hexagon, color = (0,0,0), mark_mode = 0):
-        #if just a marking with mark_mode = 0 is drawn, hexagon shall not be considered as marked, 
-        #therefore is_marked = False
         frame_width = 3 * mark_mode // 5
         if frame_width == 0:
             pygame.draw.lines(hexagon.drawn_surface, color , True, hexagon.points, 2)
+            hexagon.is_marked = True
         elif frame_width > 0:
             scaling_ratio = hexagon.size + frame_width / sqrt(3)
             start_vector = (int(hexagon.pixel_pos[0] - frame_width / (2*sqrt(3))), 
@@ -115,7 +117,10 @@ class Painter:
         for hexagon in player.side_stones.values():
             self.draw_stone_number(player, hexagon, surfaces, text_color)
         
-        
+    def draw_unmarked_side_area(self, player, surfaces):
+        surfaces["surface_stones"][player.color].fill(surfaces["surface_stones"][player.color].get_at_mapped((7,7)))
+        self.draw_set_of_hexagons(player.side_stones.values(), surfaces["surface_stones"][player.color])
+        self.draw_all_stone_numbers(player, surfaces)
         
         
         

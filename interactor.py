@@ -44,8 +44,6 @@ class Interactor:
             ##then execute drawing aspects
             self.painter.draw_stone_number(player, fhex, self.surfaces)
             self.painter.draw_hexagon(draw_hexagon, self.surfaces["surface_board"])
-            #self.painter.draw_hexagon_marking(shex, (50,50,50), max((player.stone_size//20),1))
-            self.painter.draw_hexagon_frame(shex, (50,50,50), player.stone_size // 15)
             self.painter.write_box_text(self.surfaces, t.insect_put_texts[fhex.type], fhex.color)
     
     #player want to put src_hstone on dir_stone. is that a legal ?
@@ -118,7 +116,7 @@ class Interactor:
             self.board.nonempty_fields.append(fhex.board_pos)
             self.board.nonempty_fields.remove(old_board_pos)
             
-            self.painter.draw_board(self.board, self.surfaces["surface_board"])
+            self.painter.draw_board(self.board, self.surfaces)
             
             #write texts
             self.painter.write_box_text(self.surfaces, t.insect_move_texts[fhex.type], fhex.color)

@@ -1,10 +1,11 @@
 #methods for window
 import texts as t
 
-def unmark_hexagons(display, display_before, marked_hexagons):
-    display.blit(display_before, (0,0))
+def unmark_hexagons(game, player, marked_hexagons):
     for hexagon in marked_hexagons:
         hexagon.is_marked = False
+    game.painter.draw_unmarked_side_area(player, game.surfaces)
+    game.painter.draw_board(game.board, game.surfaces)
     marked_hexagons.clear()  
     
 def mark_hexagons(game, marked_hexagons, mark_width):
@@ -29,3 +30,33 @@ def check_winner(painter, surfaces, color, surr, game_over):
         game_over = True
     return game_over
 
+def point_in_surface(surface, point):
+    surface_offset = surface.get_abs_offset()
+    width = surface.get_width()
+    height = surface.get_height()
+    xcond = surface_offset[0] < point[0] and point[0] < surface_offset[0] + height 
+    ycond = surface_offset[1] < point[1] and point[1] < surface_offset[1] + width
+    if xcond and ycond:
+        return True
+    return False
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

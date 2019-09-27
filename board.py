@@ -65,10 +65,10 @@ class Board:
                 
         return hexagon_board
     
-    #check if coord is part of the board (if board is big enough and game starts in the middle, 
-    #this function should not be necessary in a human two-player game)
-    def is_inside(self, coord):
-        pass
+    def add_hexagons_pos_offset(self, offset):
+        for lstone in self.board:
+            for hstone in lstone:
+                hstone.set_pixel_pos((hstone.pixel_pos[0] + offset[0], hstone.pixel_pos[1] + offset[1]))
     
     
 
