@@ -66,8 +66,8 @@ class Board:
         return hexagon_board
     
     def add_hexagons_pos_offset(self, offset):
-        for lstone in self.board:
-            for hstone in lstone:
+        for row in self.board:
+            for hstone in row:
                 hstone.set_pixel_pos((hstone.pixel_pos[0] + offset[0], hstone.pixel_pos[1] + offset[1]))
     
     

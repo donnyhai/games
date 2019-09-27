@@ -1,5 +1,6 @@
 #methods for window
 import texts as t
+import colors as c
 
 def unmark_hexagons(game, player, marked_hexagons):
     for hexagon in marked_hexagons:
@@ -9,7 +10,7 @@ def unmark_hexagons(game, player, marked_hexagons):
     marked_hexagons.clear()  
     
 def mark_hexagons(game, marked_hexagons, mark_width):
-    game.painter.draw_set_of_hexagon_markings(marked_hexagons, (0,255,0), mark_mode = mark_width)
+    game.painter.draw_set_of_hexagon_markings(marked_hexagons, c.marking_color, mark_mode = mark_width)
     
 def check_winner(painter, surfaces, color, surr, game_over):
     if color == "white":    opp_color = "black"

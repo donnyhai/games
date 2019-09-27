@@ -1,5 +1,6 @@
 import pygame, os
 from math import sqrt
+import colors as c
 
 hive_paths = {"ant": os.path.join("pictures", "ant.png"), "hopper": os.path.join("pictures", "hopper.png"),
               "spider": os.path.join("pictures", "spider.png"), "bee": os.path.join("pictures", "bee.png"),
@@ -20,15 +21,16 @@ class Painter:
     
     
     #draw full hexagon (shall a frame with mark_mode = 0 also be drawn ?)
-    def draw_hexagon(self, hexagon, surface, mark_mode = 0):
-        hexagon.is_drawn = True
-        hexagon.set_drawn_surface(surface)
+    def draw_hexagon(self, hexagon, surface):
+        if not hexagon.is_drawn:
+            hexagon.is_drawn = True
+            hexagon.set_drawn_surface(surface)
         #as the hexagon gets drawn, we can calculate the global pixel pos
         hexagon.calculate_global_pixel_pos()
-        if hexagon.type == "empty": pygame.draw.polygon(surface, (5,90,3), hexagon.points)
+        if hexagon.type == "empty": pygame.draw.polygon(surface, c.empty_stone_color, hexagon.points)
         else:
-            if hexagon.color == "white": pygame.draw.polygon(surface, (255,255,230), hexagon.points) #creme white
-            elif hexagon.color == "black":  pygame.draw.polygon(surface, (60,60,60), hexagon.points) #creme black
+            if hexagon.color == "white": pygame.draw.polygon(surface, c.creme_white, hexagon.points) #creme white
+            elif hexagon.color == "black":  pygame.draw.polygon(surface, c.creme_black, hexagon.points) #creme black
             #blit insect on the polygon
             if hexagon.is_mosquito:  insect = "mosquito"
             else:   insect = hexagon.type
@@ -36,9 +38,11 @@ class Painter:
             insect_image = pygame.transform.scale(insect_image, (hexagon.size, int(hexagon.size * 3**(0.5))))
             surface.blit(insect_image, hexagon.pixel_pos)
             
-        if hexagon.is_marked:
-            self.draw_hexagon_marking(hexagon, mark_mode = mark_mode)
-    
+    def draw_all_existing_markings(self, board, color = c.marking_color, mark_mode = 0):
+        for row in board.board:
+            for hstone in row:
+                if hstone.is_marked:
+                    self.draw_hexagon_marking(hstone, color, mark_mode)
     
     #draw a list of full hexagons 
     def draw_set_of_hexagons(self, hstone_list, surface):
@@ -47,9 +51,11 @@ class Painter:
     
     #draw the whole board of hexagons on surface
     def draw_board(self, board, surfaces, mark_mode = 0):
+        surfaces["surface_board"].fill(c.background_color2)
         for row in board.board:
             for hexagon in row:
-                self.draw_hexagon(hexagon, surfaces["surface_board"], mark_mode)
+                self.draw_hexagon(hexagon, surfaces["surface_board"])
+        self.draw_all_existing_markings(board, mark_mode = mark_mode)
         self.draw_ingame_frame(surfaces["surface_full"])
                 
     def draw_hexagon_frame(self, hexagon, color = (0,0,0), width = 1):
@@ -58,7 +64,7 @@ class Painter:
         pygame.draw.lines(hexagon.drawn_surface, color, True, points, int(width))
 
     #draw the frame of an hexagon in color with respect to mark_mode (mark_mode = 0 is normal thin line) 
-    def draw_hexagon_marking(self, hexagon, color = (0,0,0), mark_mode = 0):
+    def draw_hexagon_marking2(self, hexagon, color = (0,0,0), mark_mode = 0):
         frame_width = 3 * mark_mode // 5
         if frame_width == 0:
             pygame.draw.lines(hexagon.drawn_surface, color , True, hexagon.points, 2)
@@ -71,6 +77,25 @@ class Painter:
             #points = hexagon.getting_hexa(scaling_ratio, hexagon.pixel_pos)
             pygame.draw.lines(hexagon.drawn_surface, color, True, points, int(1.5* mark_mode))
             hexagon.is_marked = True
+    
+    #try different marking code    
+    def draw_hexagon_marking(self, hexagon, color = (0,0,0), mark_mode = 0):
+        
+        pygame.draw.lines(hexagon.drawn_surface, color, True, hexagon.points, int(mark_mode))
+        hexagon.is_marked = True
+        
+#        frame_width = 3 * mark_mode // 5
+#        if frame_width == 0:
+#            pygame.draw.lines(hexagon.drawn_surface, color , True, hexagon.points, 2)
+#            hexagon.is_marked = True
+#        elif frame_width > 0:
+#            scaling_ratio = hexagon.size + frame_width / sqrt(3)
+#            start_vector = (int(hexagon.pixel_pos[0] - frame_width / (2*sqrt(3))), 
+#                            int(hexagon.pixel_pos[1] - frame_width) + (frame_width // 2) ) 
+#            points = hexagon.getting_hexa(scaling_ratio, start_vector)
+#            #points = hexagon.getting_hexa(scaling_ratio, hexagon.pixel_pos)
+#            pygame.draw.lines(hexagon.drawn_surface, color, True, points, int(1.5* mark_mode))
+#            hexagon.is_marked = True
                    
     #draw set of hexagons with respective color and mark_mode, for example when drawing all possible 
     #hexagons a stone can move to 
