@@ -1,5 +1,6 @@
 import pygame
 import texts as t
+import hexagon_stone as hs
 pygame.init()
 
 
@@ -11,6 +12,22 @@ class Interactor:
         self.board = self.calculator.board
         self.surfaces = self.board.surfaces
         self.turn = turn
+    
+    #board pixel size wants to be adapted with this function. multiply ratio with stone_size
+    def scale_board(self, ratio):
+        #scale board attributes
+        for row in self.board.board:
+            for hstone in row:  hstone.size = int(ratio * hstone.size)
+        #scale player attributes
+        for player in self.players.values():
+            for hstone in player.stones_list:
+                if not hstone.is_on_board or hstone.has_bug_on:  hstone.size = int(ratio * hstone.size)
+        self.board.hexagon_size = int(ratio * self.board.hexagon_size)
+        self.board.set_hexagons_positions(self.board.board)
+    
+    def translate_board(self, offset):
+        self.board.draw_position = (self.board.draw_position[0] + offset[0], self.board.draw_position[1] + offset[1])
+        self.board.set_hexagons_positions(self.board.board)
     
     #this function evaluates and executes a potential stone put. input is the player and both clicked hexagons, 
     #first the hexagon at the side, second a hexagon on the board   
@@ -43,7 +60,7 @@ class Interactor:
             
             ##then execute drawing aspects
             self.painter.draw_stone_number(player, fhex, self.surfaces)
-            self.painter.draw_hexagon(draw_hexagon, self.surfaces["surface_board"])
+            self.painter.draw_board(self.board, self.surfaces)
             self.painter.write_box_text(self.surfaces, t.insect_put_texts[fhex.type], fhex.color)
     
     #player want to put src_hstone on dir_stone. is that a legal ?
@@ -105,9 +122,10 @@ class Interactor:
             fhex.set_pixel_pos(shex.pixel_pos)
             
             #refill "old" place with empty stone
-            new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
-            self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+            new_empty_stone = hs.hexagon_stone(fhex.size)
             new_empty_stone.set_pixel_pos(old_pixel_pos)
+            new_empty_stone.set_board_pos(old_board_pos)
+            self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
             
             #fill "new" place with fhex
             self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
@@ -181,9 +199,10 @@ class Interactor:
                 #check mosquito.
                 if fhex.is_mosquito: fhex.type = "bug"
                 #refill "old" place with empty stone
-                new_empty_stone = self.board.empty_board[old_board_pos[0]][old_board_pos[1]]
-                self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+                new_empty_stone = hs.hexagon_stone(fhex.size)
                 new_empty_stone.set_pixel_pos(old_pixel_pos)
+                new_empty_stone.set_board_pos(old_board_pos)
+                self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
                 
                 #fill "new" place with fhex
                 self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
@@ -194,7 +213,7 @@ class Interactor:
                 self.painter.draw_board(self.board, self.surfaces)
 
 
-
+    
 
 
 

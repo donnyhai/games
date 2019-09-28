@@ -8,7 +8,7 @@ class Player:
         self.stone_size = int(0.03 * self.surfaces["surface_full"].get_width())
         
         self.stones = self.create_stones(self.stone_size)
-        self.stones_list = self.get_stones_list() #all stones in one list
+        self.stones_list = self.get_stones_list() #all stones in one list (excluding the side_stones)
         self.side_stones = self.create_side_stones(self.stone_size)
         self.set_side_stones_positions(5) #side positions for the side stones
         #side_stone_numbers shall display how many of each insect type are not yet on the board

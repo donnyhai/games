@@ -113,22 +113,45 @@ while True:
 # start game            
             elif not start_game_mode:
                 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if not drag:
-                        drag = True
-                        pos = (event.pos, event.pos)
-                        counter = 0
+                if event.type == pygame.MOUSEBUTTONDOWN: 
+                    if wm.point_in_surface(game.surfaces["surface_board"], event.pos):
+                        if event.button == 1: #button 1: left mouse click
+                            if not drag:
+                                drag = True
+                                pos = (event.pos, event.pos)
+                                counter = 0
+                        elif event.button == 5: #button 4: scroll in 
+                            #the following if check ensures that you do not zoom to much out, as for some reason you cannot zoom in again 
+                            #(why does this happen ? is there a better factor than 100 ?)
+                            if game.board.hexagon_size > game.surfaces["surface_full"].get_width() // 80: 
+                                ratio = 0.85 #zoom out
+                                ep, dp = event.pos, game.board.draw_position
+                                #make the event.pos the center of zooming
+                                if game.board.scroll_is_inside_board(ep):   offset = ((1 - ratio) * (ep[0] - dp[0]), (1 - ratio) * (ep[1] - dp[1]))
+                                else:   offset = (0,0)
+                                game.interactor.scale_board(ratio)
+                                game.interactor.translate_board(offset)
+                                game.painter.draw_board(game.board, game.surfaces, mark_size)
+                        elif event.button == 4: #button 5: scroll out
+                            ratio = 1.18 #zoom in
+                            ep, dp = event.pos, game.board.draw_position
+                            #make the event.pos the center of zooming
+                            if game.board.scroll_is_inside_board(ep):   offset = ((1 - ratio) * (ep[0] - dp[0]), (1 - ratio) * (ep[1] - dp[1]))
+                            else:   offset = (0,0)
+                            game.interactor.scale_board(ratio)
+                            game.interactor.translate_board(offset)
+                            game.painter.draw_board(game.board, game.surfaces, mark_size)
                         
-                if event.type == pygame.MOUSEMOTION and drag:
+                elif event.type == pygame.MOUSEMOTION and drag:
                     if counter == 2: #makes the clicking nicer (there should not be dragging, just because a click was not completely precise)
                         moved = True
                         pos = pos[1], event.pos #save actual and one mousepos before to always add a new draw offset from pixel to pixel
                         if wm.point_in_surface(game.surfaces["surface_board"], pos[1]):
-                            game.board.add_hexagons_pos_offset((pos[1][0] - pos[0][0], pos[1][1] - pos[0][1]))
+                            game.interactor.translate_board((pos[1][0] - pos[0][0], pos[1][1] - pos[0][1]))
                             game.painter.draw_board(game.board, game.surfaces, mark_size)
-                    else: counter += 1
+                    else: counter += 1  
                 
-                if event.type== pygame.MOUSEBUTTONUP:
+                if event.type== pygame.MOUSEBUTTONUP and event.button == 1:
                     drag = False
                     if moved:   moved = False
                     else:

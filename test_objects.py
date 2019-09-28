@@ -15,19 +15,22 @@ class Test_Board(board.Board):
             for k in range(board.size):
                 new_row = []
                 for hexagon in board_matrix[k]:
-                    new_row.append(self.copy_hexagon(hexagon))
+                    hexagon_copy = hs.hexagon_stone(hexagon.size)
+                    hexagon_copy.copy_hexagon(hexagon)
+                    new_row.append(hexagon_copy)
                 copied_board_matrix[k] = new_row
             return copied_board_matrix
         
         self.board = copy_board_matrix(board.board)
         self.nonempty_fields = board.nonempty_fields.copy()
-    
-    #aim is to copy a hexagon, means here to make a new hexagon with new id but same attributes     
-    def copy_hexagon(self, hexagon):
-        hexagon_copy = hs.hexagon_stone(hexagon.size)
-        for attr in list(hexagon.__dict__.keys()):
-            hexagon_copy.__dict__[attr] = hexagon.__dict__[attr]
-        return hexagon_copy
+
+#NOTE: you can find this function in hexagon_stone (similar)    
+#    #aim is to copy a hexagon, means here to make a new hexagon with new id but same attributes     
+#    def copy_hexagon(self, hexagon):
+#        hexagon_copy = hs.hexagon_stone(hexagon.size)
+#        for attr in list(hexagon.__dict__.keys()):
+#            hexagon_copy.__dict__[attr] = hexagon.__dict__[attr]
+#        return hexagon_copy
         
     #this function evaluates and executes a stone move on the test board. input are two hexagons.
     #there are no conditions for the move, the testboard can just move a stone (conditions have to be

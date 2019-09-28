@@ -8,11 +8,8 @@ class Board:
         self.draw_position = (0, -self.hexagon_size) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
         
-        self.board = self.calculate_empty_hexagon_board() #quadratic matrix of hexagons
-        self.empty_board = self.calculate_empty_hexagon_board() #save matrix with empty hexagons, for later using them to make a field
-        #empty again, for example when a stone moves from that field away
-        self.set_board_hexagons_positions(self.board, self.draw_position)
-        self.set_board_hexagons_positions(self.empty_board, self.draw_position)
+        self.board = self.set_empty_hexagon_board() #quadratic matrix of hexagons
+        self.set_hexagons_positions(self.board)
         
         self.nonempty_fields = [] #will contain matrix coordinates
         self.drawn_hexagons = [] #will contain hexagon_stone objects (if used)
@@ -37,7 +34,7 @@ class Board:
         return [neigh for neigh in self.get_neighbours(coord).values() if neigh not in self.get_nonempty_neighbours(coord)]
     
     #create a quadratic board of hexagons as a matrix of hexagon objects with respective correct positions    
-    def calculate_empty_hexagon_board(self):
+    def set_empty_hexagon_board(self):
         def create_hexagon_row():
             hexagon_chain = []
             for i in range (self.size): hexagon_chain.append(hs.hexagon_stone(self.hexagon_size))
@@ -50,34 +47,32 @@ class Board:
         return hexagon_board
     
     
-    def set_board_hexagons_positions(self, board, draw_position):
+    #calculate the pixel_pos of all hexagons in board and empty_board with given self.draw_position (pixel_pos of top left hexagon)
+    def set_hexagons_positions(self, board):
         even_numbers = [i for i in range(self.size) if i % 2 == 0]
         odd_numbers = [i for i in range(self.size) if i % 2 == 1]
         for i in even_numbers:
-            position = (draw_position[0], draw_position[1] + i/2 * 3**(1/2) * self.hexagon_size)
+            position = (self.draw_position[0], self.draw_position[1] + i/2 * 3**(1/2) * self.hexagon_size)
             for k in range(self.size):
-                board[i][k].set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
+                hstone = board[i][k]
+                hstone.set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
+                if hstone.type == "bug":
+                    for stone in hstone.underlaying_stones: stone.set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
         for i in odd_numbers:
-            start_position = (draw_position[0] + 3/2 * self.hexagon_size, draw_position[1] + 3**(1/2)/2 * self.hexagon_size)
+            start_position = (self.draw_position[0] + 3/2 * self.hexagon_size, self.draw_position[1] + 3**(1/2)/2 * self.hexagon_size)
             position = (start_position[0], start_position[1] + (i-1)/2 * 3**(1/2) * self.hexagon_size)
             for k in range(self.size):
-                board[i][k].set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
+                hstone = board[i][k]
+                hstone.set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
+                if hstone.type == "bug":
+                    for stone in hstone.underlaying_stones: stone.set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
     
-    #board pixel size wants to be adapted with this function. multiply ratio with stone_size
-    def scale_board(self, ratio):
+    
+    #check whether a scroll on event_pos is inside the whole hexagon board or not    
+    def scroll_is_inside_board(self, event_pos):
         for row in self.board:
             for hstone in row:
-                hstone.size = int(ratio * hstone.size)
-        self.hexagon_size = int(ratio * self.hexagon_size)
-        self.set_board_hexagons_positions(self.board, self.board[0][0].pixel_pos)
-        self.draw_position = self.board[0][0].pixel_pos
-        
-    
-    
-    def add_hexagons_pos_offset(self, offset):
-        for row in self.board:
-            for hstone in row:
-                hstone.set_pixel_pos((hstone.pixel_pos[0] + offset[0], hstone.pixel_pos[1] + offset[1]))
-    
+               if hstone.point_in_hexagon(event_pos):   return True
+        return False
     
 

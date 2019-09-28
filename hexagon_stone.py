@@ -48,7 +48,11 @@ class hexagon_stone:
         self.underlaying_stones = []
 ###
     
-        
+    #aim is to copy a hexagon to have the same attr, but different id    
+    def copy_hexagon(self, hexagon):
+        for attr in list(hexagon.__dict__.keys()):
+            self.__dict__[attr] = hexagon.__dict__[attr]
+    
     #calculate the six hexagon points with starting point start_vector (point top left) and side size scaling    
     def getting_hexa(self, scaling_ratio, start_vector):    
         hex_coords = [(0,0), (1,0), (1.5, 3**(1/2)/2), (1, 3**(1/2)), (0,3**(1/2)), (-0.5, 3**(1/2)/2)]
