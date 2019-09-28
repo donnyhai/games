@@ -24,7 +24,7 @@ window_size = (496, 296)
 surface = pygame.display.set_mode(window_size,0,32)
 color_surface = surface.subsurface(pygame.Rect(0, 0, 200, 296))            
 set_palette(150)
-drag = False
+drag1, drag3 = False, False
 
 pygame.display.update()
 while True:
@@ -34,19 +34,19 @@ while True:
                 sys.exit()
             
         if event.type == pygame.MOUSEBUTTONDOWN:
-
-            if event.button == 1:
-                if not drag:    drag = True
-                color_surface.fill(surface.get_at(event.pos))
-                write_text(color_surface, str(surface.get_at(event.pos)))
-                drag1 = True
+            if 220 <= event.pos[0] < 476 and 20 <= event.pos[1] < 276:
+                if event.button == 1:
+                    drag1 = True
+                    color_surface.fill(surface.get_at(event.pos))
+                    write_text(color_surface, str(surface.get_at(event.pos)))
+                
+                if event.button == 3:
+                    drag3 = True
+                    set_palette(event.pos[0] - 220)
+                    color_surface.fill(surface.get_at(event.pos))
+                    write_text(color_surface, str(surface.get_at(event.pos)))
             
-            if event.button == 3:
-                if not drag: drag = True
-                drag3 = True
-                pos = (event.pos, event.pos)
-            
-        if event.type == pygame.MOUSEMOTION and drag:
+        elif event.type == pygame.MOUSEMOTION and (drag1 or drag3):
             if 220 <= event.pos[0] < 476 and 20 <= event.pos[1] < 276:
                 if drag1:
                     color_surface.fill(surface.get_at(event.pos))
@@ -56,8 +56,8 @@ while True:
                     color_surface.fill(surface.get_at(event.pos))
                     write_text(color_surface, str(surface.get_at(event.pos)))
         
-        if event.type == pygame.MOUSEBUTTONUP and (event.button == 1 or event.button == 3):
-            drag, drag1, drag3 = False, False, False
+        elif event.type == pygame.MOUSEBUTTONUP and (event.button == 1 or event.button == 3):
+            drag1, drag3 = False, False
                 
     pygame.display.update()
 
