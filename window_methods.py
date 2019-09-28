@@ -33,12 +33,9 @@ def check_winner(painter, surfaces, color, surr, game_over):
 
 def point_in_surface(surface, point):
     surface_offset = surface.get_abs_offset()
-    width = surface.get_width()
-    height = surface.get_height()
-    xcond = surface_offset[0] < point[0] and point[0] < surface_offset[0] + height 
-    ycond = surface_offset[1] < point[1] and point[1] < surface_offset[1] + width
-    if xcond and ycond:
-        return True
+    xcond = surface_offset[0] < point[0] and point[0] < surface_offset[0] + surface.get_width()
+    ycond = surface_offset[1] < point[1] and point[1] < surface_offset[1] + surface.get_height()
+    if xcond and ycond: return True
     return False
     
     

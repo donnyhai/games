@@ -7,9 +7,13 @@ class Board:
         self.hexagon_size = int(0.03 * self.surfaces["surface_full"].get_width())
         self.draw_position = (0, -self.hexagon_size) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
+        
         self.board = self.calculate_empty_hexagon_board() #quadratic matrix of hexagons
         self.empty_board = self.calculate_empty_hexagon_board() #save matrix with empty hexagons, for later using them to make a field
         #empty again, for example when a stone moves from that field away
+        self.set_board_hexagons_positions(self.board, self.draw_position)
+        self.set_board_hexagons_positions(self.empty_board, self.draw_position)
+        
         self.nonempty_fields = [] #will contain matrix coordinates
         self.drawn_hexagons = [] #will contain hexagon_stone objects (if used)
         
@@ -34,36 +38,41 @@ class Board:
     
     #create a quadratic board of hexagons as a matrix of hexagon objects with respective correct positions    
     def calculate_empty_hexagon_board(self):
-        
-        #function to create a horizontal connected chain of hexagons, return is a list
-        def create_horizontal_hexagon_chain(start_position):
+        def create_hexagon_row():
             hexagon_chain = []
-            for i in range (self.size):
-                position = (start_position[0] + i * 3 * self.hexagon_size, start_position[1])
-                new_hexagon = hs.hexagon_stone(self.hexagon_size)
-                new_hexagon.set_pixel_pos(position)
-                hexagon_chain.append(new_hexagon)
+            for i in range (self.size): hexagon_chain.append(hs.hexagon_stone(self.hexagon_size))
             return hexagon_chain
-        
-        hexagon_board = [0] * self.size
-        even_numbers = [i for i in range(self.size) if i % 2 == 0]
-        odd_numbers = [i for i in range(self.size) if i % 2 == 1]
-        
-        #fill hexagon_board with the correct horizontal chains, first even than odd rows
-        for i in even_numbers:
-            position = (self.draw_position[0], self.draw_position[1] + i/2 * 3**(1/2) * self.hexagon_size)
-            hexagon_board[i] = create_horizontal_hexagon_chain(position)
-        for i in odd_numbers:
-            start_position = (self.draw_position[0] + 3/2 * self.hexagon_size, self.draw_position[1] + 3**(1/2)/2 * self.hexagon_size)
-            position = (start_position[0], start_position[1] + (i-1)/2 * 3**(1/2) * self.hexagon_size)
-            hexagon_board[i] = create_horizontal_hexagon_chain(position)
-            
+        hexagon_board = []
+        for i in range(self.size):  hexagon_board.append(create_hexagon_row())
         #set board coordinates for each hexagon
         for i in range(self.size):
-            for j in range(self.size):
-                hexagon_board[i][j].set_board_pos((i,j))
-                
+            for j in range(self.size):  hexagon_board[i][j].set_board_pos((i,j))
         return hexagon_board
+    
+    
+    def set_board_hexagons_positions(self, board, draw_position):
+        even_numbers = [i for i in range(self.size) if i % 2 == 0]
+        odd_numbers = [i for i in range(self.size) if i % 2 == 1]
+        for i in even_numbers:
+            position = (draw_position[0], draw_position[1] + i/2 * 3**(1/2) * self.hexagon_size)
+            for k in range(self.size):
+                board[i][k].set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
+        for i in odd_numbers:
+            start_position = (draw_position[0] + 3/2 * self.hexagon_size, draw_position[1] + 3**(1/2)/2 * self.hexagon_size)
+            position = (start_position[0], start_position[1] + (i-1)/2 * 3**(1/2) * self.hexagon_size)
+            for k in range(self.size):
+                board[i][k].set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
+    
+    #board pixel size wants to be adapted with this function. multiply ratio with stone_size
+    def scale_board(self, ratio):
+        for row in self.board:
+            for hstone in row:
+                hstone.size = int(ratio * hstone.size)
+        self.hexagon_size = int(ratio * self.hexagon_size)
+        self.set_board_hexagons_positions(self.board, self.board[0][0].pixel_pos)
+        self.draw_position = self.board[0][0].pixel_pos
+        
+    
     
     def add_hexagons_pos_offset(self, offset):
         for row in self.board:

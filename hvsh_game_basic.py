@@ -14,7 +14,7 @@ window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size // 6
 button_y_size = window_y_size // 6
 frame_size = window_x_size // 250
-mark_size = window_x_size // 300
+mark_size = window_x_size // 400
 first_stone_board_pos = (10,4)
 
 #while-loop timing

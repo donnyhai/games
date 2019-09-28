@@ -174,8 +174,7 @@ class Interactor:
                 self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
                 #no adaptation for nonempty_fields needed
                 #draw last_stone and fhex 
-                self.painter.draw_hexagon(last_stone, self.surfaces["surface_board"])
-                self.painter.draw_hexagon(fhex, self.surfaces["surface_board"])
+                self.painter.draw_board(self.board, self.surfaces)
             else: #case: bug will certainly move from an empty field onto a nonempty field
                 fhex.underlaying_stones.append(shex)
                 shex.has_bug_on = True
@@ -192,8 +191,7 @@ class Interactor:
                 #actualize board.nonempty_fields
                 self.board.nonempty_fields.remove(old_board_pos)
                 
-                self.painter.draw_hexagon(new_empty_stone, self.surfaces["surface_board"])
-                self.painter.draw_hexagon(fhex, self.surfaces["surface_board"])
+                self.painter.draw_board(self.board, self.surfaces)
 
 
 

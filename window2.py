@@ -14,7 +14,7 @@ window_size = (window_x_size, window_y_size)
 button_x_size = window_x_size // 6
 button_y_size = window_y_size // 6
 frame_size = window_x_size // 250
-mark_size = window_x_size // 300
+mark_size = window_x_size // 400
 first_stone_board_pos = (10,4)
 
 #while-loop timing
@@ -71,7 +71,7 @@ while True:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pass
                     ####NC: settings_window still has to be implemented functionally
-                if event.type == pygame.MOUSEBUTTONUP:
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     if settings_window_shown: 
                         display.blit(start_window, (0,0))
                         settings_window_shown = False                    
@@ -104,11 +104,20 @@ while True:
 # start game            
             elif not start_game_mode:
                 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if not drag:
-                        drag = True
-                        pos = (event.pos, event.pos)
-                        counter = 0
+                
+                if event.type == pygame.MOUSEBUTTONDOWN: 
+                    if wm.point_in_surface(game.surfaces["surface_board"], event.pos):
+                        if event.button == 1: #button 1: left mouse click
+                            if not drag:
+                                drag = True
+                                pos = (event.pos, event.pos)
+                                counter = 0
+                        if event.button == 5: #button 4: scroll in
+                            game.board.scale_board(0.9)
+                            game.painter.draw_board(game.board, game.surfaces, mark_size)
+                        if event.button == 4: #button 5: scroll out
+                            game.board.scale_board(1.15)
+                            game.painter.draw_board(game.board, game.surfaces, mark_size)
                         
                 if event.type == pygame.MOUSEMOTION and drag:
                     if counter == 2: #makes the clicking nicer (there should not be dragging, just because a click was not completely precise)
@@ -118,8 +127,9 @@ while True:
                             game.board.add_hexagons_pos_offset((pos[1][0] - pos[0][0], pos[1][1] - pos[0][1]))
                             game.painter.draw_board(game.board, game.surfaces, mark_size)
                     else: counter += 1
-                    
-                if event.type == pygame.MOUSEBUTTONUP:
+                
+                
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     drag = False
                     if moved:   moved = False
                     else:
