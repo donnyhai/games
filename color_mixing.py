@@ -6,6 +6,7 @@ pygame.display.init()
 #Run this file and mix your colors. 
 #With dragging the left mouse click you move on the colors of the actual color screen. 
 #With dragging the right mouse click you change the red_value by going dragging left or right.
+#Note, that by dragging the left mouse click you do not change the red_value.
 #You can see the actual chosen color on the left side with the corresponding RGBA value. 
 
 def set_palette(red_value):
