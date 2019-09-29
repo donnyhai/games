@@ -58,6 +58,7 @@ while True:
         
         elif event.type == pygame.MOUSEBUTTONUP and (event.button == 1 or event.button == 3):
             drag1, drag3 = False, False
+            if event.pos[0] < 200:  print(color_surface.get_at(event.pos))
                 
     pygame.display.update()
 

@@ -1,6 +1,6 @@
 import pygame, sys, buttons
 import game
-import texts as t
+import texts as t, colors as c
 import start_menu
 import window_methods as wm
 
@@ -25,30 +25,20 @@ FPS = 30
 #creating showable start_window on display with, set name and set background color
 display = pygame.display.set_mode(window_size, 0, 32)
 pygame.display.set_caption("Spiel-Menue")
-display.fill((100,100,100))
+display.fill(c.settings_background_color)
 
-
-#some colors
-white = (255,255,255)
-black = (0,0,0)
-background_color1 = (255,211,155)
-background_color2 = (244,164,96)
-background_color3 = (238,197,145)
-button_color = (200,200,200)
-creme_white = (255,255,230)
-creme_black = (60,60,60)
 
 #set a "Einstellungen" Button
 settings_x = window_x_size * 5 // 12
 settings_y = window_y_size * 7 // 20
-settings_button = buttons.Button(display, button_color, settings_x,settings_y ,
+settings_button = buttons.Button(display, c.button_color, settings_x,settings_y ,
                                          button_x_size,    button_y_size,
                                          0,       "Einstellungen", (0,0,0))
 
 #set a "Spiel Starten" - Button
 start_game_x = window_x_size * 5 // 12
 start_game_y = window_y_size * 3 // 5
-start_game_button = buttons.Button(display, button_color, start_game_x, start_game_y,
+start_game_button = buttons.Button(display, c.button_color, start_game_x, start_game_y,
                                          button_x_size,    button_y_size,
                                          0,       "Spiel Starten", (0,0,0))
 
@@ -94,7 +84,11 @@ while True:
                         
                         pygame.display.set_caption("Spielbrett")
                         
-                        game.painter.draw_background(game.surfaces["surface_full"], background_color2, 128)
+                        game.painter.draw_background(game.surfaces["surface_board"], c.background_board)
+                        game.painter.draw_background(game.surfaces["surface_stones"]["white"], c.background_side_stones)
+                        game.painter.draw_background(game.surfaces["surface_stones"]["black"], c.background_side_stones)
+                        game.painter.draw_background(game.surfaces["surface_text"]["white"], c.background_text_box)
+                        game.painter.draw_background(game.surfaces["surface_text"]["black"], c.background_text_box)
     
                         game.painter.draw_set_of_hexagons(game.players["white"].side_stones.values(), game.surfaces["surface_stones"]["white"])
                         game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), game.surfaces["surface_stones"]["black"])

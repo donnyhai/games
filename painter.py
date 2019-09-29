@@ -11,14 +11,10 @@ class Painter:
     
     #fill background with color
     def draw_background(self, surface, color, alpha_value = 255):
-        s1 = pygame.Surface((surface.get_width(),surface.get_height()) )
-        s1.fill((255,255,255))
-        surface.blit(s1, (0,0))
-        s = pygame.Surface((surface.get_width(),surface.get_height()) )
-        s.set_alpha(alpha_value)
+        s = pygame.Surface((surface.get_width(), surface.get_height()))
         s.fill(color)
+        s.set_alpha(alpha_value)
         surface.blit(s, (0,0))
-    
     
     #draw full hexagon (shall a frame with mark_mode = 0 also be drawn ?)
     def draw_hexagon(self, hexagon, surface):
@@ -41,20 +37,17 @@ class Painter:
     def draw_all_existing_markings(self, board, color = c.marking_color, mark_mode = 0):
         for row in board.board:
             for hstone in row:
-                if hstone.is_marked:
-                    self.draw_hexagon_marking(hstone, color, mark_mode)
+                if hstone.is_marked:    self.draw_hexagon_marking(hstone, color, mark_mode)
     
     #draw a list of full hexagons 
     def draw_set_of_hexagons(self, hstone_list, surface):
-        for hstone in hstone_list:
-            self.draw_hexagon(hstone, surface)
+        for hstone in hstone_list:  self.draw_hexagon(hstone, surface)
     
     #draw the whole board of hexagons on surface
     def draw_board(self, board, surfaces, mark_mode = 0):
-        surfaces["surface_board"].fill(c.background_color2)
+        surfaces["surface_board"].fill(c.background_board)
         for row in board.board:
-            for hexagon in row:
-                self.draw_hexagon(hexagon, surfaces["surface_board"])
+            for hexagon in row: self.draw_hexagon(hexagon, surfaces["surface_board"])
         self.draw_all_existing_markings(board, mark_mode = mark_mode)
         self.draw_ingame_frame(surfaces["surface_full"])
                 
@@ -77,18 +70,17 @@ class Painter:
     #draw set of hexagons with respective color and mark_mode, for example when drawing all possible 
     #hexagons a stone can move to 
     def draw_set_of_hexagon_markings(self, hexagon_list, color, mark_mode = 0):
-        for hexagon in hexagon_list:
-            self.draw_hexagon_marking(hexagon, color, mark_mode)
+        for hexagon in hexagon_list:    self.draw_hexagon_marking(hexagon, color, mark_mode)
     
     #draw standard game frame (left and right side areas with text fields at the bottom and middle board area)
     def draw_ingame_frame(self, surface):
         width = surface.get_width()
         height = surface.get_height()
         line_width = width // 350
-        pygame.draw.line(surface, (0,0,0), (0.1 * width, 0), (0.1 * width, height), line_width)
-        pygame.draw.line(surface, (0,0,0), (0.9 * width, 0),(0.9 * width, height), line_width)
-        pygame.draw.line(surface, (0,0,0), (0, 0.8 * height), (0.1 * width, 0.8 * height), line_width)
-        pygame.draw.line(surface, (0,0,0), (0.9 * width, 0.8 * height), (width, 0.8 * height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0.1 * width, 0), (0.1 * width, height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0.9 * width, 0),(0.9 * width, height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0, 0.8 * height), (0.1 * width, 0.8 * height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0.9 * width, 0.8 * height), (width, 0.8 * height), line_width)
         
     def write_text(self, surface, text, font_size, color, position):
         myText = pygame.font.SysFont("Arial", font_size).render(text, 1, color)
@@ -96,9 +88,9 @@ class Painter:
         
     def write_box_text(self, surfaces, text, player_color):
         surface = surfaces["surface_text"][player_color]
-        surface.fill(surface.get_at_mapped((4,4)))
+        surface.fill(surface.get_at_mapped((7,7)))
         font_size = int(0.2 * surface.get_height())
-        color = (0,0,0)
+        color = c.box_text_color
         position = (0.1 * surface.get_width(), 0.1 * surface.get_height())
         self.write_text(surface, text, font_size, color, position)
         self.draw_ingame_frame(surfaces["surface_full"])
@@ -113,11 +105,10 @@ class Painter:
         rect_subsurface = surfaces["surface_stones"][player.color].subsurface(pygame.Rect(position, (width, height)))
         rect_subsurface.fill(surfaces["surface_stones"][player.color].get_at_mapped((7,7)))
         self.write_text(rect_subsurface, str(player.side_stones_numbers[hexagon.type]), 
-                                text_size, (0,0,0), (0,0))
+                                text_size, c.stone_number_color, (0,0))
         
     def draw_all_stone_numbers(self, player, surfaces, text_color = (0,0,0)):
-        for hexagon in player.side_stones.values():
-            self.draw_stone_number(player, hexagon, surfaces, text_color)
+        for hexagon in player.side_stones.values(): self.draw_stone_number(player, hexagon, surfaces, text_color)
         
     def draw_unmarked_side_area(self, player, surfaces):
         surfaces["surface_stones"][player.color].fill(surfaces["surface_stones"][player.color].get_at_mapped((7,7)))

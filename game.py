@@ -8,7 +8,8 @@ import calculator_extended as cal_ex
 import interactor
 import painter
 import pygame
-
+import buttons
+import colors as c
 
 class Game:
     def __init__(self, surface):
@@ -17,12 +18,14 @@ class Game:
                          "surface_board": surface.subsurface(pygame.Rect(0.1 * surface.get_width(), 0, 0.8 * surface.get_width(), surface.get_height())),
                          "surface_stones": {"white": surface.subsurface(pygame.Rect(0, 0, 0.1 * surface.get_width(), 0.8 * surface.get_height())),
                                             "black": surface.subsurface(pygame.Rect(0.9 * surface.get_width(), 0, 0.1 * surface.get_width(), 0.8 * surface.get_height()))},
-                         "surface_text": {"white": surface.subsurface(pygame.Rect(0, 0.8 * surface.get_height(), 0.1 * surface.get_width(), 0.1 * surface.get_height())),
-                                          "black": surface.subsurface(pygame.Rect(0.9 * surface.get_width(), 0.8 * surface.get_height(), 0.1 * surface.get_width(), 0.1 * surface.get_height()))}}
+                         "surface_text": {"white": surface.subsurface(pygame.Rect(0, 0.8 * surface.get_height(), 0.1 * surface.get_width(), 0.2 * surface.get_height())),
+                                          "black": surface.subsurface(pygame.Rect(0.9 * surface.get_width(), 0.8 * surface.get_height(), 0.1 * surface.get_width(), 0.2 * surface.get_height()))}}
         self.painter = painter.Painter()
         self.board = board.Board(self.board_size, self.surfaces)
         self.locator = locator.Locator(self.board, 100)
         self.turn = ("white", 1)
+        
+#        self.center_button = buttons.Button(self.surfaces["surface_board"], c.center_button_color, x,y, int(self.surfaces["surfaces_board"].get_width() / 30), int(self.surfaces["surfaces_board"].get_width() / 30))
         
     def turn_up(self):
         if self.turn[0] == "white": self.turn = ("black", self.turn[1])

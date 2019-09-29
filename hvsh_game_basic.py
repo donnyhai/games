@@ -48,7 +48,6 @@ start_window = display.copy()
 
 #write the settings from above to settings.txt
 
-
 start_game_mode = True
 settings_window_shown = False
 marked_hexagons = []
@@ -70,6 +69,7 @@ while True:
             elif start_game_mode:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pass
+                
                     ####NC: settings_window still has to be implemented functionally
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     if settings_window_shown: 
@@ -80,12 +80,17 @@ while True:
                         settings_window.write_settings(settings_window.settings, (0,0,0))
                         settings_window_shown = True
                     ####
+                    
                     elif start_game_button.pressed(event.pos):
                         game = game.HvsH_Game(display) #create game
                         
                         pygame.display.set_caption("Spielbrett")
                         
-                        game.painter.draw_background(game.surfaces["surface_full"], c.background_color2, 128)
+                        game.painter.draw_background(game.surfaces["surface_board"], c.background_board)
+                        game.painter.draw_background(game.surfaces["surface_stones"]["white"], c.background_side_stones)
+                        game.painter.draw_background(game.surfaces["surface_stones"]["black"], c.background_side_stones)
+                        game.painter.draw_background(game.surfaces["surface_text"]["white"], c.background_text_box)
+                        game.painter.draw_background(game.surfaces["surface_text"]["black"], c.background_text_box)
     
                         game.painter.draw_set_of_hexagons(game.players["white"].side_stones.values(), game.surfaces["surface_stones"]["white"])
                         game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), game.surfaces["surface_stones"]["black"])
@@ -101,6 +106,7 @@ while True:
                         #print a text claiming that white begins
                         game.painter.write_box_text(game.surfaces, t.welcome_text, "white")
                         game.painter.write_box_text(game.surfaces, t.welcome_text, "black")
+                        
 # start game            
             elif not start_game_mode:
                 
