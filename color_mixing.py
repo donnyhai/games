@@ -11,14 +11,14 @@ pygame.display.init()
 
 def set_palette(red_value):
     surface.fill((0,0,0))
-    #set palette with one color bit zero
+    #set palette with one color bit constant (here red)
     for i in range(256):
         for j in range(256):
             surface.set_at((i + 220,j + 20), (red_value, i, j))
             
 def write_text(surface, text, font_size = 20, color = (0,0,0), position = (28, 255)):
-        myText = pygame.font.SysFont("Arial", font_size).render(text, 1, color)
-        surface.blit(myText, position)
+    myText = pygame.font.SysFont("Arial", font_size).render(text, 1, color)
+    surface.blit(myText, position)
         
 window_size = (496, 296)
 surface = pygame.display.set_mode(window_size,0,32)

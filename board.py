@@ -27,7 +27,7 @@ class Board:
     def get_nonempty_neighbours (self, coord):
         nonempty_neigh = []
         for neigh in self.get_neighbours(coord).values():
-            if not self.board[neigh[0]][neigh[1]].is_empty: nonempty_neigh.append(neigh)
+            if not self.board[neigh].is_empty: nonempty_neigh.append(neigh)
         return nonempty_neigh
     
     def get_empty_neighbours(self, coord):
@@ -35,18 +35,13 @@ class Board:
     
     #create a quadratic board of hexagons as a matrix of hexagon objects with respective correct positions    
     def set_empty_hexagon_board(self):
-        def create_hexagon_row():
-            hexagon_chain = []
-            for i in range (self.size): hexagon_chain.append(hs.hexagon_stone(self.hexagon_size))
-            return hexagon_chain
-        hexagon_board = []
-        for i in range(self.size):  hexagon_board.append(create_hexagon_row())
-        #set board coordinates for each hexagon
+        hexagon_board = {}
         for i in range(self.size):
-            for j in range(self.size):  hexagon_board[i][j].set_board_pos((i,j))
+            for j in range(self.size):
+                hexagon_board[(i,j)] = hs.hexagon_stone(self.hexagon_size)
+                hexagon_board[(i,j)].set_board_pos((i,j))
         return hexagon_board
-    
-    
+        
     #calculate the pixel_pos of all hexagons in board and empty_board with given self.draw_position (pixel_pos of top left hexagon)
     def set_hexagons_positions(self, board):
         even_numbers = [i for i in range(self.size) if i % 2 == 0]
@@ -54,7 +49,7 @@ class Board:
         for i in even_numbers:
             position = (self.draw_position[0], self.draw_position[1] + i/2 * 3**(1/2) * self.hexagon_size)
             for k in range(self.size):
-                hstone = board[i][k]
+                hstone = board[(i,k)]
                 hstone.set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
                 if hstone.type == "bug":
                     for stone in hstone.underlaying_stones: stone.set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
@@ -62,7 +57,7 @@ class Board:
             start_position = (self.draw_position[0] + 3/2 * self.hexagon_size, self.draw_position[1] + 3**(1/2)/2 * self.hexagon_size)
             position = (start_position[0], start_position[1] + (i-1)/2 * 3**(1/2) * self.hexagon_size)
             for k in range(self.size):
-                hstone = board[i][k]
+                hstone = board[(i,k)]
                 hstone.set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
                 if hstone.type == "bug":
                     for stone in hstone.underlaying_stones: stone.set_pixel_pos((position[0] + k * 3 * self.hexagon_size, position[1]))
@@ -70,9 +65,8 @@ class Board:
     
     #check whether a scroll on event_pos is inside the whole hexagon board or not    
     def scroll_is_inside_board(self, event_pos):
-        for row in self.board:
-            for hstone in row:
-               if hstone.point_in_hexagon(event_pos):   return True
+        for hstone in self.board.values():
+            if hstone.point_in_hexagon(event_pos):   return True
         return False
     
 

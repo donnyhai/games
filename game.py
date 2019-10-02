@@ -8,8 +8,6 @@ import calculator_extended as cal_ex
 import interactor
 import painter
 import pygame
-import buttons
-import colors as c
 
 class Game:
     def __init__(self, surface):
@@ -24,8 +22,6 @@ class Game:
         self.board = board.Board(self.board_size, self.surfaces)
         self.locator = locator.Locator(self.board, 100)
         self.turn = ("white", 1)
-        
-#        self.center_button = buttons.Button(self.surfaces["surface_board"], c.center_button_color, x,y, int(self.surfaces["surfaces_board"].get_width() / 30), int(self.surfaces["surfaces_board"].get_width() / 30))
         
     def turn_up(self):
         if self.turn[0] == "white": self.turn = ("black", self.turn[1])

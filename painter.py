@@ -35,9 +35,8 @@ class Painter:
             surface.blit(insect_image, hexagon.pixel_pos)
             
     def draw_all_existing_markings(self, board, color = c.marking_color, mark_mode = 0):
-        for row in board.board:
-            for hstone in row:
-                if hstone.is_marked:    self.draw_hexagon_marking(hstone, color, mark_mode)
+        for hstone in board.board.values():
+            if hstone.is_marked:    self.draw_hexagon_marking(hstone, color, mark_mode)
     
     #draw a list of full hexagons 
     def draw_set_of_hexagons(self, hstone_list, surface):
@@ -46,8 +45,8 @@ class Painter:
     #draw the whole board of hexagons on surface
     def draw_board(self, board, surfaces, mark_mode = 0):
         surfaces["surface_board"].fill(c.background_board)
-        for row in board.board:
-            for hexagon in row: self.draw_hexagon(hexagon, surfaces["surface_board"])
+        for hstone in board.board.values():
+            self.draw_hexagon(hstone, surfaces["surface_board"])
         self.draw_all_existing_markings(board, mark_mode = mark_mode)
         self.draw_ingame_frame(surfaces["surface_full"])
                 

@@ -16,8 +16,8 @@ class Interactor:
     #board pixel size wants to be adapted with this function. multiply ratio with stone_size
     def scale_board(self, ratio):
         #scale board attributes
-        for row in self.board.board:
-            for hstone in row:  hstone.size = int(ratio * hstone.size)
+        for hstone in self.board.board.values():
+            hstone.size = int(ratio * hstone.size)
         #scale player attributes
         for player in self.players.values():
             for hstone in player.stones_list:
@@ -52,7 +52,7 @@ class Interactor:
             draw_hexagon.set_pixel_pos(shex.pixel_pos)
             draw_hexagon.set_board_pos(shex.board_pos)
             #put the hexagon abstractly on the board at the corresponding position and adapt board attributes
-            self.board.board[draw_hexagon.board_pos[0]][draw_hexagon.board_pos[1]] = draw_hexagon
+            self.board.board[draw_hexagon.board_pos] = draw_hexagon
             self.board.nonempty_fields.append(draw_hexagon.board_pos)
             self.board.drawn_hexagons.append(draw_hexagon)
             #set is_on_board
@@ -76,7 +76,7 @@ class Interactor:
         if not cond1:
             print("cond1 nicht erfüllt")
         #field at coord is empty
-        cond3 = self.board.board[coord[0]][coord[1]].is_empty 
+        cond3 = self.board.board[coord].is_empty 
         if not cond3:
             print("cond3 nicht erfüllt")
         #at least one same color neighbour, no other color neighbour.
@@ -89,7 +89,7 @@ class Interactor:
             cond4 = coord in neighbours
         else:
             for neigh in neighbours:
-                field = self.board.board[neigh[0]][neigh[1]]
+                field = self.board.board[neigh]
                 if not field.is_empty:
                     if field.color != src_hstone.color:
                         cond4 = False
@@ -125,10 +125,10 @@ class Interactor:
             new_empty_stone = hs.hexagon_stone(fhex.size)
             new_empty_stone.set_pixel_pos(old_pixel_pos)
             new_empty_stone.set_board_pos(old_board_pos)
-            self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+            self.board.board[old_board_pos] = new_empty_stone
             
             #fill "new" place with fhex
-            self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+            self.board.board[fhex.board_pos] = fhex
             
             #actualize board.nonempty_fields
             self.board.nonempty_fields.append(fhex.board_pos)
@@ -188,8 +188,8 @@ class Interactor:
                 #check whether fhex is mosquito. if it is and shex.is_empty then reput "mosquito" type
                 if fhex.is_mosquito and shex.is_empty: fhex.type = "mosquito"
                 #refill old place with last_stone and new place with fhex
-                self.board.board[old_board_pos[0]][old_board_pos[1]] = last_stone
-                self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+                self.board.board[old_board_pos] = last_stone
+                self.board.board[fhex.board_pos] = fhex
                 #no adaptation for nonempty_fields needed
                 #draw last_stone and fhex 
                 self.painter.draw_board(self.board, self.surfaces)
@@ -202,10 +202,10 @@ class Interactor:
                 new_empty_stone = hs.hexagon_stone(fhex.size)
                 new_empty_stone.set_pixel_pos(old_pixel_pos)
                 new_empty_stone.set_board_pos(old_board_pos)
-                self.board.board[old_board_pos[0]][old_board_pos[1]] = new_empty_stone
+                self.board.board[old_board_pos] = new_empty_stone
                 
                 #fill "new" place with fhex
-                self.board.board[fhex.board_pos[0]][fhex.board_pos[1]] = fhex
+                self.board.board[fhex.board_pos] = fhex
                 
                 #actualize board.nonempty_fields
                 self.board.nonempty_fields.remove(old_board_pos)

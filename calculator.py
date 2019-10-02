@@ -23,7 +23,7 @@ class Calculator:
         nonempty_fields = self.board.nonempty_fields
         moveable_hexagons = []
         for coord in nonempty_fields:
-            hexagon  = self.board.board[coord[0]][coord[1]]
+            hexagon  = self.board.board[coord]
             cond0 = self.board_keeps_connected(coord)
             if hexagon.type == "bug":
                 if hexagon.underlaying_stones: cond0 = True
@@ -48,7 +48,7 @@ class Calculator:
     #NOTE: connectedness of the stones graph is not considered here
     def can_move_on_ground(self, coord):
         neighbours = self.board.get_neighbours(coord).values()
-        empty_neigh = [neigh for neigh in neighbours if self.board.board[neigh[0]][neigh[1]].is_empty]
+        empty_neigh = [neigh for neigh in neighbours if self.board.board[neigh].is_empty]
         for neigh in empty_neigh:
             if self.graph.can_move_to_neighbour_on_ground(coord, neigh, self.board):
                 return True
@@ -61,13 +61,13 @@ class Calculator:
         for coord in self.board.nonempty_fields:
             for neigh in list(self.board.get_neighbours(coord).values()):
                 #neigh must be empty
-                if self.board.board[neigh[0]][neigh[1]].is_empty:
+                if self.board.board[neigh].is_empty:
                     if color == "white":    opp_color = "black"
                     else:   opp_color = "white"
                     #neigh shall not have neighbours with different color as color
                     cond = True
                     for neigh2 in list(self.board.get_neighbours(neigh).values()):
-                        if self.board.board[neigh2[0]][neigh2[1]].color == opp_color:   cond = False
+                        if self.board.board[neigh2].color == opp_color:   cond = False
                     if cond:    sol_fields.append(neigh)
         return sol_fields
     
@@ -110,8 +110,8 @@ class Calculator:
         #and get the first empty field in every "direction"
         for i in range(6):
             neigh = neighbours[i]
-            if not self.board.board[neigh[0]][neigh[1]].is_empty:
-                while not self.board.board[neigh[0]][neigh[1]].is_empty:
+            if not self.board.board[neigh].is_empty:
+                while not self.board.board[neigh].is_empty:
                     neigh = self.board.get_neighbours(neigh)[i]
                 hopper_fields.append(neigh)
         return hopper_fields
@@ -126,7 +126,7 @@ class Calculator:
     
     #bug is on coord. where can it move ?
     def get_bug_fields(self, coord):
-        if self.board.board[coord[0]][coord[1]].underlaying_stones:
+        if self.board.board[coord].underlaying_stones:
             return self.board.get_neighbours(coord).values()
         nonempty_neighbours = set(self.board.nonempty_fields).intersection(self.board.get_neighbours(coord).values())
         return self.get_bee_fields(coord) + list(nonempty_neighbours)
@@ -150,8 +150,8 @@ class Calculator:
         self.graph.test_board.copy_board(self.board)
         mosquito_fields = []
         for neigh in self.board.get_neighbours(coord).values():
-            self.graph.test_board.board[coord[0]][coord[1]].type = self.board.board[neigh[0]][neigh[1]].type
-            move_fields = self.get_possible_move_fields(self.graph.test_board.board[coord[0]][coord[1]])
+            self.graph.test_board.board[coord].type = self.board.board[neigh].type
+            move_fields = self.get_possible_move_fields(self.graph.test_board.board[coord])
             mosquito_fields += move_fields
         return mosquito_fields
          

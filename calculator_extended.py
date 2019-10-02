@@ -19,11 +19,11 @@ class Calculator_Extended(calculator.Calculator):
         if color_bee.is_on_board:   
             color_bee_surr = True
             for neigh in self.board.get_neighbours(color_bee.board_pos).values():
-                if self.board.board[neigh[0]][neigh[1]].is_empty:   color_bee_surr = False
+                if self.board.board[neigh].is_empty:   color_bee_surr = False
         if opp_color_bee.is_on_board:
             opp_color_bee_surr = True
             for neigh in self.board.get_neighbours(opp_color_bee.board_pos).values():
-                if self.board.board[neigh[0]][neigh[1]].is_empty:   opp_color_bee_surr = False
+                if self.board.board[neigh].is_empty:   opp_color_bee_surr = False
         return [color_bee_surr, opp_color_bee_surr]
     
     #event click at event_pos. in which hexagon is it ? return is a list containing exactly one hexagon 
@@ -42,8 +42,7 @@ class Calculator_Extended(calculator.Calculator):
                         if hstone2.point_in_hexagon(event_pos):
                             return hstone2
         #look on the board
-        for row in self.board.board:
-            for hstone in row:
-                if hstone.point_in_hexagon(event_pos):
-                    return hstone
+        for hstone in self.board.board.values():
+            if hstone.point_in_hexagon(event_pos):
+                return hstone
         return self.empty_help_stone

@@ -34,7 +34,7 @@ class Hexagon_Graph:
         adapt_nonempty_fields.remove(coord) #remove coord 
         for coords in adapt_nonempty_fields: #just iterate over this adapted nonempty_fields list
             for neigh in self.board.get_neighbours(coords).values():
-                if self.board.board[neigh[0]][neigh[1]].is_empty:
+                if self.board.board[neigh].is_empty:
                     points.append(neigh)
         points.append(coord) #as board is not empty on coord, append coord to the list here
         return list(set(points))
@@ -71,8 +71,8 @@ class Hexagon_Graph:
         self.test_board.copy_board(self.board)
         #remove stone at coord on test_board to calculate all moving fields correctly
         self.test_board.nonempty_fields.remove(coord)
-        self.test_board.board[coord[0]][coord[1]].type = "empty"
-        self.test_board.board[coord[0]][coord[1]].is_empty = True
+        self.test_board.board[coord].type = "empty"
+        self.test_board.board[coord].is_empty = True
         for point in self.points:
             for point2 in self.points:
                 if self.can_move_to_neighbour_on_ground(point, point2, self.test_board):
@@ -126,7 +126,7 @@ class Hexagon_Graph:
         #Note that the intersection of neigh1 and neigh2 contains 0,1 or 2 nonempty stones
         cond3 = len(set(nonempty_neigh1).intersection(nonempty_neigh2)) == 1
         #coord2 is not lying "outside" nonempty fields (that means at least "two" steps away of them)
-        cond4 = len(nonempty_neigh2) >= 1 if which_board.board[coord1[0]][coord1[1]].is_empty else len(nonempty_neigh2) >= 2
+        cond4 = len(nonempty_neigh2) >= 1 if which_board.board[coord1].is_empty else len(nonempty_neigh2) >= 2
         return cond1 and cond3 and cond4
         
     

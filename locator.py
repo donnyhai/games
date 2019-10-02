@@ -18,7 +18,7 @@ class Locator:
         
         self.look_into_past = look_into_past
         
-        self.initial_stone = self.board.board[round(self.board.size / 2)][round(self.board.size / 2)]
+        self.initial_stone = self.board.board[(round(self.board.size / 2),round(self.board.size / 2))]
         self.locations = {0: (self.initial_stone, self.initial_stone.board_pos)} #potential error source
         self.new_key = 1
     

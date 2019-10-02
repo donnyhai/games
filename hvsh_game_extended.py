@@ -156,7 +156,7 @@ while True:
         
     # (white, 1)                
                             if game.turn == ("white", 1):
-                                dir_hexagon = game.board.board[first_stone_board_pos[0]][first_stone_board_pos[1]] #shall be middle hexagon of the empty board
+                                dir_hexagon = game.board.board[first_stone_board_pos] #shall be middle hexagon of the empty board
                                 if not marked_hexagons:
                                     if clicked_hexagon.color == "white":
                                         src_hexagon = clicked_hexagon
@@ -173,7 +173,7 @@ while True:
     # (black, 1)                         
                             elif game.turn == ("black", 1):
                                 neigh_coords = game.board.get_neighbours(first_stone_board_pos).values()
-                                dir_hexagons = [game.board.board[i][j] for i,j in neigh_coords] #all empty neighbours of the middle hexagon
+                                dir_hexagons = [game.board.board[coord] for coord in neigh_coords] #all empty neighbours of the middle hexagon
                                 if not marked_hexagons:
                                     if clicked_hexagon.color == "black":
                                         src_hexagon = clicked_hexagon
@@ -206,7 +206,7 @@ while True:
                                                 #note: we are in the case that the bee is not yet put
                                                 if game.turn[1] < 4 or clicked_hexagon.type == "bee": 
                                                     dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
-                                                    dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                                    dir_hexagons = [game.board.board[coords] for coords in dir_hexagons_coords]
                                                     marked_hexagons = dir_hexagons + [src_hexagon]
                                                     wm.mark_hexagons(game, marked_hexagons, mark_size)
                                                 
@@ -242,7 +242,7 @@ while True:
                                             src_hexagon = clicked_hexagon
                                             if src_hexagon in game.players[current_player_color].putable_hexagons:
                                                 dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
-                                                dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                                dir_hexagons = [game.board.board[coords] for coords in dir_hexagons_coords]
                                                 marked_hexagons = dir_hexagons + [src_hexagon]
                                                 wm.mark_hexagons(game, marked_hexagons, mark_size)
                                         
@@ -251,7 +251,7 @@ while True:
                                             src_hexagon = clicked_hexagon
                                             if src_hexagon in game.players[current_player_color].moveable_hexagons:
                                                 dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
-                                                dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                                dir_hexagons = [game.board.board[coords] for coords in dir_hexagons_coords]
                                                 marked_hexagons = dir_hexagons + [src_hexagon]
                                                 wm.mark_hexagons(game, marked_hexagons, mark_size)
                                     
@@ -322,7 +322,7 @@ while True:
                                         src_hexagon = clicked_hexagon
                                         if src_hexagon in game.players[current_player_color].putable_hexagons:
                                             dir_hexagons_coords = game.interactor.calculator.get_possible_put_fields(current_player_color)
-                                            dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                            dir_hexagons = [game.board.board[coords] for coords in dir_hexagons_coords]
                                             marked_hexagons = dir_hexagons + [src_hexagon]
                                             wm.mark_hexagons(game, marked_hexagons, mark_size)
                                     
@@ -331,7 +331,7 @@ while True:
                                         src_hexagon = clicked_hexagon
                                         if src_hexagon in game.players[current_player_color].moveable_hexagons:
                                             dir_hexagons_coords = game.interactor.calculator.get_possible_move_fields(src_hexagon)
-                                            dir_hexagons = [game.board.board[coords[0]][coords[1]] for coords in dir_hexagons_coords]
+                                            dir_hexagons = [game.board.board[coords] for coords in dir_hexagons_coords]
                                             marked_hexagons = dir_hexagons + [src_hexagon]
                                             wm.mark_hexagons(game, marked_hexagons, mark_size)
                                     
