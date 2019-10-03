@@ -8,6 +8,8 @@ import calculator_extended as cal_ex
 import interactor
 import painter
 import pygame
+import button
+import colors as c
 
 class Game:
     def __init__(self, surface):
@@ -23,9 +25,19 @@ class Game:
         self.locator = locator.Locator(self.board, 100)
         self.turn = ("white", 1)
         
+        self.buttons = self.create_buttons()
+        
     def turn_up(self):
         if self.turn[0] == "white": self.turn = ("black", self.turn[1])
         else:   self.turn = ("white", self.turn[1] + 1)
+        
+    def create_buttons(self):
+        center_button = button.Button(self.surfaces["surface_board"], "center",
+                                      int(1/30 * self.surfaces["surface_board"].get_height()),
+                                      (int(4/9 * self.surfaces["surface_board"].get_width()), int(12/13 * self.surfaces["surface_board"].get_height())),
+                                      (int(1/9 * self.surfaces["surface_board"].get_width()), int(1/20 * self.surfaces["surface_board"].get_height())),
+                                      c.center_button_color, (0,0,0))
+        return {"center_button": center_button}
 
     
 class HvsH_Game(Game):
@@ -33,7 +45,7 @@ class HvsH_Game(Game):
         super().__init__(surface)
         self.players = {"white": plh.Human_Player("white", self.surfaces), 
                         "black": plh.Human_Player("black", self.surfaces)}
-        self.interactor = interactor.Interactor(self.painter, cal_ex.Calculator_Extended(self.locator, self.players), self.turn)
+        self.interactor = interactor.Interactor(self.painter, cal_ex.Calculator_Extended(self.locator, self.players), self.turn, self.buttons)
         
     
 
@@ -42,7 +54,7 @@ class HvsH_Game_Extended(Game):
         super().__init__(surface)
         self.players = {"white": ple.Human_Player_Extended("white", self.surfaces), 
                         "black": ple.Human_Player_Extended("black", self.surfaces)}
-        self.interactor = interactor.Interactor(self.painter, cal_ex.Calculator_Extended(self.locator, self.players), self.turn)
+        self.interactor = interactor.Interactor(self.painter, cal_ex.Calculator_Extended(self.locator, self.players), self.turn, self.buttons)
         
 
 

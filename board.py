@@ -4,7 +4,9 @@ class Board:
     def __init__(self, board_size, surfaces):
         self.size = board_size
         self.surfaces = surfaces
+        self.initial_hexagon_size = int(0.03 * self.surfaces["surface_full"].get_width())
         self.hexagon_size = int(0.03 * self.surfaces["surface_full"].get_width())
+        self.inital_pixel_pos = (0, -self.hexagon_size)
         self.draw_position = (0, -self.hexagon_size) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
         

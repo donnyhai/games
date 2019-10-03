@@ -5,13 +5,14 @@ pygame.init()
 
 
 class Interactor:
-    def __init__(self, painter, calculator, turn):
+    def __init__(self, painter, calculator, turn, buttons):
         self.painter = painter
         self.calculator = calculator
         self.players = self.calculator.players
         self.board = self.calculator.board
         self.surfaces = self.board.surfaces
         self.turn = turn
+        self.buttons = buttons
     
     #board pixel size wants to be adapted with this function. multiply ratio with stone_size
     def scale_board(self, ratio):
@@ -60,7 +61,7 @@ class Interactor:
             
             ##then execute drawing aspects
             self.painter.draw_stone_number(player, fhex, self.surfaces)
-            self.painter.draw_board(self.board, self.surfaces)
+            self.painter.draw_board(self.board, self.surfaces, self.buttons)
             self.painter.write_box_text(self.surfaces, t.insect_put_texts[fhex.type], fhex.color)
     
     #player want to put src_hstone on dir_stone. is that a legal ?
@@ -134,7 +135,7 @@ class Interactor:
             self.board.nonempty_fields.append(fhex.board_pos)
             self.board.nonempty_fields.remove(old_board_pos)
             
-            self.painter.draw_board(self.board, self.surfaces)
+            self.painter.draw_board(self.board, self.surfaces, self.buttons)
             
             #write texts
             self.painter.write_box_text(self.surfaces, t.insect_move_texts[fhex.type], fhex.color)
@@ -192,7 +193,7 @@ class Interactor:
                 self.board.board[fhex.board_pos] = fhex
                 #no adaptation for nonempty_fields needed
                 #draw last_stone and fhex 
-                self.painter.draw_board(self.board, self.surfaces)
+                self.painter.draw_board(self.board, self.surfaces, self.buttons)
             else: #case: bug will certainly move from an empty field onto a nonempty field
                 fhex.underlaying_stones.append(shex)
                 shex.has_bug_on = True
@@ -210,7 +211,7 @@ class Interactor:
                 #actualize board.nonempty_fields
                 self.board.nonempty_fields.remove(old_board_pos)
                 
-                self.painter.draw_board(self.board, self.surfaces)
+                self.painter.draw_board(self.board, self.surfaces, self.buttons)
 
 
     

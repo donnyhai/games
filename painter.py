@@ -43,12 +43,15 @@ class Painter:
         for hstone in hstone_list:  self.draw_hexagon(hstone, surface)
     
     #draw the whole board of hexagons on surface
-    def draw_board(self, board, surfaces, mark_mode = 0):
+    def draw_board(self, board, surfaces, buttons, mark_mode = 0):
         surfaces["surface_board"].fill(c.background_board)
         for hstone in board.board.values():
             self.draw_hexagon(hstone, surfaces["surface_board"])
         self.draw_all_existing_markings(board, mark_mode = mark_mode)
         self.draw_ingame_frame(surfaces["surface_full"])
+        for button in buttons.values():
+            if button.shall_be_seen:
+                button.draw_button()
                 
     def draw_hexagon_frame(self, hexagon, color = (0,0,0), width = 1):
         width = (hexagon.size + 2 * width / sqrt(3) - (width // 2)) // 15

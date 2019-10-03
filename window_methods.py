@@ -6,7 +6,7 @@ def unmark_hexagons(game, player, marked_hexagons):
     for hexagon in marked_hexagons:
         hexagon.is_marked = False
     game.painter.draw_unmarked_side_area(player, game.surfaces)
-    game.painter.draw_board(game.board, game.surfaces)
+    game.painter.draw_board(game.board, game.surfaces, game.buttons)
     marked_hexagons.clear()  
     
 def mark_hexagons(game, marked_hexagons, mark_width):
