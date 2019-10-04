@@ -56,6 +56,8 @@ class Interactor:
             self.board.board[draw_hexagon.board_pos] = draw_hexagon
             self.board.nonempty_fields.append(draw_hexagon.board_pos)
             self.board.drawn_hexagons.append(draw_hexagon)
+            #save board constellation
+            self.board.add_board_constellation()
             #set is_on_board
             draw_hexagon.is_on_board = True
             
@@ -135,6 +137,9 @@ class Interactor:
             self.board.nonempty_fields.append(fhex.board_pos)
             self.board.nonempty_fields.remove(old_board_pos)
             
+            #save board constellation
+            self.board.add_board_constellation()
+            
             self.painter.draw_board(self.board, self.surfaces, self.buttons)
             
             #write texts
@@ -191,6 +196,8 @@ class Interactor:
                 #refill old place with last_stone and new place with fhex
                 self.board.board[old_board_pos] = last_stone
                 self.board.board[fhex.board_pos] = fhex
+                #save board constellation
+                self.board.add_board_constellation()
                 #no adaptation for nonempty_fields needed
                 #draw last_stone and fhex 
                 self.painter.draw_board(self.board, self.surfaces, self.buttons)
@@ -207,11 +214,100 @@ class Interactor:
                 
                 #fill "new" place with fhex
                 self.board.board[fhex.board_pos] = fhex
+                #save board constellation
+                self.board.add_board_constellation()
                 
                 #actualize board.nonempty_fields
                 self.board.nonempty_fields.remove(old_board_pos)
                 
                 self.painter.draw_board(self.board, self.surfaces, self.buttons)
+                
+    
+    
+    #this function puts the board into some constellation of past_boards, tm put the stones to the positions
+    #as refered in the given constellation and reorganize underlaying_stones and stone attributes  
+    def put_into_constellation(self, constellation):
+        
+        #make board empty 
+        self.board.board = self.board.set_empty_hexagon_board()
+        self.board.set_hexagons_positions(self.board.board)
+        self.board.nonempty_fields.clear()
+        self.board.drawn_hexagons.clear()
+        
+        #reset all player stones
+        #for all stones of the players which do not appear in the constellation, reset their attributes
+        #back to not being on the board
+        for player in self.players.values():
+            for hstone in player.stones_list:
+                if hstone.is_on_board:
+                    del hstone.board_pos
+                    del hstone.pixel_pos
+                    del hstone.drawn_surface
+                    del hstone.global_pixel_pos
+                    del hstone.global_points
+                hstone.is_on_board = False
+                hstone.has_bug_on = False
+                hstone.is_drawn = False
+                hstone.is_marked = False
+                if hstone.type in {"bug", "mosquito"}:
+                    hstone.underlaying_stones.clear()
+                if hstone.is_mosquito:
+                    hstone.type = "mosquito"
+                        
+            for hstone in player.side_stones.values():
+                hstone.is_marked = False
+            
+        
+        #set new hexagons laying on the board
+        for coord in constellation:
+            id_list = constellation[coord]
+            k = len(id_list)
+            
+            hstone = self.get_stone(id_list[0])
+            ref_stone = self.board.board[coord]
+            self.board.board[coord] = hstone
+            hstone.set_board_pos(ref_stone.board_pos)
+            hstone.set_pixel_pos(ref_stone.pixel_pos)
+            hstone.set_drawn_surface(self.surfaces["surface_board"])
+            hstone.calculate_global_pixel_pos()
+            hstone.is_on_board = True
+            hstone.has_bug_on = False
+            hstone.is_marked = False
+            self.board.nonempty_fields.append(coord)
+            
+            for i in range(k-1): #only interesting for the case k > 1 (bug or mosquito)
+                hstone = self.get_stone(id_list[i])
+                hstone.underlaying_stones.clear()
+                for j in range(i+1, k):
+                    stone = self.get_stone(id_list[j])
+                    hstone.underlaying_stones.append(stone)
+                    stone.set_board_pos(ref_stone.board_pos)
+                    stone.set_pixel_pos(ref_stone.pixel_pos)
+                    stone.is_on_board = True
+                    stone.has_bug_on = True
+                    stone.is_marked = False
+                    stone.set_drawn_surface(self.surfaces["surface_board"])
+                    stone.calculate_global_pixel_pos()
+                    
+            lowest_stone = self.get_stone(id_list[k-1])
+            if lowest_stone.type in {"bug", "mosquito"}:
+                lowest_stone.underlaying_stones.clear()
+        
+        #drawing aspect
+        for player in self.players.values():
+            player.set_side_stones_numbers()
+            self.painter.draw_unmarked_side_area(player, self.surfaces)  
+        self.painter.draw_board(self.board, self.surfaces, self.buttons)              
+        
+
+    
+    #input is an id, output the corresponding hexagon stone
+    def get_stone(self, Id):
+        for player in self.players.values():
+            for hstone in player.stones_list:
+                if id(hstone) == Id:
+                    return hstone
+                
 
 
     

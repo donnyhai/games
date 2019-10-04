@@ -31,13 +31,22 @@ class Game:
         if self.turn[0] == "white": self.turn = ("black", self.turn[1])
         else:   self.turn = ("white", self.turn[1] + 1)
         
+    def turn_down(self):
+        if self.turn[0] == "black": self.turn = ("white", self.turn[1])
+        else:   self.turn = ("black", self.turn[1] - 1)
+        
     def create_buttons(self):
         center_button = button.Button(self.surfaces["surface_board"], "center",
                                       int(1/30 * self.surfaces["surface_board"].get_height()),
                                       (int(4/9 * self.surfaces["surface_board"].get_width()), int(12/13 * self.surfaces["surface_board"].get_height())),
                                       (int(1/9 * self.surfaces["surface_board"].get_width()), int(1/20 * self.surfaces["surface_board"].get_height())),
                                       c.center_button_color, (0,0,0))
-        return {"center_button": center_button}
+        back_button = button.Button(self.surfaces["surface_board"], "back",
+                                      int(1/30 * self.surfaces["surface_board"].get_height()),
+                                      (int(1/9 * self.surfaces["surface_board"].get_width()), int(12/13 * self.surfaces["surface_board"].get_height())),
+                                      (int(1/9 * self.surfaces["surface_board"].get_width()), int(1/20 * self.surfaces["surface_board"].get_height())),
+                                      c.center_button_color, (0,0,0))
+        return {"center_button": center_button, "back_button": back_button}
 
     
 class HvsH_Game(Game):

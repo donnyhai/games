@@ -158,6 +158,14 @@ while True:
                             game.board.draw_position = game.board.inital_pixel_pos
                             game.interactor.scale_board(game.board.initial_hexagon_size / game.board.hexagon_size)
                             game.painter.draw_board(game.board, game.surfaces, game.buttons, mark_size)
+                            
+                        elif game.buttons["back_button"].pressed(event.pos):
+                            del game.board.past_boards[len(game.board.past_boards) - 1]
+                            last_constellation = game.board.past_boards[len(game.board.past_boards) - 1]
+                            game.interactor.put_into_constellation(last_constellation)
+                            marked_hexagons.clear()
+                            game.turn_down()
+                        
                         else:
                         
                         
