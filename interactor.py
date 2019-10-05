@@ -212,6 +212,8 @@ class Interactor:
                 for player in self.players.values():
                     player.set_action_hexagons(self.calculator)
             else: #case: bug will certainly move from an empty field onto a nonempty field
+                if shex.type == "bug":
+                    fhex.underlaying_stones = shex.underlaying_stones.copy()
                 fhex.underlaying_stones.append(shex)
                 shex.has_bug_on = True
                 #check mosquito.
@@ -246,7 +248,9 @@ class Interactor:
                 if not hstone.is_empty:
                     entry = [hstone]
                     if hstone.type in {"bug", "mosquito"}:
-                        for stone in hstone.underlaying_stones:
+                        try_list = hstone.underlaying_stones.copy()
+                        try_list.reverse()
+                        for stone in try_list:
                             entry.append(stone)
                     new_board[(i,j)] = entry
         self.board.past_boards[len(self.board.past_boards)] = new_board
@@ -286,7 +290,6 @@ class Interactor:
             for i in range(k-1): #only interesting for the case k > 1 (bug or mosquito)
                 hstone = stone_list[i]
                 for j in range(i+1, k):
-                    print("jetzt")
                     stone = stone_list[j]
                     hstone.underlaying_stones.append(stone)
                     self.set_stone_attr(stone, ref_stone.board_pos, ref_stone.pixel_pos)
@@ -326,6 +329,8 @@ class Interactor:
         hstone.is_on_board = True
         hstone.has_bug_on = False
         hstone.is_marked = False
+        if hstone.type in {"bug", "mosquito"}:
+            hstone.underlaying_stones = []
 
 
     

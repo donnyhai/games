@@ -31,12 +31,6 @@ class Game:
         if self.turn[0] == "white": self.turn = ("black", self.turn[1])
         else:   self.turn = ("white", self.turn[1] + 1)
         self.board.past_boards[len(self.board.past_boards) - 1]["turn"] = self.turn #save the new turn in the actual board constellation
-        print(self.turn)
-        
-    def turn_down(self):
-        if self.turn[0] == "black": self.turn = ("white", self.turn[1])
-        else:   self.turn = ("black", self.turn[1] - 1)
-        print(self.turn)
         
     def create_buttons(self):
         center_button = button.Button(self.surfaces["surface_board"], "center",

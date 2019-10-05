@@ -153,14 +153,13 @@ while True:
                             game.painter.draw_board(game.board, game.surfaces, game.buttons, mark_size)
                     else: counter += 1
                 
-                
                 elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     drag = False
                     if moved:   moved = False
                     else:
                         
                         if game.buttons["center_button"].pressed(event.pos):
-                            game.board.draw_position = game.board.inital_pixel_pos
+                            game.board.draw_position = game.board.initial_pixel_pos
                             game.interactor.scale_board(game.board.initial_hexagon_size / game.board.hexagon_size)
                             game.painter.draw_board(game.board, game.surfaces, game.buttons, mark_size)
                             

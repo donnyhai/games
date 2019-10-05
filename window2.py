@@ -149,7 +149,7 @@ while True:
                             game.painter.draw_board(game.board, game.surfaces, game.buttons, mark_size)
                     else: counter += 1  
                 
-                if event.type== pygame.MOUSEBUTTONUP and event.button == 1:
+                elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     drag = False
                     if moved:   moved = False
                     else:
