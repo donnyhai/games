@@ -18,6 +18,7 @@ class Player_Extended:
         #init action hexagons (move and put)
         self.moveable_hexagons = []
         self.putable_hexagons = list(self.side_stones.values()).copy()
+        self.can_act = True
         
         
 
@@ -99,6 +100,8 @@ class Player_Extended:
     def set_action_hexagons(self, calculator):
         self.moveable_hexagons = calculator.get_moveable_hexagons(self.color)
         self.putable_hexagons = calculator.get_putable_hexagons(self.color, self.side_stones, self.side_stones_numbers)
+        if not self.moveable_hexagons and not self.putable_hexagons: self.can_act = False
+        else: self.can_act = True
     
 class Human_Player_Extended(Player_Extended):
     pass

@@ -6,7 +6,7 @@ class Board:
         self.surfaces = surfaces
         self.initial_hexagon_size = int(0.03 * self.surfaces["surface_full"].get_width())
         self.hexagon_size = int(0.03 * self.surfaces["surface_full"].get_width())
-        self.inital_pixel_pos = (0, -self.hexagon_size)
+        self.initial_pixel_pos = (0, -self.hexagon_size)
         self.draw_position = (0, -self.hexagon_size) #where on the surface shall the hexagon matrix be drawn ? 
         #(reference point is upper left corner of upper left hexagon)
         
@@ -14,16 +14,13 @@ class Board:
         self.set_hexagons_positions(self.board)
         
         self.nonempty_fields = [] #will contain matrix coordinates
-        self.drawn_hexagons = [] #will contain hexagon_stone objects (if used)
-        
         
         # this variable shall save past board constellations to look them up when hitting the "back" button.
         # it saves past boards in a dictionary. the keys are natural numbers representing the amount of puts or moves
-        # so far done in the game, starting with 0, the values are again dicts with keys board_pos, and values the ids 
-        # of the hexagon stones which layed there at this time. 
-        # eg: {0: {(0,0): 124234124, (0,1): 123234542, ...}, 1: {(0,0): 124234124, (0,1): 325344232, ...}, ...}
-        self.past_boards = {}
-        self.add_board_constellation() #init, containing the board constellation with all empty hexagons
+        # so far done in the game, starting with 0, the values are again dicts with keys board_pos, and values the 
+        #hexagon stones which layed there at this time. 
+        # eg: {0: {(0,0): hstone, (0,1): hstone, ...}, 1: {(0,0): hstone, (0,1): hstone, ...}, ...}
+        self.past_boards = {0: {"turn": ("white", 1)}} #init
         
     #get neighbour coordinates of (i,j) starting from top going clockwise, number them from 0 to 5
     def get_neighbours(self, coord):
@@ -32,7 +29,7 @@ class Board:
         if i % 2 == 1: return {0: (i-2,j), 1: (i-1,j+1), 2: (i+1,j+1), 3: (i+2,j), 4: (i+1,j), 5: (i-1,j)} 
         else: return {0: (i-2,j), 1: (i-1,j), 2: (i+1,j), 3: (i+2,j), 4: (i+1,j-1), 5: (i-1,j-1)} 
     
-    def get_nonempty_neighbours (self, coord):
+    def get_nonempty_neighbours(self, coord):
         nonempty_neigh = []
         for neigh in self.get_neighbours(coord).values():
             if not self.board[neigh].is_empty: nonempty_neigh.append(neigh)
@@ -77,20 +74,6 @@ class Board:
             if hstone.point_in_hexagon(event_pos):   return True
         return False
     
-    #add actual board constellation to the past_boards dict
-    #save the ids of hexagon stones
-    def add_board_constellation(self):
-        new_board = {}
-        for i in range(self.size):
-            for j in range(self.size):
-                hstone  = self.board[(i,j)]
-                if not hstone.is_empty:
-                    entry = [id(hstone)]
-                    if hstone.type in {"bug", "mosquito"}:
-                        for stone in hstone.underlaying_stones:
-                            entry.append(id(stone))
-                    new_board[(i,j)] = entry
-        self.past_boards[len(self.past_boards)] = new_board
 
 
 

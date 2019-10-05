@@ -103,8 +103,10 @@ class Hexagon_Graph:
     
     #check whether the graph is connected        
     def is_connected(self):
-        if len(self.calculate_connected_component(self.points[0])) == len(self.points): return True
-        else: return False
+        if self.points:
+            if len(self.calculate_connected_component(self.points[0])) == len(self.points): return True
+            else: return False
+        return True #if there are no points, return True
         
     #is it possible to move from coord1 to coord2 on the ground?
     #coord1 and coord2 have to be neighbour coordinates

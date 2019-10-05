@@ -21,8 +21,6 @@ class Painter:
         if not hexagon.is_drawn:
             hexagon.is_drawn = True
             hexagon.set_drawn_surface(surface)
-        #as the hexagon gets drawn, we can calculate the global pixel pos
-        hexagon.calculate_global_pixel_pos()
         if hexagon.type == "empty": pygame.draw.polygon(surface, c.empty_stone_color, hexagon.points)
         else:
             if hexagon.color == "white": pygame.draw.polygon(surface, c.creme_white, hexagon.points) #creme white

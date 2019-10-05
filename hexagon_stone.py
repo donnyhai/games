@@ -35,15 +35,7 @@ class hexagon_stone:
         self.pixel_pos = pixel_pos
         self.points = self.getting_hexa(self.size, self.pixel_pos)
     
-    #calculate global pixel pos to for example check whether a blick was inside this hexagon or not
-    #simply add the drawn_surface offset to self.pixel_pos
-    def calculate_global_pixel_pos(self):
-        if self.is_drawn:
-            self.global_pixel_pos = (self.pixel_pos[0] + self.drawn_surface.get_abs_offset()[0],
-                                     self.pixel_pos[1] + self.drawn_surface.get_abs_offset()[1])
-            self.global_points = self.getting_hexa(self.size, self.global_pixel_pos)
-    
-    #just for bug, shall contain all stones under the bug        
+    #just for bug and mosquito, shall contain all stones under the bug        
     def init_underlaying_stones(self):
         self.underlaying_stones = []
 ###
@@ -67,7 +59,9 @@ class hexagon_stone:
     #hex_stone was drawn on subsurface, and click was on global pixel_coords. is it inside the hex_stone ? 
     def point_in_hexagon(self, event_pos):
         
-        points = self.global_points
+        global_pixel_pos = (self.pixel_pos[0] + self.drawn_surface.get_abs_offset()[0],
+                            self.pixel_pos[1] + self.drawn_surface.get_abs_offset()[1])
+        points = self.getting_hexa(self.size, global_pixel_pos)
         
         def euclidean_metric(vector):
             squared = [x*x for x in vector]
