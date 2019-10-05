@@ -7,14 +7,16 @@ class Player_Extended:
     def __init__(self, color, surfaces):
         self.color = color
         self.surfaces = surfaces
-        self.stone_size = int(0.03 * self.surfaces["surface_full"].get_width())
+        self.initial_stone_size = int(0.03 * self.surfaces["surface_full"].get_width())
+        self.stone_size = self.initial_stone_size
         
         self.stones = self.create_stones(self.stone_size)
         self.stones_list = self.get_stones_list() #all stones in one list
         self.side_stones = self.create_side_stones(self.stone_size)
         self.set_side_stones_positions(7) #side positions for the side stones
         #side_stone_numbers shall display how many of each insect type are not yet on the board
-        self.side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2, "bug": 2, "mosquito": 1, "ladybug": 1}
+        self.initial_side_stones_numbers = {"bee": 1, "ant": 3, "hopper": 3, "spider": 2, "bug": 2, "mosquito": 1, "ladybug": 1}
+        self.side_stones_numbers = self.initial_side_stones_numbers.copy()
         #init action hexagons (move and put)
         self.moveable_hexagons = []
         self.putable_hexagons = list(self.side_stones.values()).copy()

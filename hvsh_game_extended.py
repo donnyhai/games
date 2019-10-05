@@ -155,7 +155,7 @@ while True:
                     else:
                         
                         if game.buttons["center_button"].pressed(event.pos):
-                            game.board.draw_position = game.board.initial_pixel_pos
+                            game.board.draw_position = game.board.initial_draw_position
                             game.interactor.scale_board(game.board.initial_hexagon_size / game.board.hexagon_size)
                             game.painter.draw_board(game.board, game.surfaces, game.buttons, mark_size)
                             
@@ -166,6 +166,15 @@ while True:
                                 game.interactor.put_into_constellation(last_constellation)
                                 marked_hexagons.clear()
                                 game.turn = last_constellation["turn"]
+                        
+                        elif game.buttons["restart_button"].pressed(event.pos):
+                            #at this point we could just overwrite the actual board and players with a new init board and new 
+                            #players, and then init a new interactor etc (see the chronology in class game). But by this we do not
+                            #have the same board, player and stone objects as before, which we may want in the future to analize 
+                            #gaming behavour better. Therefore the game gets restarted by resetting all board, player and stones attr
+                            #manually.
+                            game.interactor.restart_game()
+                            game.turn = ("white", 1)
                         
                         else:
                         

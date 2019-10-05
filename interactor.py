@@ -331,6 +331,47 @@ class Interactor:
         hstone.is_marked = False
         if hstone.type in {"bug", "mosquito"}:
             hstone.underlaying_stones = []
+    
+    #restart game, tm reset all attr to as they where at the beginning        
+    def restart_game(self):
+        #reset board:
+        self.board.hexagon_size = self.board.initial_hexagon_size
+        self.board.draw_position = self.board.initial_draw_position
+        self.board.board = self.board.set_empty_hexagon_board()
+        self.board.set_hexagons_positions(self.board.board)
+        self.board.nonempty_fields.clear()
+        self.board.past_boards = {0: {"turn": ("white", 1)}}
+        
+        #reset players:
+        for player in self.players.values():
+            player.stone_size = player.initial_stone_size
+            #reset stones
+            for stones in player.stones.values():
+                for stone in stones.values():
+                    stone.size = player.stone_size
+                    if stone.is_mosquito: stone.type = "mosquito"
+                    if stone.type in {"bug", "mosquito"}:
+                        stone.underlaying_stones.clear()
+                    if stone.is_on_board:
+                        del stone.board_pos
+                        del stone.points
+                        del stone.pixel_pos
+                    if stone.is_drawn:
+                        del stone.drawn_surface
+                    stone.is_on_board = False
+                    stone.is_drawn = False
+                    stone.is_marked = False
+                    stone.has_bug_on = False
+            player.side_stones_numbers = player.initial_side_stones_numbers
+            player.moveable_hexagons.clear()
+            player.putable_hexagons = list(player.side_stones.values()).copy()
+            player.can_act = True
+            
+        #drawing aspect
+        for player in self.players.values():
+            self.painter.draw_unmarked_side_area(player, self.surfaces)  
+        self.painter.draw_board(self.board, self.surfaces, self.buttons) 
+            
 
 
     

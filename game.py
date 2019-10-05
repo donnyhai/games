@@ -43,25 +43,30 @@ class Game:
                                       (int(1/9 * self.surfaces["surface_board"].get_width()), int(12/13 * self.surfaces["surface_board"].get_height())),
                                       (int(1/9 * self.surfaces["surface_board"].get_width()), int(1/20 * self.surfaces["surface_board"].get_height())),
                                       c.center_button_color, (0,0,0))
-        return {"center_button": center_button, "back_button": back_button}
+        restart_button = button.Button(self.surfaces["surface_board"], "restart",
+                                      int(1/30 * self.surfaces["surface_board"].get_height()),
+                                      (int(7/9 * self.surfaces["surface_board"].get_width()), int(12/13 * self.surfaces["surface_board"].get_height())),
+                                      (int(1/9 * self.surfaces["surface_board"].get_width()), int(1/20 * self.surfaces["surface_board"].get_height())),
+                                      c.center_button_color, (0,0,0))
+        return {"center_button": center_button, "back_button": back_button, "restart_button": restart_button}
 
     
 class HvsH_Game(Game):
-    def __init__(self, surface):
+    def __init__(self, surface, mode = "basic"):
         super().__init__(surface)
         self.players = {"white": plh.Human_Player("white", self.surfaces), 
                         "black": plh.Human_Player("black", self.surfaces)}
         self.interactor = interactor.Interactor(self.painter, cal_ex.Calculator_Extended(self.locator, self.players), self.turn, self.buttons)
-        
+        self.mode = mode
     
 
 class HvsH_Game_Extended(Game):
-    def __init__(self, surface):
+    def __init__(self, surface, mode = "extended"):
         super().__init__(surface)
         self.players = {"white": ple.Human_Player_Extended("white", self.surfaces), 
                         "black": ple.Human_Player_Extended("black", self.surfaces)}
         self.interactor = interactor.Interactor(self.painter, cal_ex.Calculator_Extended(self.locator, self.players), self.turn, self.buttons)
-        
+        self.mode = mode
 
 
 #In this game against the computer, the human player is white and begins the game        

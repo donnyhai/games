@@ -8,7 +8,7 @@ class hexagon_stone:
         self.number = number
         
         self.size = size
-        self.color = (255,255,255)
+        self.color = ""
         
         self.is_empty = True
         self.is_on_board = False
