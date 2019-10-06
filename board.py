@@ -26,8 +26,9 @@ class Board:
     def get_neighbours(self, coord):
         i = coord[0]
         j = coord[1]
-        if i % 2 == 1: return {0: (i-2,j), 1: (i-1,j+1), 2: (i+1,j+1), 3: (i+2,j), 4: (i+1,j), 5: (i-1,j)} 
-        else: return {0: (i-2,j), 1: (i-1,j), 2: (i+1,j), 3: (i+2,j), 4: (i+1,j-1), 5: (i-1,j-1)} 
+        s = self.size
+        if i % 2 == 1: return {0: ((i-2) % s,j % s), 1: ((i-1) % s,(j+1) % s), 2: ((i+1) % s,(j+1) % s), 3: ((i+2) % s,j % s), 4: ((i+1) % s,j % s), 5: ((i-1) % s,j % s)} 
+        else: return {0: ((i-2) % s,j % s), 1: ((i-1) % s,j % s), 2: ((i+1) % s,j % s), 3: ((i+2) % s,j % s), 4: ((i+1) % s,(j-1) % s), 5: ((i-1) % s,(j-1) % s)} 
     
     def get_nonempty_neighbours(self, coord):
         nonempty_neigh = []

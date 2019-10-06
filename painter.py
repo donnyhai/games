@@ -9,21 +9,23 @@ hive_paths = {"ant": os.path.join("pictures", "ant.png"), "hopper": os.path.join
 
 class Painter:
     
-    #fill background with color
-    def draw_background(self, surface, color, alpha_value = 255):
-        s = pygame.Surface((surface.get_width(), surface.get_height()))
-        s.fill(color)
-        s.set_alpha(alpha_value)
-        surface.blit(s, (0,0))
+    def __init__(self, backgrounds):
+        self.backgrounds = backgrounds
     
+    #fill background with color
+    def draw_background(self, surface):
+        surface.blit(self.backgrounds[surface], (0,0))
+        
     #draw full hexagon (shall a frame with mark_mode = 0 also be drawn ?)
     def draw_hexagon(self, hexagon, surface):
         if not hexagon.is_drawn:
             hexagon.is_drawn = True
             hexagon.set_drawn_surface(surface)
-        if hexagon.type == "empty": pygame.draw.polygon(surface, c.empty_stone_color, hexagon.points)
+        if hexagon.type == "empty": 
+            pass
+#            pygame.draw.polygon(surface, c.empty_stone_color, hexagon.points)
         else:
-            if hexagon.color == "white": pygame.draw.polygon(surface, c.creme_white, hexagon.points) #creme white
+            if hexagon.color == "white":    pygame.draw.polygon(surface, c.creme_white, hexagon.points) #creme white
             elif hexagon.color == "black":  pygame.draw.polygon(surface, c.creme_black, hexagon.points) #creme black
             #blit insect on the polygon
             if hexagon.is_mosquito:  insect = "mosquito"
@@ -42,7 +44,7 @@ class Painter:
     
     #draw the whole board of hexagons on surface
     def draw_board(self, board, surfaces, buttons, mark_mode = 0):
-        surfaces["surface_board"].fill(c.background_board)
+        self.draw_background(surfaces["surface_board"])
         for hstone in board.board.values():
             self.draw_hexagon(hstone, surfaces["surface_board"])
         self.draw_all_existing_markings(board, mark_mode = mark_mode)
@@ -88,7 +90,7 @@ class Painter:
         
     def write_box_text(self, surfaces, text, player_color):
         surface = surfaces["surface_text"][player_color]
-        surface.fill(surface.get_at_mapped((7,7)))
+        self.draw_background(surface)
         font_size = int(0.2 * surface.get_height())
         color = c.box_text_color
         position = (0.1 * surface.get_width(), 0.1 * surface.get_height())

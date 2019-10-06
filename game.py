@@ -10,6 +10,9 @@ import painter
 import pygame
 import button
 import colors as c
+import backgrounds as bg
+
+
 
 class Game:
     def __init__(self, surface):
@@ -20,7 +23,12 @@ class Game:
                                             "black": surface.subsurface(pygame.Rect(0.9 * surface.get_width(), 0, 0.1 * surface.get_width(), 0.8 * surface.get_height()))},
                          "surface_text": {"white": surface.subsurface(pygame.Rect(0, 0.8 * surface.get_height(), 0.1 * surface.get_width(), 0.2 * surface.get_height())),
                                           "black": surface.subsurface(pygame.Rect(0.9 * surface.get_width(), 0.8 * surface.get_height(), 0.1 * surface.get_width(), 0.2 * surface.get_height()))}}
-        self.painter = painter.Painter()
+        self.backgrounds = {self.surfaces["surface_board"]: bg.tickled_color(self.surfaces["surface_board"], c.background_color2, c.background_color3),
+                            self.surfaces["surface_stones"]["white"]: bg.standard_color(self.surfaces["surface_stones"]["white"], c.background_side_stones),
+                            self.surfaces["surface_stones"]["black"]: bg.standard_color(self.surfaces["surface_stones"]["black"], c.background_side_stones),
+                            self.surfaces["surface_text"]["white"]: bg.standard_color(self.surfaces["surface_text"]["white"], c.background_text_box),
+                            self.surfaces["surface_text"]["black"]: bg.standard_color(self.surfaces["surface_text"]["black"], c.background_text_box)}
+        self.painter = painter.Painter(self.backgrounds)
         self.board = board.Board(self.board_size, self.surfaces)
         self.locator = locator.Locator(self.board, 100)
         self.turn = ("white", 1)
@@ -50,7 +58,10 @@ class Game:
                                       c.center_button_color, (0,0,0))
         return {"center_button": center_button, "back_button": back_button, "restart_button": restart_button}
 
-    
+
+
+
+   
 class HvsH_Game(Game):
     def __init__(self, surface, mode = "basic"):
         super().__init__(surface)
@@ -61,7 +72,7 @@ class HvsH_Game(Game):
     
 
 class HvsH_Game_Extended(Game):
-    def __init__(self, surface, mode = "extended"):
+    def __init__(self, surface, human_color = "white", mode = "extended"):
         super().__init__(surface)
         self.players = {"white": ple.Human_Player_Extended("white", self.surfaces), 
                         "black": ple.Human_Player_Extended("black", self.surfaces)}

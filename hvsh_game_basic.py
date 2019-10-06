@@ -90,11 +90,11 @@ while True:
                         
                         pygame.display.set_caption("Spielbrett")
                         
-                        game.painter.draw_background(game.surfaces["surface_board"], c.background_board)
-                        game.painter.draw_background(game.surfaces["surface_stones"]["white"], c.background_side_stones)
-                        game.painter.draw_background(game.surfaces["surface_stones"]["black"], c.background_side_stones)
-                        game.painter.draw_background(game.surfaces["surface_text"]["white"], c.background_text_box)
-                        game.painter.draw_background(game.surfaces["surface_text"]["black"], c.background_text_box)
+                        game.painter.draw_background(game.surfaces["surface_board"])
+                        game.painter.draw_background(game.surfaces["surface_stones"]["white"])
+                        game.painter.draw_background(game.surfaces["surface_stones"]["black"])
+                        game.painter.draw_background(game.surfaces["surface_text"]["white"])
+                        game.painter.draw_background(game.surfaces["surface_text"]["black"])
     
                         game.painter.draw_set_of_hexagons(game.players["white"].side_stones.values(), game.surfaces["surface_stones"]["white"])
                         game.painter.draw_set_of_hexagons(game.players["black"].side_stones.values(), game.surfaces["surface_stones"]["black"])
