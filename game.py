@@ -72,7 +72,7 @@ class HvsH_Game(Game):
     
 
 class HvsH_Game_Extended(Game):
-    def __init__(self, surface, human_color = "white", mode = "extended"):
+    def __init__(self, surface, mode = "extended"):
         super().__init__(surface)
         self.players = {"white": ple.Human_Player_Extended("white", self.surfaces), 
                         "black": ple.Human_Player_Extended("black", self.surfaces)}
@@ -81,14 +81,15 @@ class HvsH_Game_Extended(Game):
 
 
 #In this game against the computer, the human player is white and begins the game        
-class HvsC_Game(Game):
-    def __init__(self, surface):
+class HvsC_Game_Basic(Game):
+    def __init__(self, surface, mode = "basic"):
         super().__init__(surface)
         self.com_calculator = cal.Calculator(self.locator)
         self.players = {"white": plh.Human_Player("white", self.surfaces), 
                         "black": plc.Computer_Player("black", self.surfaces, self.com_calculator)}
         self.calculator = cal_ex.Calculator_Extended(self.locator, self.players)
         self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn)
+        self.mode = mode
         
         
 

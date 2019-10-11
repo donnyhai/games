@@ -2,18 +2,18 @@ import pygame
  
 class App:
     def __init__(self):
-        self._running = True
-        self._display_surf = None
+        self.running = False
+        self.display = None
         self.size = self.weight, self.height = 640, 400
  
     def on_init(self):
         pygame.init()
-        self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
-        self._running = True
+        self.display = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
+        self.running = True
  
     def on_event(self, event):
         if event.type == pygame.QUIT:
-            self._running = False
+            self.running = False
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             pass
     def on_loop(self):
@@ -24,10 +24,11 @@ class App:
         pygame.quit()
  
     def on_execute(self):
-        if self.on_init() == False:
-            self._running = False
+        if not self.running:
+            self.on_init()
+            self.running = True
  
-        while( self._running ):
+        while self.running:
             for event in pygame.event.get():
                 self.on_event(event)
             self.on_loop()

@@ -8,7 +8,8 @@ import pygame
 pygame.init()
 
 class Button:
-    def __init__(self, surface, button_text = "", text_width = 0, pixel_pos = (0,0), button_size = (0,0), back_color = (100,100,100), text_color = (0,0,0)):
+    def __init__(self, surface, button_text = "", text_width = 0, pixel_pos = (0,0), button_size = (0,0), 
+                 back_color = (100,100,100), text_color = (0,0,0)):
         self.surface = surface
         self.text = button_text
         self.text_width = text_width
