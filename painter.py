@@ -14,7 +14,8 @@ class Painter:
     
     #fill background with color
     def draw_background(self, surface):
-        surface.blit(self.backgrounds[surface], (0,0))
+        surface.fill(c.background_board)
+#        surface.blit(self.backgrounds[surface], (0,0))
         
     #draw full hexagon (shall a frame with mark_mode = 0 also be drawn ?)
     def draw_hexagon(self, hexagon, surface):
