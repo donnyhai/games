@@ -14,5 +14,8 @@ while True:
         if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pass
                 
     pygame.display.update()

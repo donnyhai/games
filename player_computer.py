@@ -6,16 +6,39 @@ import random
 
 class Computer_Player(player.Player):
     
-    def __init__(self, color, surface, calculator):
-        super().__init__(color, surface)
+    def __init__(self, color, surfaces, calculator):
+        super().__init__(color, surfaces)
         self.calculator = calculator
         self.locator = self.calculator.locator
         
     
     random.seed()
     
+    
+    #input are the board constellations (you can find them aswell in self.calculator.board.past_boards) 
+    #and the decision type (eg random, score_fct, etc)
+    #return is tuple containing the hstone which wants to be moved, the direction stone it wants to be moved to
+    #and the type of action (put or move)
+    def get_action_decision(self, constellations, decision_type):
+        # set and look at moveable, putable hexagons
+        if decision_type == "random":
+            #randomly choose put or move, and select random put resp. move stone
+            #set them as src resp dir_hexagon and return action type aswell as below
+            pass
+        
+        # how many stones has opponent player left ?
+        # calculate relevant movings (src_hex, dir_hex)
+        # maximize score_fct
+        return (src_hexagon, dir_hexagon, action_type)
+    
+    def score_fct(self, constellation, src_hexagon, dir_hexagon):
+        pass
+    
+    
+    
+    
     #for now: random 
-    def get_action_decision(self):
+    def get_action_decision2(self):
         action_type = random.choice(["put", "move"])
         if action_type == "put":
             src_hexagon = self.random_put_hexagon()
