@@ -362,7 +362,7 @@ class Interactor:
                     stone.is_drawn = False
                     stone.is_marked = False
                     stone.has_bug_on = False
-            player.side_stones_numbers = player.initial_side_stones_numbers
+            player.side_stones_numbers = player.initial_side_stones_numbers.copy()
             player.moveable_hexagons.clear()
             player.putable_hexagons = list(player.side_stones.values()).copy()
             player.can_act = True

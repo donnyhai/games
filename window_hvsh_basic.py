@@ -30,7 +30,7 @@ class App:
     def on_init(self):
         self.display = pygame.display.set_mode(v.window_size)
         pygame.display.set_caption("Spielbrett")
-        self.game = g.HvsH_Game(self.display) #create self.game
+        self.game = g.HvsH_Game_Basic(self.display) #create self.game
         self.running = True
     
     def on_loop(self):

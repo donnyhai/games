@@ -62,7 +62,7 @@ class Game:
 
 
    
-class HvsH_Game(Game):
+class HvsH_Game_Basic(Game):
     def __init__(self, surface, mode = "basic"):
         super().__init__(surface)
         self.players = {"white": plh.Human_Player("white", self.surfaces), 
