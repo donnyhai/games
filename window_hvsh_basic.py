@@ -1,6 +1,6 @@
 import pygame
 import game as g
-import texts as t, colors as c
+import texts as t
 import window_methods as wm
 import variables as v
 pygame.init()
