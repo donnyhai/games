@@ -27,8 +27,8 @@ class Pregame:
             button0.draw_button()
         
         pygame.display.update()
+
  
-    
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self.running = False
