@@ -68,7 +68,7 @@ class Interactor:
             self.add_board_constellation()
             
             for player in self.players.values():
-                player.set_action_hexagons(self.calculator)
+                self.calculator.set_action_hexagons(player)
     
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):
@@ -149,7 +149,7 @@ class Interactor:
             self.add_board_constellation()
             
             for player in self.players.values():
-                player.set_action_hexagons(self.calculator)
+                self.calculator.set_action_hexagons(player)
             
     
     #player wants to move fhex to shex. is that generally possible ? that means independently of 
@@ -236,7 +236,7 @@ class Interactor:
                 self.add_board_constellation()
                 
                 for player in self.players.values():
-                    player.set_action_hexagons(self.calculator)
+                    self.calculator.set_action_hexagons(player)
                 
     #add actual board constellation to the past_boards dict
     #save the ids of hexagon stones
@@ -303,7 +303,7 @@ class Interactor:
         
         #set action hexagons of players (moveable and putable hexagons)
         for player in self.players.values():
-            player.set_action_hexagons(self.calculator)            
+            self.calculator.set_action_hexagons(player)          
         
     
     #reset a player stone into a stone not being on the board

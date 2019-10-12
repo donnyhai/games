@@ -7,7 +7,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
  
-class Window_HvsH_Basic:
+class Window_HvsC_Basic:
     def __init__(self):
         self.running = False
         self.display = None

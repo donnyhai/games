@@ -154,6 +154,13 @@ class Calculator:
             move_fields = self.get_possible_move_fields(self.graph.test_board.board[coord])
             mosquito_fields += move_fields
         return mosquito_fields
+    
+    #at some points we need to know the set of movable and putable hexagons of a player. here we actualize them
+    def set_action_hexagons(self, player):
+        player.moveable_hexagons = self.get_moveable_hexagons(player.color)
+        player.putable_hexagons = self.get_putable_hexagons(player.color, player.side_stones, player.side_stones_numbers)
+        if not player.moveable_hexagons and not player.putable_hexagons: player.can_act = False
+        else: player.can_act = True
          
             
 

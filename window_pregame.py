@@ -32,14 +32,14 @@ class Pregame:
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self.running = False
-        if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             if self.buttons["hvsh_basic_button"].pressed(event.pos):
-                hvsh_basic_game = window_hvsh_basic.App()
-                hvsh_basic_game.on_execute()
+                whb = window_hvsh_basic.Window_HvsH_Basic()
+                whb.on_execute()
                 self.running = False
             elif self.buttons["hvsh_extended_button"].pressed(event.pos):
-                hvsh_extended_game = window_hvsh_extended.App()
-                hvsh_extended_game.on_execute()
+                whe = window_hvsh_extended.Window_HvsH_Extended()
+                whe.on_execute()
                 self.running = False
             elif self.buttons["hvsc_basic_button"].pressed(event.pos):
                 #execute corresponding method

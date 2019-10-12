@@ -11,6 +11,7 @@ import pygame
 import button
 import colors as c
 import backgrounds as bg
+import computer_action as ca
 
 
 
@@ -84,9 +85,9 @@ class HvsH_Game_Extended(Game):
 class HvsC_Game_Basic(Game):
     def __init__(self, surface, mode = "basic"):
         super().__init__(surface)
-        self.com_calculator = cal.Calculator(self.locator)
+        self.com_action = ca.Computer_Action(self.locator, self.players)
         self.players = {"white": plh.Human_Player("white", self.surfaces), 
-                        "black": plc.Computer_Player("black", self.surfaces, self.com_calculator)}
+                        "black": plc.Computer_Player("black", self.surfaces)}
         self.calculator = cal_ex.Calculator_Extended(self.locator, self.players)
         self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn)
         self.mode = mode

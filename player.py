@@ -87,12 +87,6 @@ class Player:
                 stones_list.append(stone)
         return stones_list
     
-    #at some points we need to know the set of movable and putable hexagons of a player. here we actualize them
-    def set_action_hexagons(self, calculator):
-        self.moveable_hexagons = calculator.get_moveable_hexagons(self.color)
-        self.putable_hexagons = calculator.get_putable_hexagons(self.color, self.side_stones, self.side_stones_numbers)
-        if not self.moveable_hexagons and not self.putable_hexagons: self.can_act = False
-        else: self.can_act = True
     
 class Human_Player(Player):
     pass
