@@ -30,7 +30,9 @@ class Window_HvsC_Basic:
     def on_init(self):
         self.display = pygame.display.set_mode(v.window_size)
         pygame.display.set_caption("Spielbrett")
-        self.game = g.HvsH_Game_Basic(self.display) #create self.game
+        self.game = g.HvsC_Game_Basic(self.display) #create self.game
+        self.hum_player = self.game.players["white"]
+        self.com_player = self.game.players["black"]
         self.running = True
     
     def on_loop(self):
@@ -167,27 +169,23 @@ class Window_HvsC_Basic:
                                         wm.unmark_hexagons(self.game, self.game.players["white"], self.marked_hexagons)
                                         self.game.interactor.execute_stone_put(self.game.players["white"], self.src_hexagon, self.dir_hexagon)
                                         self.game.turn_up()
+                                        
+        # computer reaction             
+                                        first_put_stone = self.game.com_action.random_element(list(self.com_player.side_stones.values()))
+                                        neigh_coords = self.game.board.get_neighbours(v.first_stone_board_pos).values()
+                                        self.dir_hexagons = [self.game.board.board[coord] for coord in neigh_coords] #all empty neighbours of the middle hexagon
+                                        self.dir_hexagon = self.game.com_action.random_element(self.dir_hexagons)
+                                        self.game.interactor.execute_stone_put(self.com_player, first_put_stone, self.dir_hexagon)
+#                                        if self.game.players["black"].can_act:                           
+#                                            com_decision = self.game.com_action.get_action_decision()
+#                                            self.game.interactor.execute_stone_put(self.game.players["black"], com_decision[0], com_decision[1])
+                                        
+                                        self.game.turn_up()
+                                        #now turn is ("white", 2)
+                                        
                                     #unmark marked hexagons
                                     else:
                                         if self.marked_hexagons: wm.unmark_hexagons(self.game, self.game.players["white"], self.marked_hexagons)
-        # (black, 1)                         
-                                elif self.game.turn == ("black", 1):
-                                    neigh_coords = self.game.board.get_neighbours(v.first_stone_board_pos).values()
-                                    self.dir_hexagons = [self.game.board.board[coord] for coord in neigh_coords] #all empty neighbours of the middle hexagon
-                                    if not self.marked_hexagons:
-                                        if clicked_hexagon.color == "black":
-                                            self.src_hexagon = clicked_hexagon
-                                            self.marked_hexagons = self.dir_hexagons + [self.src_hexagon]
-                                            wm.mark_hexagons(self.game, self.marked_hexagons, v.mark_size)
-                                    #in this case stone put will be executed and the turn goes one up
-                                    elif clicked_hexagon in self.dir_hexagons:
-                                        wm.unmark_hexagons(self.game, self.game.players["black"], self.marked_hexagons)
-                                        self.game.interactor.execute_stone_put(self.game.players["black"], self.src_hexagon, clicked_hexagon)
-                                        self.game.turn_up()
-                                        self.dir_hexagons.clear() #reset self.dir_hexagons so it wont cause problems in the following turns
-                                    #unmark marked hexagons
-                                    else:
-                                        if self.marked_hexagons: wm.unmark_hexagons(self.game, self.game.players["black"], self.marked_hexagons)
         # turn 2 - 4                    
                                 #at least one white and one black stone are put now. now be has to be put until 4. turn
                                 elif self.game.turn[1] in {2,3,4}:

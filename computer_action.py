@@ -17,47 +17,58 @@ class Computer_Action(calculator_extended.Calculator_Extended):
     #and the decision type (eg random, score_fct, etc)
     #return is tuple containing the hstone which wants to be moved, the direction stone it wants to be moved to
     #and the type of action (put or move)
-    def get_action_decision(self, constellations, decision_type):
-        # set and look at moveable, putable hexagons
+    def get_action_decision(self, decision_type = "random"):
+        
+        #random computer player: decides to randomly put or move a random hstone
         if decision_type == "random":
-            if self.cplayer.
-            #randomly choose put or move, and select random put resp. move stone
-            #set them as src resp dir_hexagon and return action type aswell as below
+            self.set_action_hexagons(self.cplayer)
+            if self.cplayer.putable_hexagons:
+                if self.cplayer.moveable_hexagons:
+                    action_type = random.choice(["move", "put"])
+                    if action_type == "move":
+                        src_hexagon = self.random_move_hexagon(self.cplayer)
+                        dir_hexagon = random.choice(self.get_possible_move_fields(src_hexagon))
+                    else:
+                        src_hexagon = self.random_put_hexagon(self.cplayer)
+                        dir_hexagon = random.choice(self.get_possible_put_fields(src_hexagon.color))
+                else:
+                    action_type = "put"
+                    src_hexagon = self.random_put_hexagon(self.cplayer)
+                    dir_hexagon = random.choice(self.get_possible_put_fields(src_hexagon.color))
+            else:
+                action_type = "move"
+                src_hexagon = self.random_move_hexagon(self.cplayer)
+                dir_hexagon = random.choice(self.get_possible_move_fields(src_hexagon))
+        
+
+        #computer player which evaluates according to a score function
+        elif decision_type == "score_fct":
             pass
-        
-        # how many stones has opponent player left ?
-        # calculate relevant movings (src_hex, dir_hex)
-        # maximize score_fct
         return (src_hexagon, dir_hexagon, action_type)
     
-    def score_fct(self, constellation, src_hexagon, dir_hexagon):
-        pass
+    
+    
+    def random_move_hexagon(self, player):
+        return random.choice(player.moveable_hexagons)
+    
+    def random_put_hexagon(self, player):
+        return random.choice(player.putable_hexagons)
+    
+    def random_element(self, elements):
+        return random.choice(elements)
     
     
     
     
-    #for now: random 
-    def get_action_decision2(self):
-        action_type = random.choice(["put", "move"])
-        if action_type == "put":
-            src_hexagon = self.random_put_hexagon()
-            dir_hexagons = self.calculator.get_possible_put_fields(self.color)
-        elif action_type == "move":
-            src_hexagon = self.random_move_hexagon()
-            dir_hexagons = self.calculator.get_possible_move_fields(src_hexagon)
-        field = self.random_field(dir_hexagons)
-        dir_hexagon = self.calculator.board.board[field[0]][field[1]]
-        return (src_hexagon, dir_hexagon, action_type)
-        
-    def random_move_hexagon(self):
-        return random.choice(self.calculator.get_movable_hexagons(self.color))
     
-    def random_put_hexagon(self):
-        insects = [insect for insect in self.side_stones.keys() if self.side_stones_numbers[insect] > 0]
-        return self.side_stones[random.choice(insects)]
     
-    def random_field(self, fields):
-        return random.choice(fields)
+    
+    
+    
+    
+    
+    
+    
     
     #move_hexagon wants to be moved to dir_coord. what is the evaluation of this turn ?
     def evaluate_turn(self, move_hexagon, dir_coord):
@@ -95,6 +106,8 @@ class Computer_Action(calculator_extended.Calculator_Extended):
     def get_best_turns(self, number):
         pass
         
+    def score_fct(self, constellation, src_hexagon, dir_hexagon):
+        pass
 
     
     

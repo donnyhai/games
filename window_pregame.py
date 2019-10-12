@@ -2,7 +2,7 @@ import pygame
 import variables as v
 import button
 import colors as c
-import window_hvsh_basic, window_hvsh_extended
+import window_hvsh_basic, window_hvsh_extended, window_hvsc_basic
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -34,15 +34,16 @@ class Pregame:
             self.running = False
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             if self.buttons["hvsh_basic_button"].pressed(event.pos):
-                whb = window_hvsh_basic.Window_HvsH_Basic()
-                whb.on_execute()
+                whhb = window_hvsh_basic.Window_HvsH_Basic()
+                whhb.on_execute()
                 self.running = False
             elif self.buttons["hvsh_extended_button"].pressed(event.pos):
-                whe = window_hvsh_extended.Window_HvsH_Extended()
-                whe.on_execute()
+                whhe = window_hvsh_extended.Window_HvsH_Extended()
+                whhe.on_execute()
                 self.running = False
             elif self.buttons["hvsc_basic_button"].pressed(event.pos):
-                #execute corresponding method
+                whcb = window_hvsc_basic.Window_HvsC_Basic()
+                whcb.on_execute()
                 self.running = False
             elif self.buttons["hvsc_extended_button"].pressed(event.pos):
                 #execute corresponding method
