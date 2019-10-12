@@ -2,7 +2,7 @@ import pygame
 import variables as v
 import button
 import colors as c
-import window_hvsh_basic
+import window_hvsh_basic, window_hvsh_extended
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -36,10 +36,10 @@ class Pregame:
             if self.buttons["hvsh_basic_button"].pressed(event.pos):
                 hvsh_basic_game = window_hvsh_basic.App()
                 hvsh_basic_game.on_execute()
-                #execute corresponding method
                 self.running = False
             elif self.buttons["hvsh_extended_button"].pressed(event.pos):
-                #execute corresponding method
+                hvsh_extended_game = window_hvsh_extended.App()
+                hvsh_extended_game.on_execute()
                 self.running = False
             elif self.buttons["hvsc_basic_button"].pressed(event.pos):
                 #execute corresponding method
