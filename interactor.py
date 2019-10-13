@@ -1,6 +1,7 @@
 import pygame
 import texts as t
 import hexagon_stone as hs
+import sound_test as st
 pygame.init()
 
 
@@ -58,6 +59,9 @@ class Interactor:
             
             #set is_on_board
             draw_hexagon.is_on_board = True
+            
+            #make sound
+            st.sound_maker(stone_type).make_sound()         
             
             ##then execute drawing aspects
             self.painter.draw_stone_number(player, fhex, self.surfaces)
@@ -141,6 +145,9 @@ class Interactor:
             self.board.nonempty_fields.append(fhex.board_pos)
             self.board.nonempty_fields.remove(old_board_pos)
             
+            #make sound
+            st.sound_maker(fhex.type).make_sound()
+            
             self.painter.draw_board(self.board, self.surfaces, self.buttons)
             #write texts
             self.painter.write_box_text(self.surfaces, t.insect_move_texts[fhex.type], fhex.color)
@@ -203,6 +210,10 @@ class Interactor:
                 self.board.board[old_board_pos] = last_stone
                 self.board.board[fhex.board_pos] = fhex
                 #no adaptation for nonempty_fields needed
+                
+                #make sound
+                st.sound_maker(fhex.type).make_sound()
+                
                 #draw last_stone and fhex 
                 self.painter.draw_board(self.board, self.surfaces, self.buttons)
                 
@@ -229,6 +240,9 @@ class Interactor:
                 
                 #actualize board.nonempty_fields
                 self.board.nonempty_fields.remove(old_board_pos)
+                
+                #make sound
+                st.sound_maker(fhex.type).make_sound()
                 
                 self.painter.draw_board(self.board, self.surfaces, self.buttons)
                 
