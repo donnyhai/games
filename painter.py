@@ -9,7 +9,7 @@ hive_paths = {"ant": os.path.join("pictures", "ant.png"), "hopper": os.path.join
 
 class Painter:
     
-    def __init__(self, backgrounds):
+    def __init__(self, backgrounds = None):
         self.backgrounds = backgrounds
     
     #fill background with color

@@ -8,7 +8,7 @@ clock = pygame.time.Clock()
 
  
 class Window_HvsH_Extended:
-    def __init__(self):
+    def __init__(self, game):
         self.running = False
         self.display = None
         self.game = None
@@ -28,9 +28,10 @@ class Window_HvsH_Extended:
         self.pos = None
  
     def on_init(self):
-        self.display = pygame.display.set_mode(v.window_size)
+        self.display = pygame.display.set_mode(self.game.settings["resolution"])
         pygame.display.set_caption("Spielbrett")
-        self.game = g.HvsH_Game_Extended(self.display) #create self.game
+        self.game.set_surface(self.display)
+        self.game.set_attributes()
         self.running = True
     
     def on_loop(self):
