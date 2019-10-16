@@ -4,17 +4,18 @@ import button
 import colors as c
 import window_hvsh_basic, window_hvsh_extended, window_hvsc_basic
 import painter as pt
+import window_menu as menu
 
 pygame.init()
 clock = pygame.time.Clock()
 
  
-class Windows_Settings:
+class Window_Settings:
     def __init__(self):
         self.running = False
         self.buttons = None
         self.display = None             #surface
-        self.values = {"music":"off", "sound":"on", "version":"basic", "mode":"hvsh"}
+        self.values = {"music":False, "sound":True, "version":"basic", "mode":"hvsh", "resolution":(1152, 864)}
  
     def on_init(self):
         
@@ -42,6 +43,10 @@ class Windows_Settings:
         if event.type == pygame.QUIT:
             self.running = False
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            if self.buttons["back_button"].pressed(event.pos):
+                men = menu.Menu(self.values)
+                men.on_execute()
+                self.running = False
             if self.buttons["hvsh_basic_button"].pressed(event.pos):
                 whhb = window_hvsh_basic.Window_HvsH_Basic()
                 whhb.on_execute()
@@ -110,7 +115,11 @@ class Windows_Settings:
                                              (v.window_x_size * 8 // 12, v.window_y_size * 3 // 5), 
                                              (v.button_x_size, v.button_y_size),
                                              c.button_color, (0,0,0))
-        return {"hvsh_basic_button": hvsh_basic_button, "hvsh_extended_button": hvsh_extended_button,
+        back_button = button.Button(self.display, "Back", 25, 
+                                             (v.window_x_size * 0, v.window_y_size * 0), 
+                                             (v.button_x_size, v.button_y_size),
+                                             c.button_color, (0,0,0))
+        return {"back_button": back_button, "hvsh_basic_button": hvsh_basic_button, "hvsh_extended_button": hvsh_extended_button,
                 "hvsc_basic_button": hvsc_basic_button, "hvsc_extended_button": hvsc_extended_button,
                 "cvsc_basic_button": cvsc_basic_button, "cvsc_extended_button": cvsc_extended_button}
 
@@ -118,5 +127,5 @@ class Windows_Settings:
 
  
 if __name__ == "__main__" :
-    window_pregame = Windows_Settings()
+    window_pregame = Window_Settings()
     window_pregame.on_execute()

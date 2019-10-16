@@ -23,8 +23,8 @@ class Painter:
             hexagon.is_drawn = True
             hexagon.set_drawn_surface(surface)
         if hexagon.type == "empty": 
-#            pass
-            pygame.draw.polygon(surface, c.empty_stone_color, hexagon.points)
+            pass
+           # pygame.draw.polygon(surface, c.empty_stone_color, hexagon.points)
         else:
             if hexagon.color == "white":    pygame.draw.polygon(surface, c.creme_white, hexagon.points) #creme white
             elif hexagon.color == "black":  pygame.draw.polygon(surface, c.creme_black, hexagon.points) #creme black

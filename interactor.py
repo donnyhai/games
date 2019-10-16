@@ -1,12 +1,12 @@
 import pygame
 import texts as t
 import hexagon_stone as hs
-import sound_maker as st
+
 pygame.init()
 
 
 class Interactor:
-    def __init__(self, painter, calculator, turn, buttons, sound_maker = st.sound_maker()):
+    def __init__(self, painter, calculator, turn, buttons, sound_maker):
         self.painter = painter
         self.calculator = calculator
         self.players = self.calculator.players

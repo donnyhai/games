@@ -30,12 +30,12 @@ class Game:
         if self.surface is not None:
         
             #create following attributes, when surface is set
-            self.surfaces = {"surface_full": surface, 
-                             "surface_board": surface.subsurface(pygame.Rect(0.1 * surface.get_width(), 0, 0.8 * surface.get_width(), surface.get_height())),
-                             "surface_stones": {"white": surface.subsurface(pygame.Rect(0, 0, 0.1 * surface.get_width(), 0.8 * surface.get_height())),
-                                                "black": surface.subsurface(pygame.Rect(0.9 * surface.get_width(), 0, 0.1 * surface.get_width(), 0.8 * surface.get_height()))},
-                             "surface_text": {"white": surface.subsurface(pygame.Rect(0, 0.8 * surface.get_height(), 0.1 * surface.get_width(), 0.2 * surface.get_height())),
-                                              "black": surface.subsurface(pygame.Rect(0.9 * surface.get_width(), 0.8 * surface.get_height(), 0.1 * surface.get_width(), 0.2 * surface.get_height()))}}
+            self.surfaces = {"surface_full": self.surface, 
+                             "surface_board": self.surface.subsurface(pygame.Rect(0.1 * self.surface.get_width(), 0, 0.8 * self.surface.get_width(), self.surface.get_height())),
+                             "surface_stones": {"white": self.surface.subsurface(pygame.Rect(0, 0, 0.1 * self.surface.get_width(), 0.8 * self.surface.get_height())),
+                                                "black": self.surface.subsurface(pygame.Rect(0.9 * self.surface.get_width(), 0, 0.1 * self.surface.get_width(), 0.8 * self.surface.get_height()))},
+                             "surface_text": {"white": self.surface.subsurface(pygame.Rect(0, 0.8 * self.surface.get_height(), 0.1 * self.surface.get_width(), 0.2 * self.surface.get_height())),
+                                              "black": self.surface.subsurface(pygame.Rect(0.9 * self.surface.get_width(), 0.8 * self.surface.get_height(), 0.1 * self.surface.get_width(), 0.2 * self.surface.get_height()))}}
             self.backgrounds = {self.surfaces["surface_board"]: bg.tickled_color(self.surfaces["surface_board"], c.background_color2, c.background_color3),
                                 self.surfaces["surface_stones"]["white"]: bg.standard_color(self.surfaces["surface_stones"]["white"], c.background_side_stones),
                                 self.surfaces["surface_stones"]["black"]: bg.standard_color(self.surfaces["surface_stones"]["black"], c.background_side_stones),

@@ -1,5 +1,4 @@
 import pygame
-import game as g
 import texts as t
 import window_methods as wm
 import variables as v
