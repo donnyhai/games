@@ -3,29 +3,38 @@ import variables as v
 import button
 import colors as c
 import window_hvsh_basic, window_hvsh_extended, window_hvsc_basic
+import painter as pt
+
 pygame.init()
 clock = pygame.time.Clock()
 
  
-class Pregame:
+class Windows_Settings:
     def __init__(self):
         self.running = False
         self.buttons = None
-        self.display = None
+        self.display = None             #surface
+        self.values = {"music":"off", "sound":"on", "version":"basic", "mode":"hvsh"}
  
     def on_init(self):
         
         #create display and set display attr
         pygame.display.init()
         self.display = pygame.display.set_mode(v.window_size, 0, 32)
-        pygame.display.set_caption("Spiel-Menue")
-        self.display.fill((100,100,100))
+        pygame.display.set_caption("Einstellungen")
+        self.display.fill((50,50,200))
         
         #create buttons and draw them
         self.buttons = self.create_buttons()
         for button0 in self.buttons.values():
             button0.draw_button()
+        pt.Painter().write_text(self.display, "Settings", 50, (255,255,255), (v.window_x_size * 0.42, v.window_y_size * 0.05))
         
+        pt.Painter().write_text(self.display, "music:", 20, (255,255,255), (v.window_x_size * 0.1, v.window_y_size * 0.25))
+        pt.Painter().write_text(self.display, "sound:", 20, (255,255,255), (v.window_x_size * 0.5, v.window_y_size * 0.25))
+        pt.Painter().write_text(self.display, "version:", 20, (255,255,255), (v.window_x_size * 0.1, v.window_y_size * 0.5))
+        pt.Painter().write_text(self.display, "mode:", 20, (255,255,255), (v.window_x_size * 0.5, v.window_y_size * 0.5))
+        pt.Painter().write_text(self.display, "resolution:", 20, (255,255,255), (v.window_x_size * 0.35, v.window_y_size * 0.75))
         pygame.display.update()
 
  
@@ -109,5 +118,5 @@ class Pregame:
 
  
 if __name__ == "__main__" :
-    window_pregame = Pregame()
+    window_pregame = Windows_Settings()
     window_pregame.on_execute()
