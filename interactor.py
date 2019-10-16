@@ -1,12 +1,12 @@
 import pygame
 import texts as t
 import hexagon_stone as hs
-import sound_test as st
+import sound_maker as st
 pygame.init()
 
 
 class Interactor:
-    def __init__(self, painter, calculator, turn, buttons):
+    def __init__(self, painter, calculator, turn, buttons, sound_maker = st.sound_maker()):
         self.painter = painter
         self.calculator = calculator
         self.players = self.calculator.players
@@ -14,6 +14,7 @@ class Interactor:
         self.surfaces = self.board.surfaces
         self.turn = turn
         self.buttons = buttons
+        self.sound_maker = sound_maker
     
     #board pixel size wants to be adapted with this function. multiply ratio with stone_size
     def scale_board(self, ratio):
@@ -61,7 +62,7 @@ class Interactor:
             draw_hexagon.is_on_board = True
             
             #make sound
-            st.sound_maker(stone_type).make_sound()         
+            self.sound_maker.make_sound(stone_type)         
             
             ##then execute drawing aspects
             self.painter.draw_stone_number(player, fhex, self.surfaces)
@@ -146,7 +147,7 @@ class Interactor:
             self.board.nonempty_fields.remove(old_board_pos)
             
             #make sound
-            st.sound_maker(fhex.type).make_sound()
+            self.sound_maker.make_sound(fhex.type)
             
             self.painter.draw_board(self.board, self.surfaces, self.buttons)
             #write texts
@@ -212,7 +213,7 @@ class Interactor:
                 #no adaptation for nonempty_fields needed
                 
                 #make sound
-                st.sound_maker(fhex.type).make_sound()
+                self.sound_maker.make_sound(fhex.type)
                 
                 #draw last_stone and fhex 
                 self.painter.draw_board(self.board, self.surfaces, self.buttons)
@@ -242,7 +243,7 @@ class Interactor:
                 self.board.nonempty_fields.remove(old_board_pos)
                 
                 #make sound
-                st.sound_maker(fhex.type).make_sound()
+                self.sound_maker.make_sound(fhex.type)
                 
                 self.painter.draw_board(self.board, self.surfaces, self.buttons)
                 

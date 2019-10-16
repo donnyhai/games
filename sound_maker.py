@@ -9,8 +9,10 @@ hive_paths = {"ant": os.path.join("sounds", "ant.wav"), "hopper": os.path.join("
 
 
 class sound_maker():
-    def __init__(self, insect_type):
-        self.insect_sound = pygame.mixer.Sound(hive_paths[insect_type])
+    def __init__(self, sound = False, music = True):
+        self.sound = sound
+        self.music = music
     
-    def make_sound(self):
-       return self.insect_sound.play()      
+    def make_sound(self, insect_type):
+        if not self.sound:
+            return pygame.mixer.Sound(hive_paths[insect_type]).play()      
