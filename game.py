@@ -3,7 +3,6 @@ import player as plh
 import player_extended as ple
 import player_computer as plc
 import locator
-import calculator as cal
 import calculator_extended as cal_ex
 import interactor
 import painter
