@@ -222,7 +222,8 @@ class Interactor:
                 self.add_board_constellation()
                 
                 for player in self.players.values():
-                    player.set_action_hexagons(self.calculator)
+                    self.calculator.set_action_hexagons(player)
+                    
             else: #case: bug will certainly move from an empty field onto a nonempty field
                 if shex.type == "bug":
                     fhex.underlaying_stones = shex.underlaying_stones.copy()

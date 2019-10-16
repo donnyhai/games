@@ -16,7 +16,7 @@ class Menu:
         self.display = None
         self.settings = None
         if settings is None:
-            self.settings = {"music": False, "sound": True, "version": "basic", "mode": "hvsh", "resolution": (1152,864)} #default settings
+            self.settings = {"music": False, "sound": True, "version": "basic", "mode": "hvsh", "resolution": (1152,664)} #default settings
         else:
             self.settings = settings
  

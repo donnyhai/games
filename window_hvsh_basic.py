@@ -1,5 +1,5 @@
 import pygame
-import game as g
+import time
 import texts as t
 import window_methods as wm
 import variables as v
@@ -27,12 +27,13 @@ class Window_HvsH_Basic:
         self.counter = None
         self.pos = None
  
-    def on_init(self):
+    def on_init(self): 
         self.display = pygame.display.set_mode(self.game.settings["resolution"])
         pygame.display.set_caption("Spielbrett")
         self.game.set_surface(self.display)
-        self.game.set_attributes()
+        self.game.set_attributes() 
         self.running = True
+        
     
     def on_loop(self):
         pass

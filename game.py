@@ -12,6 +12,7 @@ import colors as c
 import backgrounds as bg
 import computer_action as ca
 import sound_maker as sm
+import time
 
 
 
@@ -26,9 +27,9 @@ class Game:
         self.surface = surface
 
     def set_attributes(self):
-
-        if self.surface is not None:
         
+        if self.surface is not None:
+            
             #create following attributes, when surface is set
             self.surfaces = {"surface_full": self.surface, 
                              "surface_board": self.surface.subsurface(pygame.Rect(0.1 * self.surface.get_width(), 0, 0.8 * self.surface.get_width(), self.surface.get_height())),
@@ -36,16 +37,20 @@ class Game:
                                                 "black": self.surface.subsurface(pygame.Rect(0.9 * self.surface.get_width(), 0, 0.1 * self.surface.get_width(), 0.8 * self.surface.get_height()))},
                              "surface_text": {"white": self.surface.subsurface(pygame.Rect(0, 0.8 * self.surface.get_height(), 0.1 * self.surface.get_width(), 0.2 * self.surface.get_height())),
                                               "black": self.surface.subsurface(pygame.Rect(0.9 * self.surface.get_width(), 0.8 * self.surface.get_height(), 0.1 * self.surface.get_width(), 0.2 * self.surface.get_height()))}}
-            self.backgrounds = {self.surfaces["surface_board"]: bg.tickled_color(self.surfaces["surface_board"], c.background_color2, c.background_color3),
-                                self.surfaces["surface_stones"]["white"]: bg.standard_color(self.surfaces["surface_stones"]["white"], c.background_side_stones),
-                                self.surfaces["surface_stones"]["black"]: bg.standard_color(self.surfaces["surface_stones"]["black"], c.background_side_stones),
-                                self.surfaces["surface_text"]["white"]: bg.standard_color(self.surfaces["surface_text"]["white"], c.background_text_box),
-                                self.surfaces["surface_text"]["black"]: bg.standard_color(self.surfaces["surface_text"]["black"], c.background_text_box)}
+            t = time.clock()
+            self.backgrounds = None
+            #the following building of backgrounds takes very long, as tickled color backgrounds are live calculated (random ect, see in backgrounds)
+#            self.backgrounds = {self.surfaces["surface_board"]: bg.tickled_color(self.surfaces["surface_board"], c.background_color2, c.background_color3),
+#                                self.surfaces["surface_stones"]["white"]: bg.standard_color(self.surfaces["surface_stones"]["white"], c.background_side_stones),
+#                                self.surfaces["surface_stones"]["black"]: bg.standard_color(self.surfaces["surface_stones"]["black"], c.background_side_stones),
+#                                self.surfaces["surface_text"]["white"]: bg.standard_color(self.surfaces["surface_text"]["white"], c.background_text_box),
+#                                self.surfaces["surface_text"]["black"]: bg.standard_color(self.surfaces["surface_text"]["black"], c.background_text_box)}
+            print(time.clock() - t)
             self.painter = painter.Painter(self.backgrounds)
             self.board = board.Board(self.board_size, self.surfaces)
             self.locator = locator.Locator(self.board, 100)
             self.buttons = self.create_buttons()
-
+            
             #create sound_maker, players and interactor according to settings
             self.sound_maker = sm.sound_maker(sound = self.settings["sound"], music = self.settings["music"])
             if self.settings["mode"] == "hvsh":

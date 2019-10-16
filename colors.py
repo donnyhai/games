@@ -4,7 +4,7 @@ black = (0,0,0)
 settings_background_color = (100,100,100)
 button_color = (200,200,200)
 
-background_board = (150, 206, 35, 255)
+background_board = (114, 112, 5, 255)
 background_side_stones = (104, 181, 49, 255)
 background_side_stones2 = (104, 0, 49)
 background_text_box = (150, 240, 55, 255)
