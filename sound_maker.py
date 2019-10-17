@@ -1,4 +1,5 @@
 import pygame, os
+from time import sleep
 pygame.init() 
 
 
@@ -16,6 +17,7 @@ class sound_maker():
     def make_sound(self, insect_type):
         if self.sound:
             pygame.mixer.music.stop()
+            sleep(0.2)
             return pygame.mixer.Sound(hive_paths[insect_type]).play() 
     
     def play_music(self):
