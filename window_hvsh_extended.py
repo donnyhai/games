@@ -1,5 +1,4 @@
 import pygame
-import game as g
 import texts as t
 import window_methods as wm
 import variables as v
@@ -11,7 +10,7 @@ class Window_HvsH_Extended:
     def __init__(self, game):
         self.running = False
         self.display = None
-        self.game = None
+        self.game = game
         
         self.start_game_mode = True
         

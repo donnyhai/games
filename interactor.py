@@ -229,8 +229,8 @@ class Interactor:
                 self.add_board_constellation()
                 
                 for player in self.players.values():
-                    player.set_action_hexagons(self.calculator)
-                
+                    self.calculator.set_action_hexagons(player)
+                    
                 #continue music
                 sleep(1)
                 self.sound_maker.play_music()

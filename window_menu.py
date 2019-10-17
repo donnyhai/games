@@ -9,6 +9,15 @@ pygame.init()
 clock = pygame.time.Clock()
 
  
+# Welcome to hive !
+
+# for insights of processing times use the follwing pattern to check code for its needed processing time:
+#import time
+#t = time.clock()
+# ##code##
+#print(time.clock() - t)
+
+
 class Menu:
     def __init__(self, settings = None):
         self.running = False
@@ -16,7 +25,7 @@ class Menu:
         self.display = None
         self.settings = None
         if settings is None:
-            self.settings = {"music": False, "sound": True, "version": "basic", "mode": "hvsh", "resolution": (1152,864)} #default settings
+            self.settings = {"music": False, "sound": True, "version": "basic", "mode": "hvsh", "resolution": (1152,664)} #default settings
         else:
             self.settings = settings
  

@@ -9,7 +9,7 @@ pygame.init()
 
 class Button:
     def __init__(self, surface, button_text = "", text_width = 0, pixel_pos = (0,0), button_size = (0,0), 
-                 back_color = (100,100,100), text_color = (0,0,0)):
+                 back_color = (100,100,100), text_color = (0,0,0), shall_be_seen = True):
         self.surface = surface
         self.text = button_text
         self.text_width = text_width
@@ -18,7 +18,7 @@ class Button:
         self.back_color = back_color
         self.text_color = text_color
         
-        self.shall_be_seen = True
+        self.shall_be_seen = shall_be_seen
         self.is_drawn = False
         
         self.rect = pygame.Rect(pixel_pos, button_size)

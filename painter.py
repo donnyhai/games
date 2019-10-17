@@ -118,6 +118,20 @@ class Painter:
         self.draw_set_of_hexagons(player.side_stones.values(), surfaces["surface_stones"][player.color])
         self.draw_all_stone_numbers(player, surfaces)
         
+    def draw_menu(self, surfaces, buttons):
+#        full_rect = surfaces["surface_full"].copy()
+#        full_rect.fill((255,255,255))
+#        full_rect.fill((100,100,100,100))
+        
+        #draw menu buttons
+        surfaces["surface_menu"].fill(c.background_menu)
+        buttons["continue_game_button"].draw_button()
+        buttons["back_to_menu_button"].draw_button()
+        
+        #blit rects
+#        surfaces["surface_full"].blit(full_rect, (0,0))
+#        offset = surfaces["surface_menu"].get_offset()
+#        surfaces["surface_full"].blit(surfaces["surface_menu"], offset)
         
         
         
