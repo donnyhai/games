@@ -31,11 +31,11 @@ class Window_Settings:
             button0.draw_button()
         pt.Painter().write_text(self.display, "Settings", 50, (255,255,255), (v.window_x_size * 0.42, v.window_y_size * 0.05))
         
-        pt.Painter().write_text(self.display, "music:", 20, (255,255,255), (v.window_x_size * 0.1, v.window_y_size * 0.25))
-        pt.Painter().write_text(self.display, "sound:", 20, (255,255,255), (v.window_x_size * 0.5, v.window_y_size * 0.25))
-        pt.Painter().write_text(self.display, "version:", 20, (255,255,255), (v.window_x_size * 0.1, v.window_y_size * 0.5))
-        pt.Painter().write_text(self.display, "mode:", 20, (255,255,255), (v.window_x_size * 0.5, v.window_y_size * 0.5))
-        pt.Painter().write_text(self.display, "resolution:", 20, (255,255,255), (v.window_x_size * 0.35, v.window_y_size * 0.75))
+        pt.Painter().write_text(self.display, "music:", 25, (255,255,255), (v.window_x_size * 0.1, v.window_y_size * 0.25))
+        pt.Painter().write_text(self.display, "sound:", 25, (255,255,255), (v.window_x_size * 0.5, v.window_y_size * 0.25))
+        pt.Painter().write_text(self.display, "version:", 25, (255,255,255), (v.window_x_size * 0.1, v.window_y_size * 0.5))
+        pt.Painter().write_text(self.display, "mode:", 25, (255,255,255), (v.window_x_size * 0.5, v.window_y_size * 0.5))
+        pt.Painter().write_text(self.display, "resolution:", 25, (255,255,255), (v.window_x_size * 0.35, v.window_y_size * 0.75))
         pygame.display.update()
 
  
@@ -47,27 +47,30 @@ class Window_Settings:
                 men = menu.Menu(self.values)
                 men.on_execute()
                 self.running = False
-            if self.buttons["hvsh_basic_button"].pressed(event.pos):
-                whhb = window_hvsh_basic.Window_HvsH_Basic()
-                whhb.on_execute()
-                self.running = False
-            elif self.buttons["hvsh_extended_button"].pressed(event.pos):
-                whhe = window_hvsh_extended.Window_HvsH_Extended()
-                whhe.on_execute()
-                self.running = False
-            elif self.buttons["hvsc_basic_button"].pressed(event.pos):
-                whcb = window_hvsc_basic.Window_HvsC_Basic()
-                whcb.on_execute()
-                self.running = False
-            elif self.buttons["hvsc_extended_button"].pressed(event.pos):
-                #execute corresponding method
-                self.running = False
-            elif self.buttons["cvsc_basic_button"].pressed(event.pos):
-                #execute corresponding method
-                self.running = False
-            elif self.buttons["cvsc_extended_button"].pressed(event.pos):
-                #execute corresponding method
-                self.running = False
+            if self.buttons["musicOn_button"].pressed(event.pos):
+                self.values["music"] = True
+            elif self.buttons["musicOff_button"].pressed(event.pos):
+                self.values["music"] = False
+            elif self.buttons["soundOn_button"].pressed(event.pos):
+                self.values["sound"] = True
+            elif self.buttons["soundOff_button"].pressed(event.pos):
+                self.values["sound"] = False
+            elif self.buttons["basic_button"].pressed(event.pos):
+                self.values["version"] = "basic"
+            elif self.buttons["extended_button"].pressed(event.pos):
+                self.values["version"] = "extended"
+            elif self.buttons["hvsh_button"].pressed(event.pos):
+                self.values["mode"] = "hvsh"
+            elif self.buttons["hvsc_button"].pressed(event.pos):
+                self.values["mode"] = "hvsc"
+            elif self.buttons["cvsc_button"].pressed(event.pos):
+                self.values["mode"] = "cvsc"
+            elif self.buttons["resolution1_button"].pressed(event.pos):
+                self.values["resolution"] = (800,600)
+            elif self.buttons["resolution2_button"].pressed(event.pos):
+                self.values["resolution"] = (1152,864)
+            elif self.buttons["resolution3_button"].pressed(event.pos):
+                self.values["resolution"] = (1920,1280)
         clock.tick(v.FPS)
             
     def on_loop(self):
@@ -90,38 +93,63 @@ class Window_Settings:
         self.on_cleanup()
         
     def create_buttons(self):
-        hvsh_basic_button = button.Button(self.display, "hvsh_basic", 25, 
-                                          (v.window_x_size * 2 // 12, v.window_y_size * 7 // 20), 
-                                          (v.button_x_size, v.button_y_size),
-                                          c.button_color, (0,0,0))
+        musicOn_button = button.Button(self.display, "on", 20, 
+                                          (v.window_x_size * 0.175, v.window_y_size * 0.25), 
+                                          (v.button_x_size*0.25, v.button_y_size*0.25),
+                                          (255,255,255), (0,0,0))
         
-        hvsh_extended_button = button.Button(self.display, "hvsh_extended", 25, 
-                                             (v.window_x_size * 2 // 12, v.window_y_size * 3 // 5), 
-                                             (v.button_x_size, v.button_y_size),
+        musicOff_button = button.Button(self.display, "off", 20, 
+                                             (v.window_x_size * 0.25, v.window_y_size * 0.25), 
+                                             (v.button_x_size*0.25, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        soundOn_button = button.Button(self.display, "on", 20, 
+                                          (v.window_x_size * 0.575, v.window_y_size * 0.25), 
+                                          (v.button_x_size*0.25, v.button_y_size*0.25),
+                                          (255,255,255), (0,0,0))
+        
+        soundOff_button = button.Button(self.display, "off", 20, 
+                                             (v.window_x_size * 0.65, v.window_y_size * 0.25), 
+                                             (v.button_x_size*0.25, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        basic_button = button.Button(self.display, "basic", 20, 
+                                          (v.window_x_size * 0.19, v.window_y_size * 0.5), 
+                                          (v.button_x_size*0.4, v.button_y_size*0.25),
+                                          (255,255,255), (0,0,0))
+        extended_button = button.Button(self.display, "extended", 19, 
+                                             (v.window_x_size * 0.29, v.window_y_size * 0.5), 
+                                             (v.button_x_size*0.5, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        hvsh_button = button.Button(self.display, "h vs. h", 20, 
+                                             (v.window_x_size * 0.575, v.window_y_size * 0.5), 
+                                             (v.button_x_size*0.5, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        hvsc_button = button.Button(self.display, "h vs. c", 20, 
+                                             (v.window_x_size * 0.68, v.window_y_size * 0.5), 
+                                             (v.button_x_size*0.5, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        cvsc_button = button.Button(self.display, "c vs. c", 20, 
+                                             (v.window_x_size * 0.785, v.window_y_size * 0.5), 
+                                             (v.button_x_size*0.5, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        resolution1_button = button.Button(self.display, "800x600", 20, 
+                                             (v.window_x_size * 0.47, v.window_y_size * 0.67), 
+                                             (v.button_x_size*0.6, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        resolution2_button = button.Button(self.display, "1152x864", 20, 
+                                             (v.window_x_size * 0.47, v.window_y_size * 0.75), 
+                                             (v.button_x_size*0.6, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        resolution3_button = button.Button(self.display, "1920x1280", 19, 
+                                             (v.window_x_size * 0.47, v.window_y_size * 0.83), 
+                                             (v.button_x_size*0.6, v.button_y_size*0.25),
+                                             (255,255,255), (0,0,0))
+        back_button = button.Button(self.display, "<--Back--", 15, 
+                                             (v.window_x_size * 0.025, v.window_y_size * 0.025), 
+                                             (v.button_x_size*0.5, v.button_y_size*0.25),
                                              c.button_color, (0,0,0))
-        hvsc_basic_button = button.Button(self.display, "hvsc_basic", 25, 
-                                          (v.window_x_size * 5 // 12, v.window_y_size * 7 // 20), 
-                                          (v.button_x_size, v.button_y_size),
-                                          c.button_color, (0,0,0))
-        hvsc_extended_button = button.Button(self.display, "hvsc_extended", 25, 
-                                             (v.window_x_size * 5 // 12, v.window_y_size * 3 // 5), 
-                                             (v.button_x_size, v.button_y_size),
-                                             c.button_color, (0,0,0))
-        cvsc_basic_button = button.Button(self.display, "cvsc_basic", 25, 
-                                          (v.window_x_size * 8 // 12, v.window_y_size * 7 // 20), 
-                                          (v.button_x_size, v.button_y_size),
-                                          c.button_color, (0,0,0))
-        cvsc_extended_button = button.Button(self.display, "cvsc_extended", 25, 
-                                             (v.window_x_size * 8 // 12, v.window_y_size * 3 // 5), 
-                                             (v.button_x_size, v.button_y_size),
-                                             c.button_color, (0,0,0))
-        back_button = button.Button(self.display, "Back", 25, 
-                                             (v.window_x_size * 0, v.window_y_size * 0), 
-                                             (v.button_x_size, v.button_y_size),
-                                             c.button_color, (0,0,0))
-        return {"back_button": back_button, "hvsh_basic_button": hvsh_basic_button, "hvsh_extended_button": hvsh_extended_button,
-                "hvsc_basic_button": hvsc_basic_button, "hvsc_extended_button": hvsc_extended_button,
-                "cvsc_basic_button": cvsc_basic_button, "cvsc_extended_button": cvsc_extended_button}
+        return {"back_button": back_button, "musicOn_button": musicOn_button, "musicOff_button": musicOff_button,
+                "soundOn_button": soundOn_button, "soundOff_button": soundOff_button,
+                "basic_button": basic_button, "extended_button": extended_button, "hvsh_button": hvsh_button, "hvsc_button": hvsc_button, "cvsc_button": cvsc_button, "resolution1_button": resolution1_button, "resolution2_button": resolution2_button, "resolution3_button": resolution3_button}
 
 
 
