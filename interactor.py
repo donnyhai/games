@@ -1,7 +1,6 @@
 import pygame
 import texts as t
 import hexagon_stone as hs
-from time import sleep
 pygame.init()
 
 
@@ -15,7 +14,6 @@ class Interactor:
         self.turn = turn
         self.buttons = buttons
         self.sound_maker = sound_maker
-        self.sound_maker.play_music()
     
     #board pixel size wants to be adapted with this function. multiply ratio with stone_size
     def scale_board(self, ratio):
@@ -76,9 +74,7 @@ class Interactor:
             for player in self.players.values():
                 self.calculator.set_action_hexagons(player)
             
-            #continue music
-            sleep(1)
-            self.sound_maker.play_music()
+
     #player want to put src_hstone on dir_stone. is that a legal ?
     def put_stone_condition(self, player, src_hstone, dir_hstone):
         coord = dir_hstone.board_pos
@@ -163,10 +159,7 @@ class Interactor:
             for player in self.players.values():
                 self.calculator.set_action_hexagons(player)
             
-            #continue music
-            sleep(1)
-            self.sound_maker.play_music()
-    
+            
     #player wants to move fhex to shex. is that generally possible ? that means independently of 
     #the stone type ? note that this game is yet without the "assel" stone    
     def move_stone_condition(self, player, fhex, shex):
@@ -231,10 +224,7 @@ class Interactor:
                 for player in self.players.values():
                     self.calculator.set_action_hexagons(player)
                     
-                #continue music
-                sleep(1)
-                self.sound_maker.play_music()
-                
+               
             else: #case: bug will certainly move from an empty field onto a nonempty field
                 if shex.type == "bug":
                     fhex.underlaying_stones = shex.underlaying_stones.copy()
@@ -265,9 +255,7 @@ class Interactor:
                 for player in self.players.values():
                     self.calculator.set_action_hexagons(player)
                 
-                #continue music
-                sleep(1)
-                self.sound_maker.play_music()
+
     #add actual board constellation to the past_boards dict
     #save the ids of hexagon stones
     def add_board_constellation(self):

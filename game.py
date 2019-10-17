@@ -12,7 +12,6 @@ import colors as c
 import backgrounds as bg
 import computer_action as ca
 import sound_maker as sm
-import time
 
 
 

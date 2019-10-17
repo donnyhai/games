@@ -5,7 +5,7 @@ import colors as c
 import window_hvsh_basic, window_hvsh_extended, window_hvsc_basic
 import painter as pt
 import window_menu as menu
-
+import sound_maker as sm
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -49,8 +49,10 @@ class Window_Settings:
                 self.running = False
             if self.buttons["musicOn_button"].pressed(event.pos):
                 self.values["music"] = True
+                sm.sound_maker(music = self.values["music"], sound = self.values["sound"]).play_music()
             elif self.buttons["musicOff_button"].pressed(event.pos):
                 self.values["music"] = False
+                pygame.mixer.music.stop()
             elif self.buttons["soundOn_button"].pressed(event.pos):
                 self.values["sound"] = True
             elif self.buttons["soundOff_button"].pressed(event.pos):
