@@ -9,6 +9,7 @@ background_side_stones = (104, 181, 49, 255)
 background_side_stones2 = (104, 0, 49)
 background_text_box = (150, 240, 55, 255)
 background_text_box2 = (0,100,10)
+background_menu = (150, 141, 226, 255)
 
 background_color1 = (255,211,155)
 background_color2 = (10, 60, 0, 255)

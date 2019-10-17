@@ -9,6 +9,15 @@ pygame.init()
 clock = pygame.time.Clock()
 
  
+# Welcome to hive !
+
+# for insights of processing times use the follwing pattern to check code for its needed processing time:
+#import time
+#t = time.clock()
+# ##code##
+#print(time.clock() - t)
+
+
 class Menu:
     def __init__(self, settings = None):
         self.running = False
