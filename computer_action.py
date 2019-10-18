@@ -9,7 +9,7 @@ class Computer_Action(calculator_extended.Calculator_Extended):
     def __init__(self, locator, players, opp_color = "white"):
         super().__init__(locator, players)
         self.opp_player = self.players[opp_color]
-        self.cplayer = self.players[[color for color in ["white", "black"] if color != opp_color].pop()]
+        self.cplayer = self.players[[color for color in ["white", "black"] if color != opp_color].pop()] #computer player
     
     random.seed()
     
@@ -27,23 +27,28 @@ class Computer_Action(calculator_extended.Calculator_Extended):
                     action_type = random.choice(["move", "put"])
                     if action_type == "move":
                         src_hexagon = self.random_move_hexagon(self.cplayer)
-                        dir_hexagon = random.choice(self.get_possible_move_fields(src_hexagon))
+                        dir_coord = random.choice(self.get_possible_move_fields(src_hexagon))
+                        dir_hexagon = self.board.board[dir_coord]
                     else:
                         src_hexagon = self.random_put_hexagon(self.cplayer)
-                        dir_hexagon = random.choice(self.get_possible_put_fields(src_hexagon.color))
+                        dir_coord = random.choice(self.get_possible_put_fields(src_hexagon.color))
+                        dir_hexagon = self.board.board[dir_coord]
                 else:
                     action_type = "put"
                     src_hexagon = self.random_put_hexagon(self.cplayer)
-                    dir_hexagon = random.choice(self.get_possible_put_fields(src_hexagon.color))
+                    dir_coord = random.choice(self.get_possible_put_fields(src_hexagon.color))
+                    dir_hexagon = self.board.board[dir_coord]
             else:
                 action_type = "move"
                 src_hexagon = self.random_move_hexagon(self.cplayer)
-                dir_hexagon = random.choice(self.get_possible_move_fields(src_hexagon))
+                dir_coord = random.choice(self.get_possible_move_fields(src_hexagon))
+                dir_hexagon = self.board.board[dir_coord]
         
 
         #computer player which evaluates according to a score function
         elif decision_type == "score_fct":
             pass
+        
         return (src_hexagon, dir_hexagon, action_type)
     
     
@@ -52,7 +57,8 @@ class Computer_Action(calculator_extended.Calculator_Extended):
         return random.choice(player.moveable_hexagons)
     
     def random_put_hexagon(self, player):
-        return random.choice(player.putable_hexagons)
+        put_hstone = random.choice(player.putable_hexagons)
+        return player.side_stones[put_hstone.type]
     
     def random_element(self, elements):
         return random.choice(elements)

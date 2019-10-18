@@ -24,6 +24,7 @@ class Menu:
         self.buttons = None
         self.display = None
         self.settings = settings
+        self.wg = None #window game
  
     def on_init(self):
         
@@ -45,24 +46,29 @@ class Menu:
         if event.type == pygame.QUIT:
             self.running = False
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            
             if self.buttons["settings"].pressed(event.pos):
+                
                 ws = window_settings.Window_Settings()
                 ws.on_execute()
                 self.running = False
+                
             elif self.buttons["start_game"].pressed(event.pos):
+                
                 game = g.Game(self.settings)
                 if self.settings["mode"] == "hvsh":
                     if self.settings["version"] == "basic":
-                        wg = window_hvsh_basic.Window_HvsH_Basic(game)
+                        self.wg = window_hvsh_basic.Window_HvsH_Basic(game)
                     elif self.settings["version"] == "extended":
-                        wg = window_hvsh_extended.Window_HvsH_Extended(game)
+                        self.wg = window_hvsh_extended.Window_HvsH_Extended(game)
                 elif self.settings["mode"] == "hvsc":
                     if self.settings["version"] == "basic":
-                        wg = window_hvsc_basic.Window_HvsC_Basic(game)
+                        self.wg = window_hvsc_basic.Window_HvsC_Basic(game)
                     elif self.settings["version"] == "extended":
                         #wg = window_hvsc_extended.Window_HvsC_Extended(game)
                         pass
-                wg.on_execute()
+                    
+                self.wg.on_execute()
                 self.running = False
         clock.tick(v.FPS)
             

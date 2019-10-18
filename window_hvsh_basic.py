@@ -30,6 +30,7 @@ class Window_HvsH_Basic:
         self.actual_full_surface = None
  
     def on_init(self): 
+        pygame.display.init()
         self.display = pygame.display.set_mode(self.game.settings["resolution"])
         pygame.display.set_caption("Spielbrett")
         self.game.set_surface(self.display)

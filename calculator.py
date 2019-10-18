@@ -157,8 +157,15 @@ class Calculator:
     
     #at some points we need to know the set of movable and putable hexagons of a player. here we actualize them
     def set_action_hexagons(self, player):
-        player.moveable_hexagons = self.get_moveable_hexagons(player.color)
-        player.putable_hexagons = self.get_putable_hexagons(player.color, player.side_stones, player.side_stones_numbers)
+        if player.stones["bee"][1].is_on_board:
+            player.moveable_hexagons = self.get_moveable_hexagons(player.color)
+            player.putable_hexagons = self.get_putable_hexagons(player.color, player.side_stones, player.side_stones_numbers)
+        else:
+            player.moveable_hexagons = []
+            if sum(player.initial_side_stones_numbers.values()) - sum(player.side_stones_numbers.values()) == 3: #have three stones been put already ?
+                player.putable_hexagons = [player.side_stones["bee"]]
+            else:
+                player.putable_hexagons = self.get_putable_hexagons(player.color, player.side_stones, player.side_stones_numbers)
         if not player.moveable_hexagons and not player.putable_hexagons: player.can_act = False
         else: player.can_act = True
          

@@ -2,6 +2,7 @@ import pygame
 import texts as t
 import window_methods as wm
 import variables as v
+import time as ti
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -171,14 +172,14 @@ class Window_HvsC_Basic:
                                         self.game.turn_up()
                                         
         # computer reaction             
+                                        pygame.display.update()
+                                        ti.sleep(1)
+        
                                         first_put_stone = self.game.com_action.random_element(list(self.com_player.side_stones.values()))
                                         neigh_coords = self.game.board.get_neighbours(v.first_stone_board_pos).values()
                                         self.dir_hexagons = [self.game.board.board[coord] for coord in neigh_coords] #all empty neighbours of the middle hexagon
                                         self.dir_hexagon = self.game.com_action.random_element(self.dir_hexagons)
                                         self.game.interactor.execute_stone_put(self.com_player, first_put_stone, self.dir_hexagon)
-#                                        if self.game.players["black"].can_act:                           
-#                                            com_decision = self.game.com_action.get_action_decision()
-#                                            self.game.interactor.execute_stone_put(self.game.players["black"], com_decision[0], com_decision[1])
                                         
                                         self.game.turn_up()
                                         #now turn is ("white", 2)
@@ -227,6 +228,19 @@ class Window_HvsC_Basic:
                                                 if not self.game.players["white"].stones["bee"][1].is_on_board:
                                                     self.game.painter.write_box_text(self.game.surfaces, t.bee_reminder, "white")
                                             
+         # com reaction                     
+                                            pygame.display.update()
+                                            ti.sleep(1)
+              
+                                            if self.com_player.can_act:                           
+                                                com_decision = self.game.com_action.get_action_decision()
+                                                if com_decision[2] == "put":
+                                                    self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
+                                                elif com_decision[2] == "move":
+                                                    self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
+                                            
+                                            self.game.turn_up() #set new turn
+                                            
                                         
                                         else:
                                             if self.marked_hexagons: wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
@@ -271,6 +285,20 @@ class Window_HvsC_Basic:
                                                 else:
                                                     if not self.game.players["white"].stones["bee"][1].is_on_board:
                                                         self.game.painter.write_box_text(self.game.surfaces, t.bee_reminder, "white")
+
+         # com reaction                     
+                                                pygame.display.update()
+                                                ti.sleep(1)
+                  
+                                                if self.com_player.can_act:                           
+                                                    com_decision = self.game.com_action.get_action_decision()
+                                                    if com_decision[2] == "put":
+                                                        self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
+                                                    elif com_decision[2] == "move":
+                                                        self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
+                                                
+                                                self.game.turn_up() #set new turn                                                
+                                                
                                                 
                                             else: 
                                                 if self.marked_hexagons: wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
@@ -298,6 +326,20 @@ class Window_HvsC_Basic:
                                                 else:
                                                     if not self.game.players["white"].stones["bee"][1].is_on_board:
                                                         self.game.painter.write_box_text(self.game.surfaces, t.bee_reminder, "white")
+
+         # com reaction                     
+                                                pygame.display.update()
+                                                ti.sleep(1)
+                  
+                                                if self.com_player.can_act:                           
+                                                    com_decision = self.game.com_action.get_action_decision()
+                                                    if com_decision[2] == "put":
+                                                        self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
+                                                    elif com_decision[2] == "move":
+                                                        self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
+                                                
+                                                self.game.turn_up() #set new turn                                                
+                                                
                                                 
                                             else: 
                                                 if self.marked_hexagons: wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
@@ -341,6 +383,21 @@ class Window_HvsC_Basic:
                                             #check winning condition
                                             self.game_over = wm.check_winner(self.game.painter, self.game.surfaces, self.current_player_color, self.game.interactor.calculator.winning_condition(self.current_player_color), self.game_over)
                                             self.dir_hexagons.clear()
+                                            
+         # com reaction                     
+                                            pygame.display.update()
+                                            ti.sleep(1)
+              
+                                            if self.com_player.can_act:                           
+                                                com_decision = self.game.com_action.get_action_decision()
+                                                if com_decision[2] == "put":
+                                                    self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
+                                                elif com_decision[2] == "move":
+                                                    self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
+                                            
+                                            self.game.turn_up() #set new turn                                            
+                                            
+                                            
                                         else: 
                                             if self.marked_hexagons: wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
                                     
@@ -359,6 +416,20 @@ class Window_HvsC_Basic:
                                             #check winning condition
                                             self.game_over = wm.check_winner(self.game.painter, self.game.surfaces, self.current_player_color, self.game.interactor.calculator.winning_condition(self.current_player_color), self.game_over)
                                             self.dir_hexagons.clear()
+                                            
+         # com reaction                     
+                                            pygame.display.update()
+                                            ti.sleep(1)
+              
+                                            if self.com_player.can_act:                           
+                                                com_decision = self.game.com_action.get_action_decision()
+                                                if com_decision[2] == "put":
+                                                    self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
+                                                elif com_decision[2] == "move":
+                                                    self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
+                                            
+                                            self.game.turn_up() #set new turn                                            
+                                            
                                         
                                         else:
                                             if self.marked_hexagons: wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
