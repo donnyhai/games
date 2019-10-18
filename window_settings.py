@@ -2,7 +2,6 @@ import pygame
 import variables as v
 import button
 import colors as c
-import window_hvsh_basic, window_hvsh_extended, window_hvsc_basic
 import painter as pt
 import window_menu as menu
 import sound_maker as sm
@@ -15,13 +14,13 @@ class Window_Settings:
         self.running = False
         self.buttons = None
         self.display = None             #surface
-        self.values = {"music":False, "sound":True, "version":"basic", "mode":"hvsh", "resolution":(1152, 864)}
+        self.values = {"music":False, "sound":True, "version":"basic", "mode":"hvsh", "resolution":(1152, 664)}
  
     def on_init(self):
         
         #create display and set display attr
         pygame.display.init()
-        self.display = pygame.display.set_mode(v.window_size, 0, 32)
+        self.display = pygame.display.set_mode(v.menu_size, 0, 32)
         pygame.display.set_caption("Einstellungen")
         self.display.fill((50,50,200))
         
@@ -29,13 +28,13 @@ class Window_Settings:
         self.buttons = self.create_buttons()
         for button0 in self.buttons.values():
             button0.draw_button()
-        pt.Painter().write_text(self.display, "Settings", 50, (255,255,255), (v.window_x_size * 0.42, v.window_y_size * 0.05))
+        pt.Painter().write_text(self.display, "Settings", 50, (255,255,255), (v.menu_x_size * 0.42, v.menu_y_size * 0.05))
         
-        pt.Painter().write_text(self.display, "music:", 25, (255,255,255), (v.window_x_size * 0.1, v.window_y_size * 0.25))
-        pt.Painter().write_text(self.display, "sound:", 25, (255,255,255), (v.window_x_size * 0.5, v.window_y_size * 0.25))
-        pt.Painter().write_text(self.display, "version:", 25, (255,255,255), (v.window_x_size * 0.1, v.window_y_size * 0.5))
-        pt.Painter().write_text(self.display, "mode:", 25, (255,255,255), (v.window_x_size * 0.5, v.window_y_size * 0.5))
-        pt.Painter().write_text(self.display, "resolution:", 25, (255,255,255), (v.window_x_size * 0.35, v.window_y_size * 0.75))
+        pt.Painter().write_text(self.display, "music:", 25, (255,255,255), (v.menu_x_size * 0.1, v.menu_y_size * 0.25))
+        pt.Painter().write_text(self.display, "sound:", 25, (255,255,255), (v.menu_x_size * 0.5, v.menu_y_size * 0.25))
+        pt.Painter().write_text(self.display, "version:", 25, (255,255,255), (v.menu_x_size * 0.1, v.menu_y_size * 0.5))
+        pt.Painter().write_text(self.display, "mode:", 25, (255,255,255), (v.menu_x_size * 0.5, v.menu_y_size * 0.5))
+        pt.Painter().write_text(self.display, "resolution:", 25, (255,255,255), (v.menu_x_size * 0.35, v.menu_y_size * 0.75))
         pygame.display.update()
 
  
@@ -70,7 +69,7 @@ class Window_Settings:
             elif self.buttons["resolution1_button"].pressed(event.pos):
                 self.values["resolution"] = (800,600)
             elif self.buttons["resolution2_button"].pressed(event.pos):
-                self.values["resolution"] = (1152,864)
+                self.values["resolution"] = (1152,664)
             elif self.buttons["resolution3_button"].pressed(event.pos):
                 self.values["resolution"] = (1920,1280)
         clock.tick(v.FPS)
@@ -96,57 +95,57 @@ class Window_Settings:
         
     def create_buttons(self):
         musicOn_button = button.Button(self.display, "on", 20, 
-                                          (v.window_x_size * 0.175, v.window_y_size * 0.25), 
+                                          (v.menu_x_size * 0.175, v.menu_y_size * 0.25), 
                                           (v.button_x_size*0.25, v.button_y_size*0.25),
                                           (255,255,255), (0,0,0))
         
         musicOff_button = button.Button(self.display, "off", 20, 
-                                             (v.window_x_size * 0.25, v.window_y_size * 0.25), 
+                                             (v.menu_x_size * 0.25, v.menu_y_size * 0.25), 
                                              (v.button_x_size*0.25, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
         soundOn_button = button.Button(self.display, "on", 20, 
-                                          (v.window_x_size * 0.575, v.window_y_size * 0.25), 
+                                          (v.menu_x_size * 0.575, v.menu_y_size * 0.25), 
                                           (v.button_x_size*0.25, v.button_y_size*0.25),
                                           (255,255,255), (0,0,0))
         
         soundOff_button = button.Button(self.display, "off", 20, 
-                                             (v.window_x_size * 0.65, v.window_y_size * 0.25), 
+                                             (v.menu_x_size * 0.65, v.menu_y_size * 0.25), 
                                              (v.button_x_size*0.25, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
         basic_button = button.Button(self.display, "basic", 20, 
-                                          (v.window_x_size * 0.19, v.window_y_size * 0.5), 
+                                          (v.menu_x_size * 0.19, v.menu_y_size * 0.5), 
                                           (v.button_x_size*0.4, v.button_y_size*0.25),
                                           (255,255,255), (0,0,0))
         extended_button = button.Button(self.display, "extended", 19, 
-                                             (v.window_x_size * 0.29, v.window_y_size * 0.5), 
+                                             (v.menu_x_size * 0.29, v.menu_y_size * 0.5), 
                                              (v.button_x_size*0.5, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
         hvsh_button = button.Button(self.display, "h vs. h", 20, 
-                                             (v.window_x_size * 0.575, v.window_y_size * 0.5), 
+                                             (v.menu_x_size * 0.575, v.menu_y_size * 0.5), 
                                              (v.button_x_size*0.5, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
         hvsc_button = button.Button(self.display, "h vs. c", 20, 
-                                             (v.window_x_size * 0.68, v.window_y_size * 0.5), 
+                                             (v.menu_x_size * 0.68, v.menu_y_size * 0.5), 
                                              (v.button_x_size*0.5, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
         cvsc_button = button.Button(self.display, "c vs. c", 20, 
-                                             (v.window_x_size * 0.785, v.window_y_size * 0.5), 
+                                             (v.menu_x_size * 0.785, v.menu_y_size * 0.5), 
                                              (v.button_x_size*0.5, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
         resolution1_button = button.Button(self.display, "800x600", 20, 
-                                             (v.window_x_size * 0.47, v.window_y_size * 0.67), 
+                                             (v.menu_x_size * 0.47, v.menu_y_size * 0.67), 
                                              (v.button_x_size*0.6, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
-        resolution2_button = button.Button(self.display, "1152x864", 20, 
-                                             (v.window_x_size * 0.47, v.window_y_size * 0.75), 
+        resolution2_button = button.Button(self.display, "1152x664", 20, 
+                                             (v.menu_x_size * 0.47, v.menu_y_size * 0.75), 
                                              (v.button_x_size*0.6, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
         resolution3_button = button.Button(self.display, "1920x1280", 19, 
-                                             (v.window_x_size * 0.47, v.window_y_size * 0.83), 
+                                             (v.menu_x_size * 0.47, v.menu_y_size * 0.83), 
                                              (v.button_x_size*0.6, v.button_y_size*0.25),
                                              (255,255,255), (0,0,0))
         back_button = button.Button(self.display, "<--Back--", 15, 
-                                             (v.window_x_size * 0.025, v.window_y_size * 0.025), 
+                                             (v.menu_x_size * 0.025, v.menu_y_size * 0.025), 
                                              (v.button_x_size*0.5, v.button_y_size*0.25),
                                              c.button_color, (0,0,0))
         return {"back_button": back_button, "musicOn_button": musicOn_button, "musicOff_button": musicOff_button,

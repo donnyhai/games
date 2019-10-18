@@ -10,7 +10,7 @@ class Window_HvsC_Basic:
     def __init__(self, game):
         self.running = False
         self.display = None
-        self.game = None
+        self.game = game
         
         self.start_game_mode = True
         

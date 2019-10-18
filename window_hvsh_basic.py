@@ -36,7 +36,6 @@ class Window_HvsH_Basic:
         self.game.set_attributes() 
         self.running = True
         
-    
     def on_loop(self):
         pass
     def on_render(self):

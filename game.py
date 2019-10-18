@@ -65,7 +65,7 @@ class Game:
                     self.players = {"white": plh.Human_Player("white", self.surfaces), "black": plc.Computer_Player("black", self.surfaces)}
                     self.com_action = ca.Computer_Action(self.locator, self.players)
                     self.calculator = cal_ex.Calculator_Extended(self.locator, self.players)
-                    self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn, self.buttons)
+                    self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn, self.buttons, self.sound_maker)
                 elif self.settings["version"] == "extended":
                     pass
         

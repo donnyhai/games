@@ -19,21 +19,17 @@ clock = pygame.time.Clock()
 
 
 class Menu:
-    def __init__(self, settings = None):
+    def __init__(self, settings = {"music": False, "sound": True, "version": "basic", "mode": "hvsh", "resolution": (1152,664)}):
         self.running = False
         self.buttons = None
         self.display = None
-        self.settings = None
-        if settings is None:
-            self.settings = {"music": False, "sound": True, "version": "basic", "mode": "hvsh", "resolution": (1152,664)} #default settings
-        else:
-            self.settings = settings
+        self.settings = settings
  
     def on_init(self):
         
         #create display and set display attr
         pygame.display.init()
-        self.display = pygame.display.set_mode(v.window_size, 0, 32)
+        self.display = pygame.display.set_mode(v.menu_size, 0, 32)
         pygame.display.set_caption("Spiel-Menue")
         self.display.fill((100,100,100))
         
@@ -91,14 +87,14 @@ class Menu:
         
     def create_buttons(self):
         settings_button = button.Button(self.display, "Settings", 25, 
-                                          (v.window_x_size * 2 // 12, v.window_y_size * 7 // 20), 
-                                          (v.button_x_size, v.button_y_size),
+                                          (v.menu_x_size * 5 // 12, v.menu_y_size * 1 // 3), 
+                                          (v.menu_x_size * 2 // 12, v.menu_y_size * 1 // 12),
                                           c.button_color, (0,0,0))
         
         start_game_button = button.Button(self.display, "Start Game", 25, 
-                                             (v.window_x_size * 2 // 12, v.window_y_size * 3 // 5), 
-                                             (v.button_x_size, v.button_y_size),
-                                             c.button_color, (0,0,0))
+                                          (v.menu_x_size * 5 // 12, v.menu_y_size * 2 // 3), 
+                                          (v.menu_x_size * 2 // 12, v.menu_y_size * 1 // 12),
+                                          c.button_color, (0,0,0))
         return {"settings": settings_button, "start_game": start_game_button}
 
 

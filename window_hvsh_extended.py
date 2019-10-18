@@ -2,6 +2,7 @@ import pygame
 import texts as t
 import window_methods as wm
 import variables as v
+import window_menu
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -18,6 +19,7 @@ class Window_HvsH_Extended:
         self.game_over = False
         self.drag = False
         self.moved = False
+        self.menu_open = False
         
         self.marked_hexagons = []
         self.src_hexagon = None
@@ -25,6 +27,7 @@ class Window_HvsH_Extended:
         self.dir_hexagons = []
         self.counter = None
         self.pos = None
+        self.actual_full_surface = None
  
     def on_init(self):
         self.display = pygame.display.set_mode(self.game.settings["resolution"])
@@ -80,6 +83,20 @@ class Window_HvsH_Extended:
             self.game.painter.write_box_text(self.game.surfaces, t.welcome_text, "black")
             
         elif not self.start_game_mode:
+            
+            if self.menu_open:
+                
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 1: 
+                
+                    if self.game.buttons["continue_game_button"].pressed(event.pos):
+                        self.menu_open = False
+                        self.display.blit(self.actual_full_surface, (0,0))
+                        
+                    elif self.game.buttons["back_to_menu_button"].pressed(event.pos):
+                        window_menu.Menu().on_execute()
+                        self.running = False
+                        
+            elif not self.menu_open:
             
                 if event.type == pygame.MOUSEBUTTONDOWN: 
                     if wm.point_in_surface(self.game.surfaces["surface_board"], event.pos):
@@ -147,6 +164,11 @@ class Window_HvsH_Extended:
                             self.game.interactor.restart_game()
                             self.game.turn = ("white", 1)
                             self.game_over = False
+                            
+                        elif self.game.buttons["menu_button"].pressed(event.pos):
+                            self.menu_open = True
+                            self.actual_full_surface = self.display.copy()
+                            self.game.painter.draw_menu(self.game.surfaces, self.game.buttons)
                         
                         else:
                             

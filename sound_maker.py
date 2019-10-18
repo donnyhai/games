@@ -16,13 +16,13 @@ class sound_maker():
     
     def make_sound(self, insect_type):
         if self.sound:
-            if self.music:
-                pygame.mixer.music.stop()
-                sleep(0.2)
+#            if self.music:
+#                pygame.mixer.music.stop()
+#                sleep(0.2)
             pygame.mixer.Sound(hive_paths[insect_type]).play()
-            if self.music:
-                sleep(1)
-                self.play_music()
+#            if self.music:
+#                sleep(1)
+#                self.play_music()
                     
     
     def play_music(self):
