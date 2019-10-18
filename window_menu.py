@@ -32,7 +32,7 @@ class Menu:
         pygame.display.init()
         self.display = pygame.display.set_mode(v.menu_size, 0, 32)
         pygame.display.set_caption("Spiel-Menue")
-        self.display.fill((100,100,100))
+        self.display.fill(c.background_main_menu)
         
         #create buttons and draw them
         self.buttons = self.create_buttons()
@@ -65,17 +65,16 @@ class Menu:
                     if self.settings["version"] == "basic":
                         self.wg = window_hvsc_basic.Window_HvsC_Basic(game)
                     elif self.settings["version"] == "extended":
-                        #wg = window_hvsc_extended.Window_HvsC_Extended(game)
+#                        self.wg = window_hvsc_extended.Window_HvsC_Extended(game)
                         pass
                     
                 self.wg.on_execute()
                 self.running = False
-        clock.tick(v.FPS)
+        
             
     def on_loop(self):
-        pass
-    def on_render(self):
-        pass
+        clock.tick(v.FPS)
+        
     def on_cleanup(self):
         pygame.quit()
  
@@ -88,7 +87,7 @@ class Menu:
             for event in pygame.event.get():
                 self.on_event(event)
             self.on_loop()
-            self.on_render()
+            
         self.on_cleanup()
         
     def create_buttons(self):
