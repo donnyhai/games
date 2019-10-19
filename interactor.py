@@ -390,8 +390,11 @@ class Interactor:
             self.painter.draw_unmarked_side_area(player, self.surfaces)  
         self.painter.draw_board(self.board, self.surfaces, self.buttons) 
             
-
-
+    #its turn of player_color, print bee reminder for the opposite color if its bee is not put yet 
+    def bee_reminder(self, player_color, game):
+        opp_color = [color for color in ["white", "black"] if color != player_color].pop()
+        if not game.players[opp_color].stones["bee"][1].is_on_board:
+            game.painter.write_box_text(game.surfaces, t.bee_reminder, opp_color)
     
 
 
