@@ -225,17 +225,18 @@ class Window_HvsC_Basic:
                                             self.dir_hexagons.clear()
                                             
          # com reaction                     
-                                            pygame.display.update()
-                                            ti.sleep(1)
-              
-                                            if self.com_player.can_act:                           
-                                                com_decision = self.game.com_action.get_action_decision()
-                                                if com_decision[2] == "put":
-                                                    self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
-                                                elif com_decision[2] == "move":
-                                                    self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
-                                            
-                                            self.game.turn_up() #set new turn                                            
+                                            if not self.game_over:
+                                                pygame.display.update()
+                                                ti.sleep(1)
+                  
+                                                if self.com_player.can_act:                           
+                                                    com_decision = self.game.com_action.get_action_decision()
+                                                    if com_decision[2] == "put":
+                                                        self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
+                                                    elif com_decision[2] == "move":
+                                                        self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
+                                                
+                                                self.game.turn_up() #set new turn                                            
                                             
                                             
                                         else: 
@@ -258,17 +259,18 @@ class Window_HvsC_Basic:
                                             self.dir_hexagons.clear()
                                             
          # com reaction                     
-                                            pygame.display.update()
-                                            ti.sleep(1)
-              
-                                            if self.com_player.can_act:                           
-                                                com_decision = self.game.com_action.get_action_decision()
-                                                if com_decision[2] == "put":
-                                                    self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
-                                                elif com_decision[2] == "move":
-                                                    self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
-                                            
-                                            self.game.turn_up() #set new turn                                            
+                                            if not self.game_over:
+                                                pygame.display.update()
+                                                ti.sleep(1)
+                  
+                                                if self.com_player.can_act:                           
+                                                    com_decision = self.game.com_action.get_action_decision()
+                                                    if com_decision[2] == "put":
+                                                        self.game.interactor.execute_stone_put(self.com_player, com_decision[0], com_decision[1])
+                                                    elif com_decision[2] == "move":
+                                                        self.game.interactor.execute_stone_move(self.com_player, com_decision[0], com_decision[1])
+                                                
+                                                self.game.turn_up() #set new turn                                            
                                             
                                         
                                         else:
