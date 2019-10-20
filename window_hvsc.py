@@ -196,7 +196,7 @@ class Window_HvsC:
                                             
             # computer reaction             
                                             pygame.display.update()
-                                            ti.sleep(1)
+                                            ti.sleep(v.computer_decision_time)
             
                                             first_put_stone = self.game.com_action.random_element(list(self.com_player.side_stones.values()))
                                             neigh_coords = self.game.board.get_neighbours(v.first_stone_board_pos).values()
@@ -250,7 +250,7 @@ class Window_HvsC:
              # com reaction                     
                                                 if not self.game_over:
                                                     pygame.display.update()
-                                                    ti.sleep(1)
+                                                    ti.sleep(v.computer_decision_time)
                       
                                                     if self.com_player.can_act:                           
                                                         com_decision = self.game.com_action.get_action_decision()
@@ -280,7 +280,7 @@ class Window_HvsC:
              # com reaction                     
                                                 if not self.game_over:
                                                     pygame.display.update()
-                                                    ti.sleep(1)
+                                                    ti.sleep(v.computer_decision_time)
                       
                                                     if self.com_player.can_act:                           
                                                         com_decision = self.game.com_action.get_action_decision()

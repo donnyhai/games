@@ -14,3 +14,4 @@ FPS = 200
 button_x_size = menu_x_size // 6
 button_y_size = menu_y_size // 6
 
+computer_decision_time = 0.5

@@ -1,15 +1,16 @@
 import calculator_extended
 import random
+import variables as v
 
 
 
 #this class makes calculations for a computer player. therefore expressions like opp_color or opp_player refer
 #to the opponent player (human or computer)
 class Computer_Action(calculator_extended.Calculator_Extended):
-    def __init__(self, locator, players, opp_color = "white"):
+    def __init__(self, locator, players, color = "black"):
         super().__init__(locator, players)
-        self.opp_player = self.players[opp_color]
-        self.cplayer = self.players[[color for color in ["white", "black"] if color != opp_color].pop()] #computer player
+        self.cplayer = self.players[color] #this com player is the player this Computer_Action object makes calculations for
+        self.opp_player = self.players[[color0 for color0 in ["white", "black"] if color0 != color].pop()]
     
     random.seed()
     
@@ -63,7 +64,15 @@ class Computer_Action(calculator_extended.Calculator_Extended):
     def random_element(self, elements):
         return random.choice(elements)
     
-    
+    def choose_first_stone(self):
+        if self.cplayer.color == "white":
+            return self.random_put_hexagon(self.cplayer)
+        else:
+            first_put_stone = self.random_element(list(self.opp_player.side_stones.values()))
+            neigh_coords = self.board.get_neighbours(v.first_stone_board_pos).values()
+            dir_hexagons = [self.board.board[coord] for coord in neigh_coords] #all empty neighbours of the middle hexagon
+            dir_hexagon = self.random_element(dir_hexagons)
+            return (first_put_stone, dir_hexagon)
     
     
     
