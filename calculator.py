@@ -34,7 +34,7 @@ class Calculator:
                 cond3 = self.can_move_on_ground(coord)
             if cond0 and cond1 and cond2 and cond3:
                 moveable_hexagons.append(hexagon)
-        return moveable_hexagons
+        return list(moveable_hexagons)
     
     #which hexagons are putable ? check with side_stone_numbers and return a list of hexagons
     def get_putable_hexagons(self, color, side_stones, side_stones_numbers):
@@ -42,7 +42,7 @@ class Calculator:
         putable_hexagons = []
         for stone_type in side_stones:
             if side_stones_numbers[stone_type] > 0: putable_hexagons.append(side_stones[stone_type])
-        return putable_hexagons
+        return list(putable_hexagons)
     
     #stone is on coord. can he move on ground, or is he blocked by surrounding stones ? return True or False
     #NOTE: connectedness of the stones graph is not considered here
@@ -69,7 +69,7 @@ class Calculator:
                     for neigh2 in list(self.board.get_neighbours(neigh).values()):
                         if self.board.board[neigh2].color == opp_color:   cond = False
                     if cond:    sol_fields.append(neigh)
-        return sol_fields
+        return list(sol_fields)
     
     #move_hexagon wants to be moved, where can it move ? return is a list of board coords
     def get_possible_move_fields(self, move_hexagon):
@@ -92,7 +92,7 @@ class Calculator:
         self.graph.set_edges(self.graph.calculate_ground_moving_edges(coord))
         ground_move_fields = self.graph.calculate_connected_component(coord)
         ground_move_fields.remove(coord) #remove this coord, as stone should not be able to move there
-        return ground_move_fields
+        return list(ground_move_fields)
     
     #bee is on coord. where can it move ?
     def get_bee_fields(self, coord):
@@ -114,7 +114,7 @@ class Calculator:
                 while not self.board.board[neigh].is_empty:
                     neigh = self.board.get_neighbours(neigh)[i]
                 hopper_fields.append(neigh)
-        return hopper_fields
+        return list(hopper_fields)
 
     #spider is on coord. where can she move ?
     def get_spider_fields(self, coord):
@@ -122,12 +122,12 @@ class Calculator:
         self.graph.set_edges(self.graph.calculate_ground_moving_edges(coord))
         self.graph.set_edges(self.graph.calculate_spider_move_edges())
         spider_fields = self.graph.get_graph_neighbours(coord)
-        return spider_fields
+        return list(spider_fields)
     
     #bug is on coord. where can it move ?
     def get_bug_fields(self, coord):
         if self.board.board[coord].underlaying_stones:
-            return self.board.get_neighbours(coord).values()
+            return list(self.board.get_neighbours(coord).values())
         nonempty_neighbours = set(self.board.nonempty_fields).intersection(self.board.get_neighbours(coord).values())
         return self.get_bee_fields(coord) + list(nonempty_neighbours)
         
@@ -138,7 +138,7 @@ class Calculator:
             nonempty_neigh2 = self.board.get_nonempty_neighbours(neigh)
             nonempty_neigh2.remove(coord)
             for neigh2 in nonempty_neigh2:  ladybug_fields += self.board.get_empty_neighbours(neigh2)
-        return ladybug_fields
+        return list(ladybug_fields)
         
     #mosquito is on coord. where can it move ? 
     #NOTE: this function (shoud) only gets called, when the mosquito has type mosquito, 
@@ -153,7 +153,7 @@ class Calculator:
             self.graph.test_board.board[coord].type = self.board.board[neigh].type
             move_fields = self.get_possible_move_fields(self.graph.test_board.board[coord])
             mosquito_fields += move_fields
-        return mosquito_fields
+        return list(mosquito_fields)
     
     #at some points we need to know the set of movable and putable hexagons of a player. here we actualize them
     def set_action_hexagons(self, player):

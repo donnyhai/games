@@ -67,7 +67,10 @@ class Game:
                     self.calculator = cal_ex.Calculator_Extended(self.locator, self.players)
                     self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn, self.buttons, self.sound_maker)
                 elif self.settings["version"] == "extended":
-                    pass
+                    self.players = {"white": ple.Human_Player_Extended("white", self.surfaces), "black": plc.Computer_Player_Extended("black", self.surfaces)}
+                    self.com_action = ca.Computer_Action(self.locator, self.players)
+                    self.calculator = cal_ex.Calculator_Extended(self.locator, self.players)
+                    self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn, self.buttons, self.sound_maker)
         
     def turn_up(self):
         if self.turn[0] == "white": self.turn = ("black", self.turn[1])

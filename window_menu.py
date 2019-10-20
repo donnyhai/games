@@ -2,8 +2,7 @@ import pygame
 import variables as v
 import button
 import colors as c
-import window_hvsh_basic, window_hvsh_extended, window_hvsc_basic
-import window_settings
+import window_hvsh, window_hvsc, window_settings
 import game as g
 pygame.init()
 clock = pygame.time.Clock()
@@ -57,16 +56,9 @@ class Menu:
                 
                 game = g.Game(self.settings)
                 if self.settings["mode"] == "hvsh":
-                    if self.settings["version"] == "basic":
-                        self.wg = window_hvsh_basic.Window_HvsH_Basic(game)
-                    elif self.settings["version"] == "extended":
-                        self.wg = window_hvsh_extended.Window_HvsH_Extended(game)
+                    self.wg = window_hvsh.Window_HvsH(game)
                 elif self.settings["mode"] == "hvsc":
-                    if self.settings["version"] == "basic":
-                        self.wg = window_hvsc_basic.Window_HvsC_Basic(game)
-                    elif self.settings["version"] == "extended":
-#                        self.wg = window_hvsc_extended.Window_HvsC_Extended(game)
-                        pass
+                    self.wg = window_hvsc.Window_HvsC(game)
                     
                 self.wg.on_execute()
                 self.running = False

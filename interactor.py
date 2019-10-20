@@ -71,8 +71,8 @@ class Interactor:
             #save board constellation
             self.add_board_constellation()
             
-            for player in self.players.values():
-                self.calculator.set_action_hexagons(player)
+            for player0 in self.players.values():
+                self.calculator.set_action_hexagons(player0)
             
 
     #player want to put src_hstone on dir_stone. is that a legal ?
@@ -156,8 +156,8 @@ class Interactor:
             #save board constellation
             self.add_board_constellation()
             
-            for player in self.players.values():
-                self.calculator.set_action_hexagons(player)
+            for player0 in self.players.values():
+                self.calculator.set_action_hexagons(player0)
             
             
     #player wants to move fhex to shex. is that generally possible ? that means independently of 
@@ -221,8 +221,8 @@ class Interactor:
                 #save board constellation
                 self.add_board_constellation()
                 
-                for player in self.players.values():
-                    self.calculator.set_action_hexagons(player)
+                for player0 in self.players.values():
+                    self.calculator.set_action_hexagons(player0)
                     
                
             else: #case: bug will certainly move from an empty field onto a nonempty field
@@ -252,8 +252,8 @@ class Interactor:
                 #save board constellation
                 self.add_board_constellation()
                 
-                for player in self.players.values():
-                    self.calculator.set_action_hexagons(player)
+                for player0 in self.players.values():
+                    self.calculator.set_action_hexagons(player0)
                 
 
     #add actual board constellation to the past_boards dict
@@ -320,9 +320,8 @@ class Interactor:
         self.painter.draw_board(self.board, self.surfaces, self.buttons)  
         
         #set action hexagons of players (moveable and putable hexagons)
-        for player in self.players.values():
-            self.calculator.set_action_hexagons(player)          
-        
+        for player0 in self.players.values():
+            self.calculator.set_action_hexagons(player0)
     
     #reset a player stone into a stone not being on the board
     def reset_stone_attr(self, hstone):
@@ -395,6 +394,17 @@ class Interactor:
         opp_color = [color for color in ["white", "black"] if color != player_color].pop()
         if not game.players[opp_color].stones["bee"][1].is_on_board:
             game.painter.write_box_text(game.surfaces, t.bee_reminder, opp_color)
+    
+
+    #action like put or move, bug moves etc get executed here        
+    def execute_action(self, player, fhex, shex, action_type):
+        if action_type == "put":    self.execute_stone_put(player, fhex, shex)
+        elif action_type == "move":
+            if fhex.type in {"bug", "mosquito"}:
+                if not shex.is_empty or len(fhex.underlaying_stones) > 0:   
+                    self.move_bug_on_nonempty_stone(player, fhex, shex)
+                else: self.execute_stone_move(player, fhex, shex)
+            else: self.execute_stone_move(player, fhex, shex)
     
 
 

@@ -9,7 +9,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
  
-class Window_HvsH_Basic:
+class Window_HvsH:
     def __init__(self, game):
         self.running = False
         self.display = None
@@ -40,7 +40,9 @@ class Window_HvsH_Basic:
         self.running = True
         
     def on_loop(self):
-        pass
+        pygame.display.update()
+        clock.tick(v.FPS)
+        
     def on_render(self):
         pass
     def on_cleanup(self):
@@ -246,9 +248,11 @@ class Window_HvsH_Basic:
                                         #execute put
                                         elif self.src_hexagon in self.game.players[self.current_player_color].side_stones.values():
                                             if clicked_hexagon in self.dir_hexagons:
+                                                
                                                 wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
-                                                self.game.interactor.execute_stone_put(self.game.players[self.current_player_color], self.src_hexagon, clicked_hexagon)
+                                                self.game.interactor.execute_action(self.game.players[self.current_player_color], self.src_hexagon, clicked_hexagon, "put")
                                                 self.game.turn_up() #set new turn
+                                                
                                                 #check whether opponent has any possible put or move, if not put turn up 
                                                 if not self.game.players[self.game.turn[0]].can_act:  self.game.turn_up()
                                                 #check winning condition
@@ -264,13 +268,11 @@ class Window_HvsH_Basic:
                                         #execute move
                                         elif self.src_hexagon in self.game.players[self.current_player_color].stones_list:
                                             if clicked_hexagon in self.dir_hexagons and clicked_hexagon.board_pos != self.src_hexagon.board_pos:
+                                                
                                                 wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
-                                                if self.src_hexagon.type == "bug":
-                                                    if not clicked_hexagon.is_empty or len(self.src_hexagon.underlaying_stones) > 0:
-                                                        self.game.interactor.move_bug_on_nonempty_stone(self.game.players[self.current_player_color], self.src_hexagon, clicked_hexagon)
-                                                    else: self.game.interactor.execute_stone_move(self.game.players[self.current_player_color], self.src_hexagon, clicked_hexagon)
-                                                else: self.game.interactor.execute_stone_move(self.game.players[self.current_player_color], self.src_hexagon, clicked_hexagon)
+                                                self.game.interactor.execute_action(self.game.players[self.current_player_color], self.src_hexagon, clicked_hexagon, "move")
                                                 self.game.turn_up() #set new turn
+                                                
                                                 #check whether opponent has any possible put or move, if not put turn up 
                                                 if not self.game.players[self.game.turn[0]].can_act:  self.game.turn_up()
                                                 #check winning condition
@@ -287,13 +289,6 @@ class Window_HvsH_Basic:
                                 else:
                                     if self.marked_hexagons: wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
 
-        pygame.display.update()
-        clock.tick(v.FPS)
-        
-        
-
-
- 
 #if __name__ == "__main__" :
 #    theApp = App()
 #    theApp.on_execute()
