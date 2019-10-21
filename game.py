@@ -31,11 +31,11 @@ class Game:
             
             #create following attributes, when surface is set
             self.surfaces = {"surface_full": self.surface, 
-                             "surface_board": self.surface.subsurface(pygame.Rect(0.1 * self.surface.get_width(), 0, 0.8 * self.surface.get_width(), self.surface.get_height())),
-                             "surface_stones": {"white": self.surface.subsurface(pygame.Rect(0, 0, 0.1 * self.surface.get_width(), 0.8 * self.surface.get_height())),
-                                                "black": self.surface.subsurface(pygame.Rect(0.9 * self.surface.get_width(), 0, 0.1 * self.surface.get_width(), 0.8 * self.surface.get_height()))},
-                             "surface_text": {"white": self.surface.subsurface(pygame.Rect(0, 0.8 * self.surface.get_height(), 0.1 * self.surface.get_width(), 0.2 * self.surface.get_height())),
-                                              "black": self.surface.subsurface(pygame.Rect(0.9 * self.surface.get_width(), 0.8 * self.surface.get_height(), 0.1 * self.surface.get_width(), 0.2 * self.surface.get_height()))},
+                             "surface_board": self.surface.subsurface(pygame.Rect(0.1 * self.surface.get_width(), 0, 0.8 * self.surface.get_width(), 0.95 * self.surface.get_height())),
+                             "surface_stones": {"white": self.surface.subsurface(pygame.Rect(0, 0, 0.1 * self.surface.get_width(), 0.95 * self.surface.get_height())),
+                                                "black": self.surface.subsurface(pygame.Rect(0.9 * self.surface.get_width(), 0, 0.1 * self.surface.get_width(), 0.95 * self.surface.get_height()))},
+                             "surface_text": {"white": self.surface.subsurface(pygame.Rect(0, 0.95 * self.surface.get_height(), 0.5 * self.surface.get_width(), 0.05 * self.surface.get_height())),
+                                              "black": self.surface.subsurface(pygame.Rect(0.5 * self.surface.get_width(), 0.95 * self.surface.get_height(), 0.5 * self.surface.get_width(), 0.05 * self.surface.get_height()))},
                              "surface_menu": self.surface.subsurface(pygame.Rect(1/3 * self.surface.get_width(), 1/3 * self.surface.get_height(), 1/3 * self.surface.get_width(), 1/3 * self.surface.get_height()))}
             
             #the following building of backgrounds takes very long, as tickled color backgrounds are live calculated (random ect, see in backgrounds)

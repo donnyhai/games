@@ -1,5 +1,5 @@
 import pygame, os
-from math import sqrt
+from math import sqrt, log
 import colors as c
 
 hive_paths = {"ant": os.path.join("pictures", "ant.png"), "hopper": os.path.join("pictures", "hopper.png"),
@@ -80,10 +80,11 @@ class Painter:
         width = surface.get_width()
         height = surface.get_height()
         line_width = width // 350
-        pygame.draw.line(surface, c.ingame_frame_color, (0.1 * width, 0), (0.1 * width, height), line_width)
-        pygame.draw.line(surface, c.ingame_frame_color, (0.9 * width, 0),(0.9 * width, height), line_width)
-        pygame.draw.line(surface, c.ingame_frame_color, (0, 0.8 * height), (0.1 * width, 0.8 * height), line_width)
-        pygame.draw.line(surface, c.ingame_frame_color, (0.9 * width, 0.8 * height), (width, 0.8 * height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0.1 * width, 0), (0.1 * width, 0.95 * height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0.9 * width, 0),(0.9 * width, 0.95 * height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0, 0.95 * height), (0.5 * width, 0.95 * height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0.5 * width, 0.95 * height), (width, 0.95 * height), line_width)
+        pygame.draw.line(surface, c.ingame_frame_color, (0.5 * width, 0.95 * height), (0.5 * width, height), line_width)
         
     def write_text(self, surface, text, font_size, color, position):
         myText = pygame.font.SysFont("Arial", font_size).render(text, 1, color)
@@ -92,9 +93,9 @@ class Painter:
     def write_box_text(self, surfaces, text, player_color):
         surface = surfaces["surface_text"][player_color]
         self.draw_background(surface)
-        font_size = int(0.2 * surface.get_height())
+        font_size = int(25 - log(len(text))) 
         color = c.box_text_color
-        position = (0.1 * surface.get_width(), 0.1 * surface.get_height())
+        position = (0.05 * surface.get_width(), 0.1 * surface.get_height())
         self.write_text(surface, text, font_size, color, position)
         self.draw_ingame_frame(surfaces["surface_full"])
     
