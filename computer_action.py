@@ -3,7 +3,6 @@ import random
 import variables as v
 
 
-
 #this class makes calculations for a computer player. therefore expressions like opp_color or opp_player refer
 #to the opponent player (human or computer)
 class Computer_Action(calculator_extended.Calculator_Extended):
@@ -11,7 +10,7 @@ class Computer_Action(calculator_extended.Calculator_Extended):
         super().__init__(locator, players)
         self.cplayer = self.players[color] #this com player is the player this Computer_Action object makes calculations for
         self.opp_player = self.players[[color0 for color0 in ["white", "black"] if color0 != color].pop()]
-    
+        
     random.seed()
     
     #input are the board constellations (you can find them aswell in self.calculator.board.past_boards) 
@@ -74,22 +73,23 @@ class Computer_Action(calculator_extended.Calculator_Extended):
             dir_hexagon = self.random_element(dir_hexagons)
             return (first_put_stone, dir_hexagon)
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     #move_hexagon wants to be moved to dir_coord. what is the evaluation of this turn ?
-    def evaluate_turn(self, move_hexagon, dir_coord):
+    def score_fct(self, fhex, shex, action_type):
+        
+        #make test_board and copy actual board_constellation
+        test_board = self.locator.test_board
+        test_board.copy(self.board)
+        player = self.locator.test_players[fhex.color]
+        test_board.execute_action(player, fhex, shex, action_type)
+        
         
         ###low evaluation points
-        #spider is 3 steps away from opp bee +1
+        cond0 = True
+        if fhex.type == "spider" and shex.type == "bee":
+            cond0 = self.get_ground_moving_distance(fhex, shex) == 3 
+        
+        #spider is 3 steps away from opp bee and bee would be blocked by spider move to bee +1
         #hopper is put next to own bee in the first 6 moves +1
         #opponent has few places to put stone +1
         #bug or hopper next to own bee +1/-1 (depends)
@@ -121,8 +121,10 @@ class Computer_Action(calculator_extended.Calculator_Extended):
     def get_best_turns(self, number):
         pass
         
-    def score_fct(self, constellation, src_hexagon, dir_hexagon):
+    def get_ground_moving_distance(self, fhex, shex):
         pass
-
+    
+    def is_blocked(self, fhex):
+        pass
     
     
