@@ -4,7 +4,7 @@ import hexagon_graph as hg
 
 #NOTE: calculator is not depending on players. for that see calculator_extended
 class Calculator:
-    def __init__(self, locator):
+    def __init__(self, locator = None):
         self.locator = locator
         self.board = self.locator.board #note that the locator always contains the board object of the actual game
         self.empty_help_stone = hs.hexagon_stone(self.board.hexagon_size, "empty", 99)

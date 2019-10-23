@@ -2,7 +2,7 @@ import hexagon_stone as hs
 from math import sqrt
 
 class Player:
-    def __init__(self, color, surfaces):
+    def __init__(self, color, surfaces = None):
         self.color = color
         self.surfaces = surfaces
         self.initial_stone_size = int(0.03 * self.surfaces["surface_full"].get_width())
