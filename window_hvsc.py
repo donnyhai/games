@@ -192,6 +192,10 @@ class Window_HvsC:
                                         elif clicked_hexagon == self.dir_hexagon:
                                             wm.unmark_hexagons(self.game, self.game.players["white"], self.marked_hexagons)
                                             self.game.interactor.execute_stone_put(self.game.players["white"], self.src_hexagon, self.dir_hexagon)
+                                            
+                                            #save board constellation
+                                            self.game.interactor.add_board_constellation()
+                                            
                                             self.game.turn_up()
                                             
             # computer reaction             
@@ -203,6 +207,9 @@ class Window_HvsC:
                                             self.dir_hexagons = [self.game.board.board[coord] for coord in neigh_coords] #all empty neighbours of the middle hexagon
                                             self.dir_hexagon = self.game.com_action.random_element(self.dir_hexagons)
                                             self.game.interactor.execute_stone_put(self.com_player, first_put_stone, self.dir_hexagon)
+                                            
+                                            #save board constellation
+                                            self.game.interactor.add_board_constellation()
                                             
                                             self.game.turn_up()
                                             #now turn is ("white", 2)
