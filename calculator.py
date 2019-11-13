@@ -145,11 +145,26 @@ class Calculator:
     #tm when it sits on the ground. (note: when a mosquito copies the bug, and moves onto a nonempty stone,
     #it gets type bug as long as it is up.)
     def get_mosquito_fields(self, coord):
+        #calculate all neighbour coords and neighbours coords of possible mosquito neighbour
+        copy_coords = []
+        def append_copy_coords(coord, exclusive):
+            #init attr exclusive for this function
+            if exclusive is None:
+                append_copy_coords.exclusive = []
+            ll = [neigh for neigh in self.board.get_neighbours(coord).values() if neigh not in append_copy_coords.exclusive]
+            for neigh in ll:
+                if self.board.board[neigh].type == "mosquito":
+                    append_copy_coords.exclusive.append(coord)
+                    append_copy_coords(neigh, append_copy_coords.exclusive)
+                else:
+                    copy_coords.append(neigh)
+        append_copy_coords(coord, None)
+        
         #copy board into test_board and simulate situations on it 
         #(eg mosquito copies ant: change mosquito type to ant type and calc move fields)
         self.graph.test_board.copy_board(self.board)
         mosquito_fields = []
-        for neigh in self.board.get_neighbours(coord).values():
+        for neigh in copy_coords:
             self.graph.test_board.board[coord].type = self.board.board[neigh].type
             move_fields = self.get_possible_move_fields(self.graph.test_board.board[coord])
             mosquito_fields += move_fields
