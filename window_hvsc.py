@@ -192,6 +192,10 @@ class Window_HvsC:
                                         elif clicked_hexagon == self.dir_hexagon:
                                             wm.unmark_hexagons(self.game, self.game.players["white"], self.marked_hexagons)
                                             self.game.interactor.execute_stone_put(self.game.players["white"], self.src_hexagon, self.dir_hexagon)
+                                            
+                                            #save board constellation
+                                            self.game.interactor.add_board_constellation()
+                                            
                                             self.game.turn_up()
                                             
             # computer reaction             
@@ -203,6 +207,9 @@ class Window_HvsC:
                                             self.dir_hexagons = [self.game.board.board[coord] for coord in neigh_coords] #all empty neighbours of the middle hexagon
                                             self.dir_hexagon = self.game.com_action.random_element(self.dir_hexagons)
                                             self.game.interactor.execute_stone_put(self.com_player, first_put_stone, self.dir_hexagon)
+                                            
+                                            #save board constellation
+                                            self.game.interactor.add_board_constellation()
                                             
                                             self.game.turn_up()
                                             #now turn is ("white", 2)
@@ -241,8 +248,7 @@ class Window_HvsC:
                                                 wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
                                                 self.game.interactor.execute_action(self.hum_player, self.src_hexagon, clicked_hexagon, "put")
                                                 self.game.turn_up() #set new turn
-                                                #check whether opponent has any possible put or move, if not put turn up 
-                                                if not self.game.players[self.game.turn[0]].can_act:  self.game.turn_up()
+                                                
                                                 #check winning condition
                                                 self.game_over = wm.check_winner(self.game.painter, self.game.surfaces, self.current_player_color, self.game.interactor.calculator.winning_condition(self.current_player_color), self.game_over)
                                                 self.dir_hexagons.clear()
@@ -251,6 +257,8 @@ class Window_HvsC:
                                                 if not self.game_over:
                                                     pygame.display.update()
                                                     ti.sleep(v.computer_decision_time)
+                                                    
+                                                    print(self.com_player.can_act)
                       
                                                     if self.com_player.can_act:                           
                                                         com_decision = self.game.com_action.get_action_decision()
@@ -259,6 +267,7 @@ class Window_HvsC:
                                                     #print put bee reminder
                                                     self.game.interactor.bee_reminder(self.com_player.color, self.game)
                                                     
+                                                    self.game_over = wm.check_winner(self.game.painter, self.game.surfaces, self.current_player_color, self.game.interactor.calculator.winning_condition(self.current_player_color), self.game_over)    
                                                     self.game.turn_up() #set new turn                                            
                                                 
                                                 
@@ -271,8 +280,7 @@ class Window_HvsC:
                                                 wm.unmark_hexagons(self.game, self.game.players[self.current_player_color], self.marked_hexagons)
                                                 self.game.interactor.execute_action(self.hum_player, self.src_hexagon, clicked_hexagon, "move")
                                                 self.game.turn_up() #set new turn
-                                                #check whether opponent has any possible put or move, if not put turn up 
-                                                if not self.game.players[self.game.turn[0]].can_act:  self.game.turn_up()
+                                                
                                                 #check winning condition
                                                 self.game_over = wm.check_winner(self.game.painter, self.game.surfaces, self.current_player_color, self.game.interactor.calculator.winning_condition(self.current_player_color), self.game_over)
                                                 self.dir_hexagons.clear()
@@ -282,6 +290,8 @@ class Window_HvsC:
                                                     pygame.display.update()
                                                     ti.sleep(v.computer_decision_time)
                       
+                                                    print(self.com_player.can_act)
+                        
                                                     if self.com_player.can_act:                           
                                                         com_decision = self.game.com_action.get_action_decision()
                                                         self.game.interactor.execute_action(self.com_player, com_decision[0], com_decision[1], com_decision[2])
@@ -289,6 +299,7 @@ class Window_HvsC:
                                                     #print put bee reminder
                                                     self.game.interactor.bee_reminder(self.com_player.color, self.game)
                                                     
+                                                    self.game_over = wm.check_winner(self.game.painter, self.game.surfaces, self.current_player_color, self.game.interactor.calculator.winning_condition(self.current_player_color), self.game_over)    
                                                     self.game.turn_up() #set new turn                                            
                                                 
                                             

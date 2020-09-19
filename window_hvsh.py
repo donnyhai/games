@@ -197,6 +197,10 @@ class Window_HvsH:
                                         elif clicked_hexagon == self.dir_hexagon:
                                             wm.unmark_hexagons(self.game, self.game.players["white"], self.marked_hexagons)
                                             self.game.interactor.execute_stone_put(self.game.players["white"], self.src_hexagon, self.dir_hexagon)
+                                            
+                                            #save board constellation
+                                            self.game.interactor.add_board_constellation()  
+                                            
                                             self.game.turn_up()
                                         #unmark marked hexagons
                                         else:
@@ -214,6 +218,10 @@ class Window_HvsH:
                                         elif clicked_hexagon in self.dir_hexagons:
                                             wm.unmark_hexagons(self.game, self.game.players["black"], self.marked_hexagons)
                                             self.game.interactor.execute_stone_put(self.game.players["black"], self.src_hexagon, clicked_hexagon)
+                                            
+                                            #save board constellation
+                                            self.game.interactor.add_board_constellation()  
+                                            
                                             self.game.turn_up()
                                             self.dir_hexagons.clear() #reset self.dir_hexagons so it wont cause problems in the following turns
                                         #unmark marked hexagons

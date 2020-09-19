@@ -12,6 +12,7 @@ import colors as c
 import backgrounds as bg
 import computer_action as ca
 import sound_maker as sm
+import copy
 
 
 
@@ -74,16 +75,16 @@ class Game:
             elif self.settings["mode"] == "cvsc":
                 if self.settings["version"] == "basic":
                     self.players = {"white": plc.Computer_Player("white", self.surfaces), "black": plc.Computer_Player("black", self.surfaces)}
-                    self.com_action = {"white": ca.Computer_Action(self.locator, self.players, "white"),
-                                       "black": ca.Computer_Action(self.locator, self.players, "black")}
                     self.calculator = cal_ex.Calculator_Extended(self.locator, self.players)
                     self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn, self.buttons, self.sound_maker)
-                elif self.settings["version"] == "extended":
-                    self.players = {"white": plc.Computer_Player_Extended("white", self.surfaces), "black": plc.Computer_Player_Extended("black", self.surfaces)}
                     self.com_action = {"white": ca.Computer_Action(self.locator, self.players, "white"),
                                        "black": ca.Computer_Action(self.locator, self.players, "black")}
+                elif self.settings["version"] == "extended":
+                    self.players = {"white": plc.Computer_Player_Extended("white", self.surfaces), "black": plc.Computer_Player_Extended("black", self.surfaces)}
                     self.calculator = cal_ex.Calculator_Extended(self.locator, self.players)
                     self.interactor = interactor.Interactor(self.painter, self.calculator, self.turn, self.buttons, self.sound_maker) 
+                    self.com_action = {"white": ca.Computer_Action(self.locator, self.players, "white"),
+                                       "black": ca.Computer_Action(self.locator, self.players, "black")}
         
     def turn_up(self):
         if self.turn[0] == "white": self.turn = ("black", self.turn[1])

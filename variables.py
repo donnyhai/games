@@ -8,7 +8,7 @@ frame_size = menu_x_size // 250
 mark_size = menu_x_size // 400
 first_stone_board_pos = (10,4)
 
-FPS = 200
+FPS = 1000
 
 #buttons in pregame window:
 button_x_size = menu_x_size // 6
