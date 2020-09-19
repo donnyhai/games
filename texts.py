@@ -1,5 +1,5 @@
 #begin texts
-welcome_text = "Welcome to this hive game! Have fun and good thinking! White begins."
+welcome_text = "Welcome to hive! Have fun and good thinking! White begins."
 bee_reminder = "See, that you lay your bee until your 4. move."
 computer_player_text = "I am a computer player! Lets see how I handle this..."
 

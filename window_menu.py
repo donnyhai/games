@@ -32,7 +32,7 @@ class Menu:
         self.display = pygame.display.set_mode(v.menu_size, 0, 32)
         pygame.display.set_caption("Spiel-Menue")
         self.display.fill(c.background_main_menu)
-        
+            
         #create buttons and draw them
         self.buttons = self.create_buttons()
         for button0 in self.buttons.values():

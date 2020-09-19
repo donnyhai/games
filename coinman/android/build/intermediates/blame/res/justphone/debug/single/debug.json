@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\build\\intermediates\\res\\merged\\justphone\\debug\\drawable-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\res\\drawable-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\build\\intermediates\\res\\merged\\justphone\\debug\\drawable-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\build\\intermediates\\res\\merged\\justphone\\debug\\drawable-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\res\\drawable-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\build\\intermediates\\res\\merged\\justphone\\debug\\drawable-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\res\\drawable-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\build\\intermediates\\res\\merged\\justphone\\debug\\drawable-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\donnykong\\AndroidStudioProjects\\coinman\\android\\res\\drawable-xxhdpi\\ic_launcher.png"
+    }
+]

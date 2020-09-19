@@ -1,4 +1,5 @@
 import test_objects as test
+import calculator as cal
 
 #A locator object corresponds to a board and and saves stones the locator is or was looking at in the past in 
 #a dict .locations (init with key = 0, and value = the stone in the middle of the board and its coordinate)
@@ -14,7 +15,8 @@ class Locator:
     def __init__(self, board, look_into_past):
         #board, test_board and players
         self.board = board #this is a Board object
-        self.test_board = test.Test_Board(self.board.size, self.board.surfaces) 
+        
+        self.test_board = test.Test_Board(self.board.size, self.board.surfaces)
         
         self.look_into_past = look_into_past
         
